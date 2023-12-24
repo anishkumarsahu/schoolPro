@@ -1,0 +1,181 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block  main %}
+    <div class="right_col" role="main">
+        <div class="">
+            <div class="page-title">
+                <div class="title_left">
+                    <h3>Send SMS to class</h3>
+                </div>
+
+
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>{{ request.session.CurrentSchoolSession.currentSessionYear }}</h2>
+
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <br/>
+                            <form class="form-horizontal form-label-left" id="classmsg"> {% csrf_token %}
+
+
+                                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>Class*</label>
+                                    <select id="stuClass" class="form-control" onchange="getClassSectionList()">
+                                    <option value="N/A">Choose Class</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>Section*</label>
+                                    <select id="stuSection" class="form-control" >
+
+
+                                    </select>
+                                </div>
+
+
+                                <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
+            <label for="">Message*:</label>
+            <textarea style="height: 200px!important;" id="messageText" class="form-control" name="message"
+          placeholder="Type your message here..."></textarea>
+
+                                </div>
+                                <div id="textarea_feedback"></div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div style="text-align: center;padding-top: 10px">
+
+                <button style="width: 20%;height: 50px" class="btn btn-dark" type="button"
+                        onclick="sendSMS()" >Send
+                </button>
+
+
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+     $(
+            getOnlyClassListList()
+        );
+        function getOnlyClassListList() {
+
+
+            $.ajax({
+                type: 'get',
+                url: '/api/GetOnlyClassList/',
+                success: function (response) {
+
+                    for (i in response.data) {
+                        listData = '<option value="' + response.data[i].ClassID + '">' + response.data[i].Standard + '</option>';
+                        $('#stuClass').append(listData);
+                    }
+                    {#            return response;#}
+                },
+                error: function () {
+                    $('#name_status').addClass('validate_data');
+                    $('#name_status').html('error.');
+                }
+            });
+
+        }
+        function getClassSectionList() {
+
+            var id = $('#stuClass').val();
+            $('#stuSection').html('');
+            if(id ==='N/A'){
+                return false
+            }
+            else{
+                  $.ajax({
+                type: 'get',
+                url: '/api/GetOnlyClassSectionDetail/' + id + '/',
+                success: function (response) {
+
+
+                    for (i in response.data) {
+                        listData = '<option value="' + response.data[i].SectionID + '">' + response.data[i].Section + '</option>';
+                        $('#stuSection').append(listData);
+
+
+                    }
+                    {#            return response;#}
+                },
+                error: function () {
+                    $('#name_status').addClass('validate_data');
+                    $('#name_status').html('error.').fadeIn().fadeOut(2000);
+                }
+            });
+
+
+            }
+
+
+        }
+
+        function sendSMS() {
+    var msg = $('#messageText').val();
+    var standard = $('#stuClass').val();
+    var section = $('#stuSection').val();
+     if ( msg === ''||standard ==='') {
+                $('#name_status').addClass('validate_data');
+                $('#name_status').html('All fields are required.').fadeIn().fadeOut(2000);
+
+            }
+            else {
+
+
+         data = new FormData();
+         data.append('msg', msg);
+         data.append('standard', standard);
+         data.append('section', section);
+
+
+         $.ajax({
+             type: 'post',
+             url: '/api/SendSmsToClass/',
+             data: data,
+             contentType: false,
+             cache: false,
+             processData: false,
+             success: function (response) {
+                 if (response.response === 'ok') {
+                     $('#name_status').addClass('validate_data');
+                     $('#name_status').html('Message Sent Successfully.').fadeIn().fadeOut(2000);
+                     $('#classmsg')[0].reset();
+
+                 }
+                 else {
+                     $('#name_status').addClass('validate_data');
+                     $('#name_status').html("" + response.response).fadeIn().fadeOut(2000);
+                 }
+             },
+             error: function () {
+                 $('#name_status').addClass('validate_data');
+                 $('#name_status').html('error.').fadeIn().fadeOut(2000);
+             }
+         });
+     }
+
+}
+    </script>
+
+{% endblock %}

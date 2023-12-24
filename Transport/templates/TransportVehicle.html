@@ -1,0 +1,633 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block css %}
+    <!-- Datatables -->
+    <link href="{% static 'vendors/datatables.net-bs/css/dataTables.bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css' %}"
+          rel="stylesheet">
+    <link href="{% static 'vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css' %}" rel="stylesheet">
+    <style>
+        .dataTables_filter {
+            width: 50%;
+            float: left !important;
+            text-align: right;
+        }
+
+        div.dataTables_wrapper div.dataTables_length select {
+            width: 176% !important;
+            display: inline-block;
+        }
+
+        div.dataTables_wrapper div.dataTables_filter input {
+            margin-left: 0.5em;
+            display: inline-block;
+            width: 161% !important;
+        }
+    </style>
+{% endblock %}
+{% block  main %}
+    <div class="right_col" role="main">
+        <div class="">
+            <div class="page-title">
+                <div class="title_left">
+                    <h3>Vehicle</h3>
+                </div>
+
+
+            </div>
+
+            <div class="clearfix"></div>
+
+
+            <div class="row">
+
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>Add Vehicle Detail</h2>
+
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <br/>
+
+
+                            <form id="subjectAddNewForm" class="form-horizontal form-label-left"
+                                  method="post"> {% csrf_token %}
+
+                                <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>Vehicle Name:</label>
+                                    <input type="text" class="form-control has-feedback-left" id="Vname"
+                                           placeholder="Vehicle Name">
+                                    <span class="fa fa-pencil form-control-feedback left" aria-hidden="true"></span>
+                                </div>
+
+                                <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>Number:</label>
+                                    <input type="text" class="form-control has-feedback-left" id="Vnumber"
+                                           placeholder="Number">
+                                    <span class="fa fa-pencil form-control-feedback left" aria-hidden="true"></span>
+                                </div>
+
+                                <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>Route Terminal:</label>
+                                    <input type="text" class="form-control has-feedback-left" id="Vterminal"
+                                           placeholder="Route Terminal">
+                                    <span class="fa fa-pencil form-control-feedback left" aria-hidden="true"></span>
+                                </div>
+
+                                <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>Seat Capacity:</label>
+                                    <input type="text" class="form-control has-feedback-left" id="Vcapacity"
+                                           placeholder="Seat Capacity">
+                                    <span class="fa fa-pencil form-control-feedback left" aria-hidden="true"></span>
+                                </div>
+
+
+                                <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>Driver (Optional):</label>
+                                    <select id="Vdriver" class="form-control">
+                                        <option value="">Choose..</option>
+
+                                    </select>
+                                </div>
+
+                                <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>Conductor (Optional):</label>
+                                    <select id="Vconductor" class="form-control">
+                                        <option value="">Choose..</option>
+
+                                    </select>
+                                </div>
+
+
+                                <div style="padding-top: 23px" class="col-md-4 col-sm-6 col-xs-12">
+                                    <button type="button" class="btn btn-dark" onclick="AddVehicle()">Add</button>
+                                </div>
+
+                            </form>
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>Vehicle List</h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <p class="text-muted font-13 m-b-30">
+
+
+                            </p>
+                            <table id="VehicleTable" class="table table-striped table-bordered bulk_action">
+                                <thead>
+                                <tr>
+
+                                    <th>SL no.</th>
+                                    <th>Name</th>
+                                    <th>Number</th>
+                                    <th>Route Terminal</th>
+                                    <th>Seat Capacity</th>
+                                    <th>Driver</th>
+                                    <th>Conductor</th>
+                                    <th>Added On</th>
+                                    <th>Action</th>
+
+                                </tr>
+                                </thead>
+
+
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        1
+                                    </td>
+                                    <td>Mantripukhri</td>
+                                    <td>MN12345666</td>
+                                    <td>Mantripukhri</td>
+                                    <td>50</td>
+                                    <td>5/12/2015</td>
+                                    <td>
+                                        <a href="#" class="btn btn-primary btn-xs" data-toggle="modal"
+                                           data-target="#myModalEdit"><i class="fa fa-pencil"></i>
+                                            Edit </a>
+                                        <a href="#" class="btn btn-danger btn-xs" data-toggle="modal"
+                                           data-target="#myModalDelete"><i class="fa fa-trash-o"></i>
+                                            Delete </a>
+                                    </td>
+
+
+                                </tr>
+
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade bd-example-modal-lg" id="myModalEdit" role="dialog">
+                    <div class="modal-dialog modal-lg">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Edit Vehicle Detail</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <div class="x_panel">
+
+                                            <div class="x_content">
+                                                <br/>
+                                                <form id="subjectAddNewForm" class="form-horizontal form-label-left"
+                                                      method="post"> {% csrf_token %}
+                                                    <input type="hidden" id="EVID">
+
+                                                    <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>Vehicle Name:</label>
+                                                        <input type="text" class="form-control has-feedback-left"
+                                                               id="EVname"
+                                                               placeholder="Vehicle Name">
+                                                        <span class="fa fa-pencil form-control-feedback left"
+                                                              aria-hidden="true"></span>
+                                                    </div>
+
+                                                    <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>Number:</label>
+                                                        <input type="text" class="form-control has-feedback-left"
+                                                               id="EVnumber"
+                                                               placeholder="Number">
+                                                        <span class="fa fa-pencil form-control-feedback left"
+                                                              aria-hidden="true"></span>
+                                                    </div>
+
+                                                    <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>Route Terminal:</label>
+                                                        <input type="text" class="form-control has-feedback-left"
+                                                               id="EVterminal"
+                                                               placeholder="Route Terminal">
+                                                        <span class="fa fa-pencil form-control-feedback left"
+                                                              aria-hidden="true"></span>
+                                                    </div>
+
+                                                    <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>Seat Capacity:</label>
+                                                        <input type="text" class="form-control has-feedback-left"
+                                                               id="EVseat"
+                                                               placeholder="Seat Capacity">
+                                                        <span class="fa fa-pencil form-control-feedback left"
+                                                              aria-hidden="true"></span>
+                                                    </div>
+
+
+                                                    <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>Driver:</label>
+                                                        <select id="EVdriver" class="form-control">
+                                                            <option value="">Choose..</option>
+
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>Conductor:</label>
+                                                        <select id="EVconductor" class="form-control">
+                                                            <option value="">Choose..</option>
+
+                                                        </select>
+                                                    </div>
+
+
+                                                </form>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" onclick="updateVehicle()" class="btn btn-success"><i
+                                            class="fa fa-check m-right-xs"></i>Update
+                                    </button>
+
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i
+                                            class="fa fa-times m-right-xs"></i>Close
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade bd-example-modal-lg" id="myModalDelete" role="dialog">
+                    <div class="modal-dialog modal-lg">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Confirmation</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row" style="padding-left: 20px;padding-bottom: 30px">
+                                    <h4>Are you sure you want to delete this vehicle?</h4>
+                                <input type="hidden" id="vehicleDeleteID">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" onclick="deleteVehicle()" class="btn btn-success"><i
+                                            class="fa fa-check m-right-xs"></i>Yes
+                                    </button>
+
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i
+                                            class="fa fa-times m-right-xs"></i>Close
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block js %}
+    {#        <script src="{% static 'vendors/jquery/dist/jquery.min.js' %}"></script>#}
+    {#    <!-- Datatables -->#}
+    <script src="{% static 'vendors/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-bs/js/dataTables.bootstrap.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons/js/buttons.flash.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-keytable/js/dataTables.keyTable.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-scroller/js/dataTables.scroller.min.js' %}"></script>
+    <script src="{% static 'vendors/jszip/dist/jszip.min.js' %}"></script>
+    <script src="{% static 'vendors/pdfmake/build/pdfmake.min.js' %}"></script>
+    <script src="{% static 'vendors/pdfmake/build/vfs_fonts.js' %}"></script>
+
+    <script>
+    $(getOnlyDriverList(),getOnlyConductorList(),getOnlyDriverListEdit(),getOnlyConductorListEdit()
+    );
+
+
+
+            function getOnlyDriverList() {
+
+            $.ajax({
+                type: 'get',
+                url: '/apiT/getDriverListForVehicle/',
+                success: function (response) {
+
+                    for (i in response.data) {
+                        listData = '<option value="' + response.data[i].DriverID + '">' + response.data[i].Name +' - ' + response.data[i].Phone  + '</option>';
+                        $('#Vdriver').append(listData);
+                    }
+                    {#            return response;#}
+                },
+                error: function () {
+                    $('#name_status').addClass('validate_data');
+                    $('#name_status').html('error.');
+                }
+            });
+
+        }
+        function getOnlyDriverListEdit() {
+
+            $.ajax({
+                type: 'get',
+                url: '/apiT/getDriverListForVehicle/',
+                success: function (response) {
+
+                    for (i in response.data) {
+                        listData = '<option value="' + response.data[i].DriverID + '">' + response.data[i].Name +' - ' + response.data[i].Phone  + '</option>';
+                        $('#EVdriver').append(listData);
+                    }
+                    {#            return response;#}
+                },
+                error: function () {
+                    $('#name_status').addClass('validate_data');
+                    $('#name_status').html('error.');
+                }
+            });
+
+        }
+        function getOnlyConductorList() {
+
+            $.ajax({
+                type: 'get',
+                url: '/apiT/getConductorListForVehicle/',
+                success: function (response) {
+
+                    for (i in response.data) {
+                        listData = '<option value="' + response.data[i].DriverID + '">' + response.data[i].Name +' - ' + response.data[i].Phone  + '</option>';
+                        $('#Vconductor').append(listData);
+                    }
+                    {#            return response;#}
+                },
+                error: function () {
+                    $('#name_status').addClass('validate_data');
+                    $('#name_status').html('error.');
+                }
+            });
+
+        }
+        function getOnlyConductorListEdit() {
+
+            $.ajax({
+                type: 'get',
+                url: '/apiT/getConductorListForVehicle/',
+                success: function (response) {
+
+                    for (i in response.data) {
+                        listData = '<option value="' + response.data[i].DriverID + '">' + response.data[i].Name +' - ' + response.data[i].Phone  + '</option>';
+                        $('#EVconductor').append(listData);
+                    }
+                    {#            return response;#}
+                },
+                error: function () {
+                    $('#name_status').addClass('validate_data');
+                    $('#name_status').html('error.');
+                }
+            });
+
+        }
+
+        function AddVehicle() {
+            var Vname = $('#Vname').val();
+            var Vnumber = $('#Vnumber').val();
+            var Vterminal = $('#Vterminal').val();
+            var Vcapacity = $('#Vcapacity').val();
+            var Vdriver = $('#Vdriver').val();
+            var Vconductor = $('#Vconductor').val();
+            var csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val();
+            data = new FormData();
+            data.append('Vname', Vname);
+            data.append('Vnumber', Vnumber);
+            data.append('Vterminal', Vterminal);
+            data.append('Vcapacity', Vcapacity);
+            data.append('Vdriver', Vdriver);
+            data.append('Vconductor', Vconductor);
+
+            data.append('csrfmiddlewaretoken', csrfmiddlewaretoken);
+
+
+            if (Vname === "" || Vnumber === "" || Vterminal === "" || Vcapacity === "") {
+
+                $('#name_status').addClass('validate_data');
+                $('#name_status').html('* fields required.');
+                $('#name_status').fadeIn().fadeOut(2000);
+
+            }
+            else {
+                $.ajax({
+                    type: 'post',
+                    url: '/apiT/addVehicle/',
+                    data: data,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (response) {
+                        if (response.response === 'ok') {
+                            $('#name_status').addClass('validate_data');
+                            $('#name_status').html('New Vehicle added successfully.').fadeIn().fadeOut(2000);
+                            $('#subjectAddNewForm').trigger('reset');
+                            VehicleTable.ajax.reload();
+                        }
+                        else {
+                            $('#name_status').addClass('validate_data');
+                            $('#name_status').html("" + response.response).fadeIn().fadeOut(2000);
+
+
+                        }
+
+                    },
+                    error: function () {
+                        $('#name_status').addClass('validate_data');
+                        $('#name_status').html('error.').fadeIn().fadeOut(2000);
+                        ;
+                    }
+                });
+            }
+
+        }
+
+        var VehicleTable;
+         $(document).ready(function () {
+            VehicleTable = $('#VehicleTable').DataTable({
+                "ajax": "/apiT/getVehicleList/",
+                "columns": [
+                    {"data": "VehicleID"},
+                    {"data": "Name"},
+                    {"data": "Number"},
+                    {"data": "Terminal"},
+                    {"data": "Seat"},
+                    {"data": "Driver"},
+                    {"data": "Conductor"},
+                    {"data": "AddedOn"},
+                    {"data": "Action"}
+                ],
+                "order": [['0', 'desc']],
+
+            });
+            VehicleTable.column(0).visible(false)
+            return VehicleTable;
+        });
+
+        function editVehicleDetail(id) {
+
+            $.ajax({
+                type: 'get',
+                url: '/apiT/getVehicleDetail/' + id + '/',
+                success: function (response) {
+                    $('#EVID').val(response.data["VehicleID"]);
+                    $('#EVname').val(response.data["Name"]);
+                    $('#EVnumber').val(response.data["Number"]);
+                    $('#EVterminal').val(response.data["Terminal"]);
+                    $('#EVseat').val(response.data["Seat"]);
+                    $('#EVdriver').val(response.data["Driver"]);
+                    $('#EVconductor').val(response.data["Conductor"]);
+
+                },
+                error: function () {
+                    $('#name_status').addClass('validate_data');
+                    $('#name_status').html('error.');
+                }
+            });
+        }
+ function updateVehicle() {
+            var EVID = $('#EVID').val();
+            var EVname = $('#EVname').val();
+            var EVnumber = $('#EVnumber').val();
+            var EVterminal = $('#EVterminal').val();
+            var EVseat = $('#EVseat').val();
+            var EVdriver = $('#EVdriver').val();
+            var EVconductor = $('#EVconductor').val();
+            var csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val();
+            data = new FormData();
+            data.append('EVID', EVID);
+            data.append('EVname', EVname);
+            data.append('EVnumber', EVnumber);
+            data.append('EVterminal', EVterminal);
+            data.append('EVseat', EVseat);
+            data.append('EVdriver', EVdriver);
+            data.append('EVconductor', EVconductor);
+
+            data.append('csrfmiddlewaretoken', csrfmiddlewaretoken);
+
+
+            if (EVname === "" ||EVnumber === "" ||EVterminal === "" ||EVseat === "") {
+
+                $('#name_status').addClass('validate_data');
+                $('#name_status').html('* fileds are required.');
+                $('#name_status').fadeIn().fadeOut(2000);
+
+            }
+            else {
+                $.ajax({
+                    type: 'post',
+                    url: '/apiT/editVehicleDetail/',
+                    data: data,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+
+
+                    success: function (response) {
+                        if (response.response === 'ok') {
+                            $('#name_status').addClass('validate_data');
+                            $('#name_status').html('Vehicle detail updated successfully.').fadeIn().fadeOut(2000);
+                            $('#myModalEdit').modal('toggle');
+
+                            VehicleTable.ajax.reload();
+                        }
+                        else {
+                            $('#name_status').addClass('validate_data');
+                            $('#name_status').html(""+response.response).fadeIn().fadeOut(2000);
+
+                        }
+
+                    },
+                    error: function () {
+                        $('#name_status').addClass('validate_data');
+                        $('#name_status').html('error.').fadeIn().fadeOut(2000);
+
+                    }
+                });
+            }
+
+        }
+
+  function deleteVehicleDetail(id) {
+            $('#vehicleDeleteID').val(id)
+
+  }
+
+
+    function deleteVehicle() {
+
+            var vehicleDeleteID = $('#vehicleDeleteID').val();
+
+            data = new FormData();
+            data.append('deleteID', vehicleDeleteID);
+
+
+            $.ajax({
+                type: 'post',
+                url: '/apiT/deleteVehicleDetail/',
+                data: data,
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function (response) {
+                    if (response.response === 'ok') {
+                        $('#name_status').addClass('validate_data');
+                        $('#name_status').html('Vehicle Deleted.').fadeIn().fadeOut(2000);
+                        VehicleTable.ajax.reload();
+                        $('#myModalDelete').modal('toggle');
+
+
+
+                    }
+                    else {
+                        $('#name_status').addClass('validate_data');
+                        $('#name_status').html(""+response.response);
+                        $('#name_status').fadeIn().fadeOut(2000);
+
+                    }
+
+                },
+                error: function () {
+                    $('#name_status').addClass('validate_data');
+                    $('#name_status').html('error.').fadeIn().fadeOut(2000);
+                }
+            });
+
+        }
+
+
+
+    </script>
+
+{% endblock %}

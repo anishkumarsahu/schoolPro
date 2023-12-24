@@ -1,0 +1,648 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block css %}
+{% endblock %}
+
+{% block  main %}
+    <div class="right_col" role="main">
+        <div class="">
+            <div class="page-title">
+                <div class="title_left">
+                    <h3>Students Attendance History</h3>
+                </div>
+
+
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="">
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>{{ request.session.CurrentSchoolSession.currentSessionYear }}</h2>
+
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+
+
+                            <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                                <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                                    <li role="presentation" class="active"><a href="#tab_content1" id="home-tab"
+                                                                              role="tab" data-toggle="tab"
+                                                                              aria-expanded="true">Date Range
+                                    </a>
+                                    </li>
+                                    <li role="presentation" class=""><a href="#tab_content4" role="tab"
+                                                                        id="profile-tab" data-toggle="tab"
+                                                                        aria-expanded="false">Student Wise</a>
+                                    </li>
+
+
+                                </ul>
+                                <div id="myTabContent" class="tab-content">
+                                    <div role="tabpanel" class="tab-pane fade active in" id="tab_content1"
+                                         aria-labelledby="home-tab">
+
+
+                                        <form class="form-horizontal form-label-left">
+
+
+                                            <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                <label>Class:</label>
+                                                <select id="stuClass" class="form-control"
+                                                        onchange="getClassSectionList()">
+                                                    <option value="">Choose Class</option>
+
+
+                                                </select>
+                                            </div>
+
+
+                                            <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                <label>Section:</label>
+                                                <select id="stuSection" class="form-control">
+
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                <label>Subject:</label>
+                                                <select id="SubjectList" class="form-control">
+
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3 col-sm-6 col-xs-12 form-group has-feedback">
+                                                <label>From:</label>
+
+                                                <div class="controls">
+                                                    <div class="col-md-11 xdisplay_inputx form-group has-feedback">
+                                                        <input type="text" class="form-control has-feedback-left"
+                                                               id="myDatepicker" placeholder="from"
+                                                               aria-describedby="inputSuccess2Status2">
+                                                        <span class="fa fa-calendar-o form-control-feedback left"
+                                                              aria-hidden="true"></span>
+                                                        <span id="inputSuccess2Status2"
+                                                              class="sr-only">(success)</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3 col-sm-6 col-xs-12 form-group has-feedback">
+                                                <label>To:</label>
+
+                                                <div class="control-group">
+                                                    <div class="controls">
+                                                        <div class="col-md-11 xdisplay_inputx form-group has-feedback">
+                                                            <input type="text"
+                                                                   class="form-control has-feedback-left"
+                                                                   id="myDatepicker2" placeholder="to"
+                                                                   aria-describedby="inputSuccess2Status2">
+                                                            <span class="fa fa-calendar-o form-control-feedback left"
+                                                                  aria-hidden="true"></span>
+                                                            <span id="inputSuccess2Status2"
+                                                                  class="sr-only">(success)</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <button type="button" style="float: right" class="btn btn-success"
+                                                    onclick="getAttendance()"><i
+                                                    class="fa fa-search"></i> Search
+                                            </button>
+
+                                        </form>
+                                        <table id="ByDateRange"
+                                               class="table table-striped table-bordered bulk_action">
+                                            <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Photo</th>
+                                                <th>Name</th>
+                                                <th>Roll No.</th>
+                                                <th>No. of Days Attended</th>
+                                                <th>No. of Days Absent</th>
+                                                <th>Percentage</th>
+
+                                            </tr>
+                                            </thead>
+
+
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+
+
+                                    </div>
+
+                                    <div role="tabpanel" class="tab-pane fade" id="tab_content4"
+                                         aria-labelledby="profile-tab">
+
+
+                                        <form class="form-horizontal form-label-left">
+
+                                            <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                                <label>Class:</label>
+                                                <select id="stuClass2" class="form-control"
+                                                        onchange="getClassSectionList2()">
+                                                    <option value="">Choose Class</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                                <label>Section:</label>
+                                                <select id="stuSection2" class="form-control">
+
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                                <label>Subject:</label>
+                                                <select id="SubjectList2" class="form-control">
+
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                                <label>From:</label>
+
+
+                                                <input type="text" class="form-control has-feedback-left"
+                                                       id="2myDatepicker" placeholder="from"
+                                                       aria-describedby="inputSuccess2Status2">
+                                                <span class="fa fa-calendar-o form-control-feedback left"
+                                                      aria-hidden="true"></span>
+                                                <span id="inputSuccess2Status2"
+                                                      class="sr-only">(success)</span>
+
+                                            </div>
+
+                                            <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                                <label>To:</label>
+
+
+                                                <input type="text"
+                                                       class="form-control has-feedback-left"
+                                                       id="2myDatepicker2" placeholder="to"
+                                                       aria-describedby="inputSuccess2Status2">
+                                                <span class="fa fa-calendar-o form-control-feedback left"
+                                                      aria-hidden="true"></span>
+                                                <span id="inputSuccess2Status2" class="sr-only">(success)</span>
+
+                                            </div>
+                                            <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                                <label>Student (Name/Roll):</label>
+                                                <select id="stuList2" class="form-control">
+
+                                                </select>
+                                            </div>
+
+
+                                            {#                                                <a target="_blank"#}
+                                            {#                                                   href="{% url 'schoolApp:studentAttendanceHistoryStuWise' %}"#}
+                                            {#                                                   style="float: left" class="btn btn-primary"><i#}
+                                            {#                                                        class="fa fa-print"></i> Print#}
+                                            {#                                                </a>#}
+
+                                            <button style="float: right" type="button" class="btn btn-success"
+                                                    onclick="getAttendanceByStudent()"><i
+                                                    class="fa fa-search"></i> Search
+                                            </button>
+
+                                        </form>
+
+                                        <br>
+
+                                        <table id="ByStudent"
+                                               class="table table-striped table-bordered bulk_action">
+                                            <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Date</th>
+                                                <th>Is Present</th>
+                                                <th>Is ABsent</th>
+                                                <th>Remark</th>
+
+                                            </tr>
+                                            </thead>
+
+
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+{% endblock %}
+{% block js %}
+    <script>
+        $('#myDatepicker').datetimepicker(
+            {format: 'YYYY-MM-DD'}
+        );
+
+        $('#myDatepicker2').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+
+        $('#2myDatepicker').datetimepicker(
+            {format: 'YYYY-MM-DD'}
+        );
+
+        $('#2myDatepicker2').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+
+
+        $('#myDatepicker21').datetimepicker({
+            format: 'DD.MM.YYYY'
+        });
+
+        $('#myDatepicker3').datetimepicker({
+            format: 'hh:mm A'
+        });
+
+        $('#myDatepicker4').datetimepicker({
+            ignoreReadonly: true,
+            allowInputToggle: true
+        });
+
+        $('#datetimepicker6').datetimepicker();
+
+        $('#datetimepicker7').datetimepicker({
+            useCurrent: false
+        });
+
+        $("#datetimepicker6").on("dp.change", function (e) {
+            $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
+        });
+
+        $("#datetimepicker7").on("dp.change", function (e) {
+            $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
+        });
+        $(
+            getOnlyClassListList(),
+            getOnlyClassListList2()
+        );
+        function getOnlyClassListList() {
+
+
+            $.ajax({
+                type: 'get',
+                url: '/api/GetOnlyClassList/',
+                success: function (response) {
+
+                    for (i in response.data) {
+                        listData = '<option value="' + response.data[i].ClassID + '">' + response.data[i].Standard + '</option>';
+                        $('#stuClass').append(listData);
+                    }
+                    {#            return response;#}
+
+                },
+                error: function () {
+                    $('#name_status').addClass('validate_data');
+                    $('#name_status').html('error.');
+                }
+            });
+
+        }
+        function getClassSectionList() {
+            getAssignSubjectClassList();
+            $('#selectDate').val('');
+
+
+            var id = $('#stuClass').val();
+            $('#stuSection').html('');
+
+            $.ajax({
+                type: 'get',
+                url: '/api/GetOnlyClassSectionDetail/' + id + '/',
+                success: function (response) {
+
+
+                    for (i in response.data) {
+                        listData = '<option value="' + response.data[i].SectionID + '">' + response.data[i].Section + '</option>';
+                        $('#stuSection').append(listData);
+
+
+                    }
+                    {#            return response;#}
+                },
+                error: function () {
+                    $('#name_status').addClass('validate_data');
+                    $('#name_status').html('error.').fadeIn().fadeOut(2000);
+                }
+            });
+
+
+        }
+        function getAssignSubjectClassList() {
+            {#            $('#studentAttendanceList tbody').empty();#}
+            var classID = $('#stuClass').val();
+            $('#SubjectList').html('');
+
+            $('#SubjectList').append('<option value="">Entire Class</option>');
+            if (classID !== "") {
+                $.ajax({
+                    type: 'get',
+                    url: '/api/GetSubjectListWithClass/' + classID + '/',
+                    success: function (response) {
+
+
+                        for (i in response.data) {
+                            listData = '<option value="' + response.data[i].ID + '">' + response.data[i].SubjectName + '</option>';
+                            $('#SubjectList').append(listData);
+
+
+                        }
+                        {#            return response;#}
+                    },
+                    error: function () {
+                        $('#name_status').addClass('validate_data');
+                        $('#name_status').html('error.').fadeIn().fadeOut(2000);
+                    }
+                });
+            }
+
+
+        }
+
+        function getAssignSubjectClassList2() {
+            {#            $('#studentAttendanceList tbody').empty();#}
+            var classID = $('#stuClass2').val();
+            $('#SubjectList2').html('');
+            $('#stuList2').html('');
+            $('#SubjectList2').append('<option value="">Entire Class</option>');
+            if (classID !== "") {
+                $.ajax({
+                    type: 'get',
+                    url: '/api/GetSubjectListWithClass/' + classID + '/',
+                    success: function (response) {
+                        for (i in response.data) {
+                            listData = '<option value="' + response.data[i].ID + '">' + response.data[i].SubjectName + '</option>';
+                            $('#SubjectList2').append(listData);
+
+
+                        }
+                        {#            return response;#}
+                    },
+                    error: function () {
+                        $('#name_status').addClass('validate_data');
+                        $('#name_status').html('error.').fadeIn().fadeOut(2000);
+                    }
+                });
+            }
+        }
+        function getOnlyClassListList2() {
+
+
+            $.ajax({
+                type: 'get',
+                url: '/api/GetOnlyClassList/',
+                success: function (response) {
+
+                    for (i in response.data) {
+                        listData = '<option value="' + response.data[i].ClassID + '">' + response.data[i].Standard + '</option>';
+                        $('#stuClass2').append(listData);
+                    }
+                    {#            return response;#}
+                },
+                error: function () {
+                    $('#name_status').addClass('validate_data');
+                    $('#name_status').html('error.');
+                }
+            });
+
+        }
+
+        function getClassSectionList2() {
+
+            getAssignSubjectClassList2();
+
+            $('#selectDate2').val('');
+
+            var id = $('#stuClass2').val();
+            $('#stuSection2').html('');
+
+            $.ajax({
+                type: 'get',
+                url: '/api/GetOnlyClassSectionDetail/' + id + '/',
+                success: function (response) {
+
+
+                    for (i in response.data) {
+                        listData = '<option value="' + response.data[i].SectionID + '">' + response.data[i].Section + '</option>';
+                        $('#stuSection2').append(listData);
+
+
+                    }
+
+                    getStudentList();
+                },
+                error: function () {
+                    $('#name_status').addClass('validate_data');
+                    $('#name_status').html('error.').fadeIn().fadeOut(2000);
+                }
+            });
+
+
+        }
+
+        function getStudentList() {
+            var standard = $('#stuClass2').val();
+            var section = $('#stuSection2').val();
+
+
+            $.ajax({
+                type: 'get',
+                url: '/api/GetStudentListwithClassAndSection/?classID=' + standard + '&sectionID=' + section,
+                success: function (response) {
+                    for (i in response.data) {
+                        listData = '<option value="' + response.data[i].StudentID + '">' + response.data[i].Name + '-' + response.data[i].Roll + '</option>';
+                        $('#stuList2').append(listData);
+                    }
+                    {#            return response;#}
+                },
+                error: function () {
+                    $('#name_status').addClass('validate_data');
+                    $('#name_status').html('error.');
+                }
+            });
+
+
+        }
+
+
+    </script>
+
+    <script>
+        var StudentAttendanceTableByDateRange;
+        var counts = 0;
+        function getAttendance() {
+            var standard = $('#stuClass').val();
+            var section = $('#stuSection').val();
+            var subject = $('#SubjectList').val();
+            var startDate = $('#myDatepicker').val();
+            var endDate = $('#myDatepicker2').val();
+
+            if (standard === '' || startDate === '' || endDate === '') {
+                $('#name_status').addClass('validate_data');
+                $('#name_status').html('* fields are required.');
+                $('#name_status').fadeIn().fadeOut(2000);
+
+            }
+            else {
+                if (counts === 0) {
+
+                    StudentAttendanceTableByDateRange = $('#ByDateRange').DataTable({
+                        "processing": true,
+                        "ajax": "/api/GetStudentAttendanceListByDateRange/?classID=" + standard + "&sectionID=" + section + "&subjectID=" + subject + "&StartDate=" + startDate + "&EndDate=" + endDate,
+
+                        "columns": [
+                            {"data": "ID"},
+                            {"data": "Image"},
+                            {"data": "StudentName"},
+                            {"data": "Roll"},
+                            {"data": "Present"},
+                            {"data": "Absent"},
+                            {"data": "Percentage"}
+
+                        ],
+                        "order": [['0', 'desc']],
+                        "language": {
+                            "emptyTable": 'No Record Found.'
+                        },
+                        dom: 'Bfrtip',
+                        buttons: [
+                            {
+                                className: 'gradient-button gradient-button-1',
+                                extend: 'print',
+                                exportOptions: {
+                                    columns: [1, 2, 3, 4]
+                                }
+                            },
+                            {
+                                className: 'gradient-button gradient-button-1',
+                                extend: 'csv',
+                                exportOptions: {
+                                    columns: [1, 2, 3, 4]
+                                }
+                            },
+                            {
+                                extend: 'pdf',
+                                exportOptions: {
+                                    columns: [1, 2, 3, 4]
+                                }
+                            }
+                        ]
+
+
+                    });
+                    StudentAttendanceTableByDateRange.column(0).visible(false);
+                    counts = counts + 1;
+
+
+                }
+                else {
+                    StudentAttendanceTableByDateRange.ajax.url("/api/GetStudentAttendanceListByDateRange/?classID=" + standard + "&sectionID=" + section + "&subjectID=" + subject + "&StartDate=" + startDate + "&EndDate=" + endDate).load();
+
+                }
+
+            }
+
+
+        }
+
+
+        var StudentAttendanceTableByStudent;
+        var count = 0;
+        function getAttendanceByStudent() {
+            var standard = $('#stuClass2').val();
+            var section = $('#stuSection2').val();
+            var subject = $('#SubjectList2').val();
+            var startDate = $('#2myDatepicker').val();
+            var endDate = $('#2myDatepicker2').val();
+            var studentID = $('#stuList2').val();
+
+            if (standard === '' || startDate === '' || endDate === '' || studentID === '') {
+                $('#name_status').addClass('validate_data');
+                $('#name_status').html('* fields are required.');
+                $('#name_status').fadeIn().fadeOut(2000);
+
+            }
+            else {
+                if (count === 0) {
+
+                    StudentAttendanceTableByStudent = $('#ByStudent').DataTable({
+                        "processing": true,
+                        "ajax": "/api/GetStudentAttendanceListwithClassAndSectionAndStudent/?classID=" + standard + "&sectionID=" + section + "&subjectID=" + subject + "&StartDate=" + startDate + "&EndDate=" + endDate + "&StudentID=" + studentID,
+
+                        "columns": [
+                            {"data": "ID"},
+                            {"data": "Date"},
+                            {"data": "Present"},
+                            {"data": "Absent"},
+                            {"data": "Reason"}
+
+                        ],
+                        "order": [['1', 'asc']],
+                        "language": {
+                            "emptyTable": 'No Record Found.'
+                        },
+                        dom: 'Bfrtip',
+                        buttons: [
+                            {
+                                className: 'gradient-button gradient-button-1',
+                                extend: 'print',
+                                exportOptions: {
+                                    columns: [1, 2, 3, 4]
+                                }
+                            },
+                            {
+                                className: 'gradient-button gradient-button-1',
+                                extend: 'csv',
+                                exportOptions: {
+                                    columns: [1, 2, 3, 4]
+                                }
+                            },
+                            {
+                                extend: 'pdf',
+                                exportOptions: {
+                                    columns: [1, 2, 3, 4]
+                                }
+                            }
+                        ]
+                    });
+                    StudentAttendanceTableByStudent.column(0).visible(false);
+                    count = count + 1;
+
+
+                }
+                else {
+                    StudentAttendanceTableByStudent.ajax.url("/api/GetStudentAttendanceListwithClassAndSectionAndStudent/?classID=" + standard + "&sectionID=" + section + "&subjectID=" + subject + "&StartDate=" + startDate + "&EndDate=" + endDate + "&StudentID=" + studentID).load();
+
+                }
+
+            }
+        }
+    </script>
+
+
+{% endblock %}

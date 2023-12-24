@@ -1,0 +1,231 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block css %}
+{% endblock %}
+{% block  main %}
+    <div class="right_col" role="main">
+        <div class="">
+            <div class="page-title">
+                <div class="title_left">
+                    <h3>Assign Subject To Teacher</h3>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>{{ request.session.CurrentSchoolSession.currentSessionYear }}</h2>
+
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <br/>
+                            <form id="assignSubForm" class="form-horizontal form-label-left"> {% csrf_token %}
+                                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>Class *:</label>
+                                    <select id="ClassID" onchange="getClassSectionList()" class="form-control">
+                                        <option value="">Choose..</option>
+                                    </select>
+                                </div>
+
+
+                                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>Section :</label>
+                                    <select id="classSection" class="form-control">
+
+                                    </select>
+                                </div>
+
+
+                                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>Subject *:</label>
+                                    <select id="SubjectList" class="form-control">
+
+                                    </select>
+                                </div>
+
+
+                                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>Teacher *:</label>
+                                    <select id="TeacherList" class="form-control">
+                                        <option value="">Choose..</option>
+                                    </select>
+                                </div>
+
+
+                                <button type="button" style="float: right" class="btn btn-success"
+                                        onclick="AssignSubjectToClassToTeacher()">Assign
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block js %}
+
+    <script>
+        $(document).ready(function () {
+            getOnlyClassListList();
+            getUnassignedTeacherList()
+
+
+        })
+        function getOnlyClassListList() {
+
+
+            $.ajax({
+                type: 'get',
+                url: '/api/GetOnlyClassList/',
+                success: function (response) {
+
+                    for (i in response.data) {
+                        listData = '<option value="' + response.data[i].ClassID + '">' + response.data[i].Standard + '</option>';
+                        $('#ClassID').append(listData);
+                    }
+                    {#            return response;#}
+                },
+                error: function () {
+                    $('#name_status').addClass('validate_data');
+                    $('#name_status').html('error.');
+                }
+            });
+
+        }
+        function getClassSectionList() {
+            getAssignSubjectClassList()
+
+            var classID = $('#ClassID').val();
+            $('#classSection').html('');
+            if (classID !== "") {
+                $.ajax({
+                    type: 'get',
+                    url: '/api/GetOnlyClassSectionDetail/' + classID + '/',
+                    success: function (response) {
+
+
+                        for (i in response.data) {
+                            listData = '<option value="' + response.data[i].SectionID + '">' + response.data[i].Section + '</option>';
+                            $('#classSection').append(listData);
+
+
+                        }
+                        {#            return response;#}
+                    },
+                    error: function () {
+                        $('#name_status').addClass('validate_data');
+                        $('#name_status').html('error.').fadeIn().fadeOut(2000);
+                    }
+                });
+            }
+
+
+        }
+        function getAssignSubjectClassList() {
+
+            var classID = $('#ClassID').val();
+            $('#SubjectList').html('');
+            if (classID !== "") {
+                $.ajax({
+                    type: 'get',
+                    url: '/api/GetSubjectListWithClass/' + classID + '/',
+                    success: function (response) {
+
+
+                        for (i in response.data) {
+                            listData = '<option value="' + response.data[i].ID + '">' + response.data[i].SubjectName + '</option>';
+                            $('#SubjectList').append(listData);
+
+
+                        }
+                        {#            return response;#}
+                    },
+                    error: function () {
+                        $('#name_status').addClass('validate_data');
+                        $('#name_status').html('error.').fadeIn().fadeOut(2000);
+                    }
+                });
+            }
+
+
+        }
+        function getUnassignedTeacherList() {
+
+            $.ajax({
+                type: 'get',
+                url: '/api/GetUnassignedTeacherList/',
+                success: function (response) {
+                    for (i in response) {
+                        listData = '<option value="' + response[i].ID + '">' + response[i].Name + '</option>';
+                        $('#TeacherList').append(listData);
+                    }
+                    {#            return response;#}
+                },
+                error: function () {
+                    $('#name_status').addClass('validate_data');
+                    $('#name_status').html('error.');
+                }
+            });
+
+        }
+
+        function AssignSubjectToClassToTeacher() {
+
+            var classID = $('#ClassID').val();
+            var sectionID = $('#classSection').val();
+            var subjectID = $('#SubjectList').val();
+            var teacherID = $('#TeacherList').val();
+
+            var csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val();
+
+            data = new FormData();
+            data.append('classID', classID);
+            data.append('sectionID', sectionID);
+            data.append('subjectID', subjectID);
+            data.append('teacherID', teacherID);
+            data.append('csrfmiddlewaretoken', csrfmiddlewaretoken);
+
+
+            if (classID === "" || subjectID === null || teacherID === '') {
+                $('#name_status').addClass('validate_data');
+                $('#name_status').html('* fields are required.').fadeIn().fadeOut(2000);
+
+            }
+            else {
+                $.ajax({
+                    type: 'post',
+                    url: '/api/PostSubjectsToClassToTeacher/',
+                    data: data,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+
+
+                    success: function (response) {
+                        if (response.response === 'ok') {
+                            $('#name_status').addClass('validate_data');
+                            $('#name_status').html('Subject Assign to class and teacher successfully.').fadeIn().fadeOut(2000);
+                            $('#assignSubForm')[0].reset();
+                        }
+                        else {
+                            $('#name_status').removeClass('validate_data');
+                            $('#name_status').html(response.response).fadeIn().fadeOut(2000);
+
+                        }
+
+                        return response;
+                    },
+                    error: function () {
+                        $('#name_status').addClass('validate_data');
+                        $('#name_status').html('error.').fadeIn().fadeOut(2000);
+                    }
+                });
+            }
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,459 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block css %}
+
+{% endblock %}
+{% block  main %}
+    <div class="right_col" role="main">
+        <div class="">
+            <div class="page-title">
+                <div class="title_left">
+                    <h3>Event List</h3>
+                </div>
+
+
+            </div>
+
+            <div class="clearfix"></div>
+
+
+            <div class="row">
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>{{ request.session.CurrentSchoolSession.currentSessionYear }}</h2>
+
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                             <button style="float: right" class="btn btn-success " data-toggle="modal" data-target="#myModalEventAdd"><i class="fa fa-plus"></i> Add
+                                    Event
+                                </button>
+                            <table id="EventListTable" class="table table-striped table-bordered bulk_action" style="width: 100%;">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Sl. No</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Title</th>
+                                    <th>Descriptions</th>
+                                    <th>Action</th>
+
+                                </tr>
+                                </thead>
+
+
+                                <tbody>
+
+
+
+                                </tbody>
+                            </table>
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade bd-example-modal-lg" id="myModalEventAdd" role="dialog">
+        <div class="modal-dialog modal-md">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Add Event</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2" style="padding-bottom: 20px">
+                            <form id="eventAddNewForm"> {% csrf_token %}
+
+                                <label>Title *:</label>
+                                <input type="text" class="form-control has-feedback-left"
+                                       id="titleE" name="titleE"
+                                       placeholder="Title">
+
+                                <label>Description *:</label>
+                                <input type="text" class="form-control has-feedback-left"
+                                       id="descriptionE" name="descriptionE"
+                                       placeholder="Description">
+
+                                <div class=''>
+                                    <label>Start Date *:</label>
+                                    <div class="form-group">
+                                        <div class='input-group date' id='myDatepicker2'>
+                                            <input type='text' class="form-control" id="datestartE"/>
+                                            <span class="input-group-addon">
+                               <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class=''>
+                                    <label>End Date *:</label>
+                                    <div class="form-group">
+                                        <div class='input-group date' id='myDatepicker23'>
+                                            <input type='text' class="form-control" id="dateendE"/>
+                                            <span class="input-group-addon">
+                               <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" onclick="AddEvent()"><i
+                                class="fa fa-check m-right-xs"></i>Save
+                        </button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i
+                                class="fa fa-times m-right-xs"></i>Close
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="modal fade bd-example-modal-lg" id="myModalStudentEdit" role="dialog">
+        <div class="modal-dialog modal-md">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Edit Event</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2" style="padding-bottom: 20px">
+                            <form id="studentAddNewForm"> {% csrf_token %}
+                                <input type="hidden" id="idEdit">
+                                <label>Title *:</label>
+                                <input type="text" class="form-control has-feedback-left"
+                                       id="titleEdit" name="titleEdit"
+                                       placeholder="Title">
+
+                                <label>Description *:</label>
+                                <input type="text" class="form-control has-feedback-left"
+                                       id="descriptionEdit" name="descriptionEdit"
+                                       placeholder="Description">
+
+                                <div class=''>
+                                    <label>Start Date *:</label>
+                                    <div class="form-group">
+                                        <div class='input-group date' id='myDatepicker21'>
+                                            <input type='text' class="form-control" id="datesEdit"/>
+                                            <span class="input-group-addon">
+                               <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class=''>
+                                    <label>End Date *:</label>
+                                    <div class="form-group">
+                                        <div class='input-group date' id='myDatepicker24'>
+                                            <input type='text' class="form-control" id="dateeEdit"/>
+                                            <span class="input-group-addon">
+                               <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" onclick="UpdateEvent()"><i
+                                class="fa fa-check m-right-xs"></i>Update
+                        </button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i
+                                class="fa fa-times m-right-xs"></i>Close
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="modal fade" id="myModalDelete" role="dialog">
+        <div class="modal-dialog ">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h2 class="modal-title">Confirmation</h2>
+                </div>
+                <div class="modal-body">
+                    <p style="color: #0D3349;font-size: 20px">Are you sure you want to delete this
+                        Event.</p>
+                    <input type="hidden" id="DeleteID">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" onclick="DeleteEvent()">Delete</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block js %}
+    <script>
+
+
+        $('#myDatepicker2').datetimepicker({
+
+            format: 'YYYY-MM-DD'
+        });
+        $('#myDatepicker21').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+
+        $('#myDatepicker23').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+
+        $('#myDatepicker24').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+
+        $(getEventList());
+        function AddEvent() {
+
+
+            var titleE = $('#titleE').val();
+            var descriptionE = $('#descriptionE').val();
+            var datestartE = $('#datestartE').val();
+            var dateendE = $('#dateendE').val();
+
+
+            if (titleE === '' || descriptionE === '' || datestartE === '' || dateendE === '') {
+                $('#name_status').addClass('validate_data');
+                $('#name_status').html('All fields are required.').fadeIn().fadeOut(2000);
+
+            }
+            else {
+
+
+                data = new FormData();
+                data.append('title', titleE);
+                data.append('description', descriptionE);
+                data.append('datestart', datestartE);
+                data.append('dateend', dateendE);
+
+
+                $.ajax({
+                    type: 'post',
+                    url: '/api/AddEvent/',
+                    data: data,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (response) {
+                        if (response.response === 'ok') {
+                            $('#name_status').addClass('validate_data');
+                            $('#name_status').html('Event Added.').fadeIn().fadeOut(2000);
+                            EventListTableData.ajax.url("/api/GetEventsList/").load();
+                            $('#myModalEventAdd').modal('toggle');
+
+                        }
+                        else {
+                            $('#name_status').addClass('validate_data');
+                            $('#name_status').html("" + response.response).fadeIn().fadeOut(2000);
+                        }
+                        return response;
+                    },
+                    error: function () {
+                        $('#name_status').addClass('validate_data');
+                        $('#name_status').html('error.').fadeIn().fadeOut(2000);
+                    }
+                });
+            }
+        }
+        var EventListTableData;
+        var count = 0;
+        function getEventList() {
+
+             EventListTableData = $('#EventListTable').DataTable({
+                        "scrollX": true,
+                        dom: 'Blfrtip',
+                        buttons: [{
+                            extend: 'excel',
+                            exportOptions: {
+                                columns: [1,2, 3, 4, 5]
+                            }
+                        }, {
+                            extend: 'print',
+                            exportOptions: {
+                                columns: [1,2, 3, 4, 5]
+                            }
+                        }
+                        ],
+                        "columnDefs": [
+                            {"name": "id", "targets": 0, "orderable": false},
+                            {"name": "count", "targets": 1, "orderable": false},
+                            {"name": "startDate", "targets": 2, "orderable": true},
+                            {"name": "endDate", "targets": 3, "orderable": true},
+                            {"name": "title", "targets": 4, "orderable": true},
+                            {"name": "message", "targets": 5, "orderable": true},
+                            {"name": "'Action'", "targets": 6, "orderable": false},
+
+                        ],
+                        aaSorting: [[2, 'asc']],
+                        "lengthMenu": [[20, 25, 50, 100, -1], [20, 25, 50, 100, "All"]],
+                        "pageLength": 20,
+                        "processing": true,
+                        "serverSide": true,
+                        "ajax": "{% url 'SchoolTableApi:getEventsListJson' %}",
+                        stateSave: true
+                    });
+
+
+
+            EventListTableData.column(0).visible(false);
+
+
+        }
+
+        function editEventDetail(id, sDate, eDate, title, description) {
+            $('#idEdit').val(id);
+            $('#datesEdit').val(sDate);
+            $('#dateeEdit').val(eDate);
+            $('#titleEdit').val(title);
+            $('#descriptionEdit').val(description)
+
+
+        }
+        function UpdateEvent() {
+
+
+            var idEdit = $('#idEdit').val();
+            var datesEdit = $('#datesEdit').val();
+            var dateeEdit = $('#dateeEdit').val();
+            var titleEdit = $('#titleEdit').val();
+            var descriptionEdit = $('#descriptionEdit').val();
+            var csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val();
+
+
+            if (idEdit === '' || datesEdit === '' || dateeEdit === '' || titleEdit === '' || descriptionEdit === '') {
+                $('#name_status').addClass('validate_data');
+                $('#name_status').html('All fields are required.').fadeIn().fadeOut(2000);
+
+            }
+            else {
+
+
+                data = new FormData();
+                data.append('id', idEdit);
+                data.append('title', titleEdit);
+                data.append('description', descriptionEdit);
+                data.append('datestart', datesEdit);
+                data.append('dateend', dateeEdit);
+
+                data.append('csrfmiddlewaretoken', csrfmiddlewaretoken);
+
+
+                $.ajax({
+                    type: 'post',
+                    url: '/api/EditEvent/',
+                    data: data,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (response) {
+                        if (response.response === 'ok') {
+                            $('#name_status').addClass('validate_data');
+                            $('#name_status').html('Event Updated.').fadeIn().fadeOut(2000);
+                            EventListTableData.reload();
+                            $('#myModalStudentEdit').modal('toggle');
+
+                        }
+                        else {
+                            $('#name_status').addClass('validate_data');
+                            $('#name_status').html("" + response.response).fadeIn().fadeOut(2000);
+                        }
+                        return response;
+                    },
+                    error: function () {
+                        $('#name_status').addClass('validate_data');
+                        $('#name_status').html('error.').fadeIn().fadeOut(2000);
+                    }
+                });
+            }
+        }
+        function deleteAssignDetail(id) {
+            $('#DeleteID').val(id)
+
+        }
+
+        function DeleteEvent() {
+
+
+            var eventID = $('#DeleteID').val();
+
+
+            data = new FormData();
+            data.append('eventID', eventID);
+
+
+            $.ajax({
+                type: 'post',
+                url: '/api/DeleteEvent/',
+                data: data,
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function (response) {
+                    if (response.response === 'ok') {
+                        $('#name_status').addClass('validate_data');
+                        $('#name_status').html('Event Deleted.').fadeIn().fadeOut(2000);
+                        EventListTableData.ajax.url("/api/GetEventsList/").load();
+                        $('#myModalDelete').modal('toggle');
+
+                    }
+                    else {
+                        $('#name_status').addClass('validate_data');
+                        $('#name_status').html("" + response.response).fadeIn().fadeOut(2000);
+                    }
+                    return response;
+                },
+                error: function () {
+                    $('#name_status').addClass('validate_data');
+                    $('#name_status').html('error.').fadeIn().fadeOut(2000);
+                }
+            });
+
+        }
+
+    </script>
+{% endblock %}

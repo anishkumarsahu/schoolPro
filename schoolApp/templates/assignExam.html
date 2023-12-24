@@ -1,0 +1,255 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block css %}
+    <style>
+        .dataTables_filter {
+            width: 50%;
+            float: left !important;
+            text-align: right;
+        }
+
+        div.dataTables_wrapper div.dataTables_length select {
+            width: 176% !important;
+            display: inline-block;
+        }
+
+        div.dataTables_wrapper div.dataTables_filter input {
+            margin-left: 0.5em;
+            display: inline-block;
+            width: 161% !important;
+        }
+    </style>
+
+{% endblock %}
+{% block  main %}
+    <div class="right_col" role="main">
+        <div class="">
+            <div class="page-title">
+                <div class="title_left">
+                    <h3>Assign Exam</h3>
+                </div>
+
+
+            </div>
+
+            <div class="clearfix"></div>
+
+
+            <div class="row">
+
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>{{ request.session.CurrentSchoolSession.currentSessionYear }}</h2>
+
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <br/>
+
+
+                            <form class="form-horizontal form-label-left" id="examAssignForm">{% csrf_token %}
+
+
+                                <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>Exam Name:</label>
+                                    <select class="form-control has-feedback-left" id="examList"
+                                    >
+                                    </select>
+                                </div>
+                                <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>Start Date:</label>
+
+                                    <div class="controls">
+                                        <div class="col-md-12 xdisplay_inputx form-group has-feedback">
+                                            <input type="text" class="form-control has-feedback-left"
+                                                   id="myDatepicker" placeholder="from"
+                                                   aria-describedby="inputSuccess2Status2">
+                                            <span class="fa fa-calendar-o form-control-feedback left"
+                                                  aria-hidden="true"></span>
+                                            <span id="inputSuccess2Status2"
+                                                  class="sr-only">(success)</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>End Date:</label>
+
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <div class="col-md-12 xdisplay_inputx form-group has-feedback">
+                                                <input type="text"
+                                                       class="form-control has-feedback-left"
+                                                       id="myDatepicker2" placeholder="to"
+                                                       aria-describedby="inputSuccess2Status2">
+                                                <span class="fa fa-calendar-o form-control-feedback left"
+                                                      aria-hidden="true"></span>
+                                                <span id="inputSuccess2Status2" class="sr-only">(success)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>Select class(es):</label>
+
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <div class="col-md-11 xdisplay_inputx form-group has-feedback">
+                                                <select id="stuClass" class="select2_multiple form-control"
+                                                        multiple="multiple"
+                                                        style="height: 200px;">
+
+                                                </select></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>Max Mark:</label>
+                                    <input type="number" class="form-control has-feedback-left" id="fullMark"
+                                           placeholder="Full Mark">
+                                </div>
+                                <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>Min Mark:</label>
+                                    <input type="number" class="form-control has-feedback-left" id="passMark"
+                                           placeholder="Pass Mark">
+                                    <span class="fa fa-calendar-o form-control-feedback left"
+                                          aria-hidden="true"></span>
+                                </div>
+
+
+                            </form>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <button style="float: right;" class="btn btn-success" type="button"
+                                        onclick="assignExam()">Assign
+                                </button>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script>
+        $('#myDatepicker').datetimepicker(
+            {format: 'YYYY-MM-DD'}
+        );
+
+        $('#myDatepicker2').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+        $(getOnlyExamList(),
+            getOnlyClassListList());
+        function getOnlyClassListList() {
+
+
+            $.ajax({
+                type: 'get',
+                url: '/api/GetOnlyClassList/',
+                success: function (response) {
+
+                    for (i in response.data) {
+                        listData = '<option value="' + response.data[i].ClassID + '">' + response.data[i].Standard + '</option>';
+                        $('#stuClass').append(listData);
+                    }
+                    {#            return response;#}
+
+                },
+                error: function () {
+                    $('#name_status').addClass('validate_data');
+                    $('#name_status').html('error.');
+                }
+            });
+
+        }
+        function getOnlyExamList() {
+
+
+            $.ajax({
+                type: 'get',
+                url: '/api/GetExamList/',
+                success: function (response) {
+
+                    for (i in response.data) {
+                        listData = '<option value="' + response.data[i].ID + '">' + response.data[i].ExamName + '</option>';
+                        $('#examList').append(listData);
+                    }
+                    {#            return response;#}
+
+                },
+                error: function () {
+                    $('#name_status').addClass('validate_data');
+                    $('#name_status').html('error.');
+                }
+            });
+
+        }
+        function assignExam() {
+            var standard = $('#stuClass').val();
+            var fullMark = $('#fullMark').val();
+            var passMark = $('#passMark').val();
+            var startDate = $('#myDatepicker').val();
+            var endDate = $('#myDatepicker2').val();
+            var examList = $('#examList').val();
+            var csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val();
+
+            if (standard === '' || fullMark === '' || startDate === '' || endDate === '' || passMark === '') {
+                $('#name_status').addClass('validate_data');
+                $('#name_status').html('* fields are required.');
+                $('#name_status').fadeIn().fadeOut(2000);
+
+            }
+            else {
+                data = new FormData();
+                data.append('standard', standard);
+                data.append('fullMark', fullMark);
+                data.append('passMark', passMark);
+                data.append('startDate', startDate);
+                data.append('endDate', endDate);
+                data.append('examList', examList);
+                data.append('csrfmiddlewaretoken', csrfmiddlewaretoken);
+
+
+                $.ajax({
+                    type: 'post',
+                    url: '/api/AssignExam/',
+                    data: data,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+
+
+                    success: function (response) {
+                        if (response.response === 'ok') {
+                            $('#name_status').addClass('validate_data');
+                            $('#name_status').html('Exam Assign successfully.').fadeIn().fadeOut(2000);
+                            $('#examAssignForm')[0].reset();
+
+                        }
+                        else {
+                            $('#name_status').removeClass('validate_data');
+                            $('#name_status').html("").fadeIn().fadeOut(2000);
+
+                        }
+
+                        return response;
+                    },
+                    error: function () {
+                        $('#name_status').addClass('validate_data');
+                        $('#name_status').html('error.').fadeIn().fadeOut(2000);
+                    }
+                });
+            }
+
+        }
+    </script>
+{% endblock %}

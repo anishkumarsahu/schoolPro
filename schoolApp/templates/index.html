@@ -1,0 +1,459 @@
+{% load static %}
+{% load pwa %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="{% static 'images/fevicon3.png' %}" type=""/>
+    <title>School Stack</title>
+    {% progressive_web_app_meta %}
+    <link href="{% static 'vendors/bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendors/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendors/nprogress/nprogress.css' %}" rel="stylesheet">
+    <link href="{% static 'vendors/iCheck/skins/flat/green.css' %}" rel="stylesheet">
+    <link href="{% static 'vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendors/jqvmap/dist/jqvmap.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.css' %}" rel="stylesheet">
+    <link href="{% static 'build/css/custom.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/buttons.dataTables.min.css' %}" rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="{% static 'vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css' %}">
+
+    <link href="{% static 'vendors/datatables.net-bs/css/dataTables.bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css' %}"
+          rel="stylesheet">
+    <link href="{% static 'vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static  'vendors/fullcalendar/dist/fullcalendar.min.css' %}" rel="stylesheet">
+    <link href="{% static  'vendors/fullcalendar/dist/fullcalendar.print.css' %}" rel="stylesheet" media="print">
+
+
+    <style>
+        .page-title .title_left {
+            width: 100% !important;
+            float: left;
+            display: block;
+        }
+
+        .style-7 {
+            position: fixed;
+            overflow-x: hidden;
+            overflow-y: scroll;
+            top: 0;
+            bottom: 0;
+        }
+
+        ::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+            background-color: #F5F5F5;
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            background-color: #F5F5F5;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            border-radius: 6px;
+            background-image: -webkit-gradient(linear,
+            left bottom,
+            left top,
+            color-stop(0.44, rgb(191, 182, 180)),
+            color-stop(0.72, rgb(255, 100, 97)),
+            color-stop(0.86, rgb(130, 64, 148)));
+        }
+
+        .gradient-button {
+            font-family: "Arial Black", Gadget, sans-serif;
+            font-size: 14px;
+            text-align: center;
+            text-transform: uppercase;
+            transition: 0.5s;
+            background-size: 200% auto;
+            color: #FFF;
+            box-shadow: 0 0 20px #eee;
+
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+            transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .gradient-button-1 {
+            background-image: linear-gradient(to right, #00d2ff 0%, #3a7bd5 51%, #00d2ff 100%)
+        }
+
+        .gradient-button-1:hover {
+            background-position: right center;
+        }
+
+
+    </style>
+    {% block css %}
+
+    {% endblock %}
+
+</head>
+
+<body class="nav-md">
+
+
+<div class="modal fade" id="myModalSession" role="dialog">
+    <div class="modal-dialog ">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h2 class="modal-title">Confirmation</h2>
+            </div>
+            <div class="modal-body">
+                <p style="color: #ff6461;font-size: 20px">Are you sure you want to change the session ?
+                </p>
+                <input type="hidden" id="idSes">
+                <input type="hidden" id="yearSes">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" onclick="changeSessionConfirm()">Change</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="container body">
+    <div class="main_container">
+        <div class="col-md-3 left_col style-7" id="sideBar">
+            <div class="left_col scroll-view">
+                {% include 'common/navbarTitle.html' %}
+                <div class="clearfix"></div>
+                {% include 'common/menu_profile.html' %}
+                <br/>
+                {% include 'common/sideNavbar.html' %}
+                {% include 'common/sideNavbarFooter.html' %}
+            </div>
+        </div>
+        {% include 'common/topNavbar.html' %}
+        {% block main %}
+            <div class="right_col" role="main">
+                <div class="row tile_count">
+                    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                        <span class="count_top"><i class="fa fa-user"></i> Total Students</span>
+                        <div class="count">{{ students.count }}</div>
+                        {#             <span class="count_bottom">Male: {{ studentsM.count }}   |   Female : {{ studentsF.count }}</span>#}
+                    </div>
+                    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                        <span class="count_top"><i class="fa fa-user"></i> Total Male Students</span>
+                        <div class="count">{{ studentsM.count }}</div>
+                        {#             <span class="count_bottom">Male: {{ teachersM.count }}   |   Female : {{ teachersF.count }}</span>#}
+                    </div>
+                    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                        <span class="count_top"><i class="fa fa-user"></i>Total Female Students</span>
+                        <div class="count">{{ studentsF.count }}</div>
+                        {# <span class="count_bottom">Male: {{ teachersM.count }}   |   Female : {{ teachersF.count }}</span>           #}
+                    </div>
+                    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                        <span class="count_top"><i class="fa fa-user"></i> Total Teachers</span>
+                        <div class="count">{{ teachers.count }}</div>
+                        {#              <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>12% </i> From last Week</span>#}
+                    </div>
+                    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                        <span class="count_top"><i class="fa fa-user"></i> Total Male Teachers</span>
+                        <div class="count">{{ teachersM.count }}</div>
+                        {#              <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>#}
+                    </div>
+                    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                        <span class="count_top"><i class="fa fa-user"></i> Total Female Teachers</span>
+                        <div class="count">{{ teachersF.count }}</div>
+                        {#              <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>#}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Students Count
+                                    <small>Sessions
+                                        - {{ request.session.CurrentSchoolSession.currentSessionYear }}</small>
+                                </h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <iframe class="chartjs-hidden-iframe"
+                                        style="width: 100%; display: block; border: 0px; height: 0px; margin: 0px; position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px;"></iframe>
+                                <canvas id="myChart" width="485px" height="242"
+                                        style="width: 485px; height: 242px;"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    {% comment %} <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Attendance Count
+                                    <small>Sessions - {{ request.session.CurrentSchoolSession.currentSessionYear }}</small>
+                                </h2>
+
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <iframe class="chartjs-hidden-iframe"
+                                        style="width: 100%; display: block; border: 0px; height: 0px; margin: 0px; position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px;"></iframe>
+                                <canvas id="myChartLine" width="485" height="242"
+                                        style="width: 485px; height: 242px;"></canvas>
+                            </div>
+                        </div>
+                    </div>{% endcomment %}
+                </div>
+
+
+            </div>
+        {% endblock %}
+        {% include 'common/pageFooter.html' %}
+    </div>
+</div>
+
+<script src="{% static 'vendors/jquery/dist/jquery.min.js' %}"></script>
+<script src="{% static 'vendors/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'vendors/fastclick/lib/fastclick.js' %}"></script>
+<script src="{% static 'vendors/nprogress/nprogress.js' %}"></script>
+<script src="{% static 'vendors/gauge.js/dist/gauge.min.js' %}"></script>
+<script src="{% static 'vendors/bootstrap-progressbar/bootstrap-progressbar.min.js' %}"></script>
+<script src="{% static 'vendors/iCheck/icheck.min.js' %}"></script>
+<script src="{% static 'vendors/skycons/skycons.js' %}"></script>
+<script src="{% static 'vendors/Flot/jquery.flot.js' %}"></script>
+<script src="{% static 'vendors/Flot/jquery.flot.pie.js' %}"></script>
+<script src="{% static 'vendors/Flot/jquery.flot.time.js' %}"></script>
+<script src="{% static 'vendors/Flot/jquery.flot.stack.js' %}"></script>
+<script src="{% static 'vendors/Flot/jquery.flot.resize.js' %}"></script>
+<script src="{% static 'vendors/flot.orderbars/js/jquery.flot.orderBars.js' %}"></script>
+<script src="{% static 'vendors/flot-spline/js/jquery.flot.spline.min.js' %}"></script>
+<script src="{% static 'vendors/flot.curvedlines/curvedLines.js' %}"></script>
+<script src="{% static 'vendors/DateJS/build/date.js' %}"></script>
+<script src="{% static 'vendors/jqvmap/dist/jquery.vmap.js' %}"></script>
+<script src="{% static 'vendors/jqvmap/dist/maps/jquery.vmap.world.js' %}"></script>
+<script src="{% static 'vendors/jqvmap/examples/js/jquery.vmap.sampledata.js' %}"></script>
+<script src="{% static 'vendors/moment/min/moment.min.js' %}"></script>
+<script src="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
+<script src="{% static 'build/js/custom.min.js' %}"></script>
+<script src="{% static 'vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js' %}"></script>
+<script src="{% static  'vendors/fullcalendar/dist/fullcalendar.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-bs/js/dataTables.bootstrap.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-buttons/js/buttons.flash.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-keytable/js/dataTables.keyTable.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-scroller/js/dataTables.scroller.min.js' %}"></script>
+<script src="{% static 'vendors/jszip/dist/jszip.min.js' %}"></script>
+<script src="{% static 'vendors/pdfmake/build/pdfmake.min.js' %}"></script>
+<script src="{% static 'vendors/pdfmake/build/vfs_fonts.js' %}"></script>
+<script src="{% static 'vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js' %}"></script>
+
+
+<script>
+    function updateSession(id, year) {
+        $('#idSes').val(id);
+        $('#yearSes').val(year);
+
+    }
+
+
+    function changeSessionConfirm() {
+        var idSes = $('#idSes').val();
+        var yearSes = $('#yearSes').val();
+
+
+        data = new FormData();
+        data.append('id', idSes);
+        data.append('year', yearSes);
+
+
+        $.ajax({
+            type: 'post',
+            url: '/api/UpdateSession/',
+            data: data,
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function (response) {
+                if (response.response === 'ok') {
+                    $('#name_status').addClass('validate_data');
+                    $('#name_status').html('Session Updated.').fadeIn().fadeOut(2000);
+                    $('#myModalSession').modal('toggle');
+                    setTimeout(location.reload.bind(location), 1500);
+
+                }
+                else {
+                    $('#name_status').addClass('validate_data');
+                    $('#name_status').html("" + response.response).fadeIn().fadeOut(2000);
+                }
+                return response;
+            },
+            error: function () {
+                $('#name_status').addClass('validate_data');
+                $('#name_status').html('error.').fadeIn().fadeOut(2000);
+            }
+        });
+
+    }
+    function tClass() {
+        var bodyClass = $('body')
+        console.log(bodyClass[0].className)
+
+        if (bodyClass[0].className === 'nav-sm') {
+            $('#sideBar').addClass('style-7');
+        }
+        else {
+            $('#sideBar').removeClass('style-7');
+        }
+
+
+    }
+
+</script>
+
+{% block js %}
+    <script src="{% static 'vendors/Chart.js/dist/Chart.min.js' %}"></script>
+
+    <script>
+        var labels = [];
+        var count = [];
+        var ctx = document.getElementById("myChart");
+        $.ajax({
+            method: "GET",
+            url: "/api/getStudentCountByClassAndSection/",
+            success: function (data) {
+                labels = data.data['ClassList'];
+                count = data.data['Counts'];
+                var myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: '# of Student',
+                            data: count,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
+
+                            ],
+                            borderColor: [
+                                'rgba(255,99,132,1)',
+                                'rgba(255,99,132,1)',
+                                'rgba(255,99,132,1)',
+                                'rgba(255,99,132,1)',
+                                'rgba(255,99,132,1)',
+                                'rgba(255,99,132,1)',
+                                'rgba(255,99,132,1)',
+                                'rgba(255,99,132,1)',
+                                'rgba(255,99,132,1)',
+                                'rgba(255,99,132,1)',
+                                'rgba(255,99,132,1)',
+                                'rgba(255,99,132,1)',
+                                'rgba(255,99,132,1)',
+                                'rgba(255,99,132,1)',
+                                'rgba(255,99,132,1)',
+                                'rgba(255,99,132,1)',
+                                'rgba(255,99,132,1)',
+                                'rgba(255,99,132,1)',
+                                'rgba(255,99,132,1)',
+
+
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+            },
+            error: function (error_data) {
+                console.log(error_data)
+            }
+        });
+
+        var ctxLine = document.getElementById("myChartLine");
+        var myChartLine = new Chart(ctxLine, {
+            type: 'line',
+            data: {
+                labels: ["Class 1", "Class 2", "Class 3", "Class 4", "Class 5", "Class 6"],
+                datasets: [{
+                    label: '# of Student',
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+
+                    ],
+
+                    borderColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(255,99,132,1)',
+                        'rgba(255,99,132,1)',
+                        'rgba(255,99,132,1)',
+                        'rgba(255,99,132,1)',
+                        'rgba(255,99,132,1)',
+                        'rgba(255,99,132,1)',
+
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+{% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,281 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block css %}
+{% endblock %}
+{% block  main %}
+    <div class="right_col" role="main">
+        <div class="">
+            <div class="page-title">
+                <div class="title_left">
+                    <h3>Assigned Subjects</h3>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>{{ request.session.CurrentSchoolSession.currentSessionYear }}</h2>
+
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <table id="AssignedList" class="table table-striped table-bordered dt-responsive nowrap"
+                                   cellspacing="0" width="100%">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Class</th>
+                                    <th>Section</th>
+                                    <th>Subject</th>
+                                    <th>Teacher name</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal fade bd-example-modal-lg" id="myModalAssignEdit" role="dialog">
+                            <div class="modal-dialog modal-lg">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Edit Assigned Subject Detail</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <form class="form-horizontal form-label-left"> {% csrf_token %}
+
+                                                <input type="hidden" id="eID">
+
+                                                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                    <label>Class *:</label>
+                                                    <input id="ClassID" type="text" disabled class="form-control">
+                                                    </input>
+                                                </div>
+                                                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                    <label>Section :</label>
+                                                    <input type="text" disabled id="classSection" class="form-control">
+
+                                                    </input>
+                                                </div>
+                                                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                    <label>Subject *:</label>
+                                                    <select id="SubjectList" class="form-control">
+
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                    <label>Teacher *:</label>
+                                                    <select id="TeacherList" class="form-control">
+                                                    </select>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-success"
+                                                    onclick="UpdateAssignSubjectToClassToTeacher()"><i
+                                                    class="fa fa-check m-right-xs"></i>Update
+                                            </button>
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal"><i
+                                                    class="fa fa-times m-right-xs"></i>Close
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="myModalDelete" role="dialog">
+                            <div class="modal-dialog ">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h2 class="modal-title">Confirmation</h2>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p style="color: #0D3349;font-size: 20px">Are you sure you want to delete this
+                                            data.</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block js %}
+    <script>
+        var AssignedTable;
+        $(document).ready(function () {
+            AssignedTable = $('#AssignedList').DataTable({
+                "ajax": "/api/GetAssignSubjectsToClassToTeacherList/",
+                "columns": [
+                    {"data": "ID"},
+                    {"data": "Standard"},
+                    {"data": "Section"},
+                    {"data": "Subject"},
+                    {"data": "Teacher"},
+                    {"data": "Action"}
+                ],
+                "order": [['0', 'desc']],
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        className: 'gradient-button gradient-button-1',
+                        extend: 'print',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4]
+                        }
+                    },
+                    {
+                        className: 'gradient-button gradient-button-1',
+                        extend: 'csv',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4]
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4]
+                        }
+                    }
+                ]
+            });
+            AssignedTable.column(0).visible(false);
+
+        });
+        function editAssignDetail(id) {
+            getUnassignedTeacherList();
+            $.ajax({
+                type: 'get',
+                url: '/api/GetAssignSubjectsToClassToTeacherDetailForEdit/' + id + '/',
+                success: function (response) {
+                    $('#eID').val(response.data['ID']);
+                    $('#ClassID').val(response.data['Standard']);
+                    $('#classSection').val(response.data['Section']);
+
+                    getAssignSubjectClassList(response.data['StandardID']);
+                    $('#SubjectList').val(response.data['SubjectID']);
+
+                    $('#TeacherList').val(response.data['TeacherID']);
+
+
+                }
+            });
+
+        }
+
+        function getAssignSubjectClassList(id) {
+            $('#SubjectList').html("");
+            $.ajax({
+                type: 'get',
+                url: '/api/GetSubjectListWithClass/' + id + '/',
+                success: function (response) {
+
+
+                    for (i in response.data) {
+                        listData = '<option value="' + response.data[i].ID + '">' + response.data[i].SubjectName + '</option>';
+                        $('#SubjectList').append(listData);
+
+
+                    }
+                    {#            return response;#}
+                },
+                error: function () {
+                    $('#name_status').addClass('validate_data');
+                    $('#name_status').html('error.').fadeIn().fadeOut(2000);
+                }
+            });
+        }
+        function getUnassignedTeacherList() {
+            $('#TeacherList').html("");
+            $.ajax({
+                type: 'get',
+                url: '/api/GetUnassignedTeacherList/',
+                success: function (response) {
+
+                    for (i in response) {
+                        listData = '<option value="' + response[i].ID + '">' + response[i].Name + '</option>';
+                        $('#TeacherList').append(listData);
+                    }
+                    {#            return response;#}
+                },
+                error: function () {
+                    $('#name_status').addClass('validate_data');
+                    $('#name_status').html('error.');
+                }
+            });
+
+        }
+        function UpdateAssignSubjectToClassToTeacher() {
+            var eID = $('#eID').val();
+            var subjectID = $('#SubjectList').val();
+            var teacherID = $('#TeacherList').val();
+            var csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val();
+            data = new FormData();
+            data.append('eID', eID);
+            data.append('subjectID', subjectID);
+            data.append('teacherID', teacherID);
+            data.append('csrfmiddlewaretoken', csrfmiddlewaretoken);
+            if (subjectID === null || teacherID === '') {
+                $('#name_status').addClass('validate_data');
+                $('#name_status').html('* fields are required.').fadeIn().fadeOut(2000);
+
+            }
+            else {
+                $.ajax({
+                    type: 'post',
+                    url: '/api/UpdateSubjectsToClassToTeacher/',
+                    data: data,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+
+
+                    success: function (response) {
+                        if (response.response === 'ok') {
+                            $('#myModalAssignEdit').modal('toggle');
+                            $('#name_status').addClass('validate_data');
+                            $('#name_status').html('Subject Assign to class and teacher successfully Updated.').fadeIn().fadeOut(2000);
+                            AssignedTable.ajax.reload();
+                        }
+                        else {
+                            $('#name_status').removeClass('validate_data');
+                            $('#name_status').html("").fadeIn().fadeOut(2000);
+
+                        }
+
+                        return response;
+                    },
+                    error: function () {
+                        $('#name_status').addClass('validate_data');
+                        $('#name_status').html('error.').fadeIn().fadeOut(2000);
+                    }
+                });
+            }
+        }
+    </script>
+{% endblock %}

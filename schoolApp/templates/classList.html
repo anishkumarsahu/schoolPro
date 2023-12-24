@@ -1,0 +1,510 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block css %}
+
+{% endblock %}
+{% block  main %}
+    <div class="right_col" role="main">
+        <div class="">
+            <div class="page-title">
+                <div class="title_left">
+                    <h3>Class List</h3>
+                </div>
+
+
+            </div>
+
+            <div class="clearfix"></div>
+
+
+            <div class="row">
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>{{ request.session.CurrentSchoolSession.currentSessionYear }}</h2>
+
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <p class="text-muted font-13 m-b-30">
+
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12">
+                                    <select onchange="SelectClass()" id="selectClass" class="form-control" required>
+                                        <option value="all">All Class</option>
+                                        {% for obj in ClassData %}
+                                            <option value="{{ obj.pk }}">{{ obj.name }}</option>
+
+                                        {% endfor %}
+
+
+                                    </select>
+                                </div>
+
+
+                            </div>
+
+
+                            </p>
+                            <table id="ClassList" class="table table-striped table-bordered bulk_action" style="width: 100%;">
+                                <thead>
+                                <tr>
+                                    <th>Class</th>
+                                    <th>Section</th>
+                                    <th>Starting Roll</th>
+                                    <th>Ending Roll</th>
+                                    <th>Class Teacher</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+
+
+                                <tbody>
+
+                                </tbody>
+                            </table>
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="modal fade bd-example-modal-lg" id="myModal" role="dialog">
+                    <div class="modal-dialog modal-lg">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Class Detail</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <div class="profile_title">
+                                                <div class="col-md-6">
+                                                    <h2 id="setClass"></h2>
+                                                </div>
+                                            </div>
+                                            <div class="x_content">
+                                                <table class="table table-striped">
+                                                    <tbody>
+                                                    <tr>
+                                                        <th scope="row">Section:</th>
+                                                        <td id="setSection"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">Class Location:</th>
+                                                        <td id="setLocation"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">Start Roll:</th>
+                                                        <td id="setStart"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">End Roll:</th>
+                                                        <td id="setEnd"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">Class Teacher:</th>
+                                                        <td id="setTeacher"></td>
+                                                    </tr>
+
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i
+                                            class="fa fa-times m-right-xs"></i>Close
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade bd-example-modal-lg" id="myModalEditClass" role="dialog">
+                    <div class="modal-dialog modal-lg">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Edit Class Detail</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <div class="x_panel">
+
+                                            <div class="x_content">
+                                                <br/>
+                                                <form class="form-horizontal form-label-left"
+                                                      id="classEditForm"> {% csrf_token %}
+
+                                                    <input type="hidden" id="ClassIDEdit">
+                                                    <input type="hidden" id="HasSectionEdit">
+                                                    <input type="hidden" id="SectionIDEdit">
+                                                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>Class Name *:</label>
+                                                        <input type="text" class="form-control has-feedback-left"
+                                                               id="EditClassName"
+                                                               placeholder="Class Name">
+                                                        <span class="fa fa-joomla form-control-feedback left"
+                                                              aria-hidden="true"></span>
+                                                    </div>
+
+
+                                                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>Class Location (Optional):</label>
+                                                        <input type="text" class="form-control has-feedback-left"
+                                                               id="EditClassLocation"
+                                                               placeholder="Class Location">
+                                                        <span class="fa fa-globe form-control-feedback left"
+                                                              aria-hidden="true"></span>
+                                                    </div>
+
+                                                    <div class="col-md-12 col-sm-12 col-xs-12" id="ClassDetail">
+                                                        <div class="x_panel">
+                                                            <div class="x_title">
+                                                                <h2>Detail</h2>
+
+                                                                <div class="clearfix"></div>
+                                                            </div>
+                                                            <div class="x_content">
+                                                                <br/>
+
+
+                                                                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                                    <label>Class Teacher: *</label>
+                                                                    <select id="EditClassTeacherChoose"
+                                                                            class="form-control">
+                                                                        <option value="">Choose..</option>
+
+
+                                                                    </select>
+                                                                </div>
+                                                                <div id="hideSection"
+                                                                     class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                                    <label>Section Name *:</label>
+                                                                    <input type="text"
+                                                                           class="form-control has-feedback-left"
+                                                                           id="EditSectionName"
+                                                                           placeholder="Section Name">
+                                                                    <span class="fa fa-joomla form-control-feedback left"
+                                                                          aria-hidden="true"></span>
+                                                                </div>
+
+
+                                                                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                                    <label>Start Roll *:</label>
+                                                                    <input type="number"
+                                                                           class="form-control has-feedback-left"
+                                                                           id="EditClassStartRoll"
+                                                                           placeholder="Start Roll">
+                                                                    <span class="fa fa-list-ol form-control-feedback left"
+                                                                          aria-hidden="true"></span>
+                                                                </div>
+
+
+                                                                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                                    <label>End Roll *:</label>
+                                                                    <input type="number"
+                                                                           class="form-control has-feedback-left"
+                                                                           id="EditClassEndRoll"
+                                                                           placeholder="End Roll">
+                                                                    <span class="fa fa-list-ol form-control-feedback left"
+                                                                          aria-hidden="true"></span>
+                                                                </div>
+
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" onclick="updateClass()" class="btn btn-success">Update
+                                    </button>
+
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i
+                                            class="fa fa-times m-right-xs"></i>Close
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                {#                delete modala#}
+
+                <div class="modal fade" id="myModalDelete" role="dialog">
+                    <div class="modal-dialog ">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h2 class="modal-title">Confirmation</h2>
+                            </div>
+
+                            <input type="hidden" id="secOrCls">
+                            <input type="hidden" id="classID">
+                            <div class="modal-body">
+                                <p style="color: #0D3349;font-size: 20px">Are you sure you want to delete this
+                                    data.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" onclick="sureDelete()" class="btn btn-danger">Delete</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block js %}
+
+    <script>
+        var classTable;
+        $(document).ready(function () {
+
+
+            classTable = $('#ClassList').DataTable({
+                "ajax": "/api/GetClassList/?query=all",
+                "columns": [
+                    {"data": "Class"},
+                    {"data": "Section"},
+                    {"data": "StartRoll"},
+                    {"data": "EndRoll"},
+                    {"data": "Teacher"},
+                    {"data": "Action"}
+                ],
+                 "scrollX": true,
+                        dom: 'Blfrtip',
+                        buttons: [{
+                            extend: 'excel',
+                            exportOptions: {
+                                columns: [0,1, 2, 3, 4]
+                            }
+                        }, {
+                            extend: 'print',
+                            exportOptions: {
+                                columns: [0,1, 2, 3, 4]
+                            }
+                        }
+                        ],
+                select: true,
+                aaSorting: [[2, 'asc']],
+                "lengthMenu": [[20, 25, 50, 100, -1], [20, 25, 50, 100, "All"]],
+                "pageLength": 20,
+
+            });
+            return classTable;
+        });
+
+
+        function SelectClass() {
+            var class_id = $('#selectClass').val();
+
+            classTable.ajax.url("/api/GetClassList/?query=" + class_id).load();
+
+
+        }
+
+
+        function getClassDetail(std) {
+
+
+            $.ajax({
+                type: 'get',
+                url: '/api/GetClassDetailWithoutSection/' + std + '/',
+                success: function (response) {
+                    $('#setClass').html(response.data['Class']);
+                    $('#setSection').html(response.data['Section']);
+                    $('#setStart').html(response.data['StartRoll']);
+                    $('#setEnd').html(response.data['EndRoll']);
+                    $('#setLocation').html(response.data['Location']);
+                    $('#setTeacher').html(response.data['Teacher']);
+                    return response;
+                }
+            });
+
+
+        }
+        function getClassDetailWithSection(std, sec) {
+            $.ajax({
+                type: 'get',
+                url: '/api/GetClassDetailWithSection/' + sec + '/',
+                success: function (response) {
+                    $('#setClass').html(response.data['Class']);
+                    $('#setSection').html(response.data['Section']);
+                    $('#setStart').html(response.data['StartRoll']);
+                    $('#setEnd').html(response.data['EndRoll']);
+                    $('#setLocation').html(response.data['Location']);
+                    $('#setTeacher').html(response.data['Teacher']);
+                    return response;
+                }
+            });
+
+
+        }
+
+        function deleteClass(std) {
+            $('#classID').val(std);
+            $('#secOrCls').val('NO');
+
+        }
+
+        function deleteClassSection(sec) {
+            $('#classID').val(sec);
+            $('#secOrCls').val('Yes');
+
+        }
+
+
+        function sureDelete() {
+            var id = $('#classID').val();
+            var sec = $('#secOrCls').val();
+
+            $.ajax({
+                type: 'post',
+                url: '/api/DeleteClassOrSection/',
+                data: {
+                    id: id,
+                    sec: sec,
+                },
+                success: function (response) {
+                    $('#myModalDelete').modal('toggle');
+                    $('#name_status').addClass('validate_data');
+                    $('#name_status').html('Class Detail Deleted Successfully.');
+                    $('#name_status').fadeIn().fadeOut(2000);
+                    classTable.ajax.reload();
+
+
+                    return response;
+                }
+            });
+        }
+
+
+        function editClassDetail(std) {
+
+            $.ajax({
+                type: 'get',
+                url: '/api/GetClassDetailWithoutSection/' + std + '/',
+                success: function (response) {
+                    $('#ClassIDEdit').val(response.data['ClassID']);
+                    $('#HasSectionEdit').val('NO');
+                    $('#EditClassName').val(response.data['Class']);
+                    $('#hideSection').css('display', 'none');
+                    $('#EditClassStartRoll').val(response.data['StartRoll']);
+                    $('#EditClassEndRoll').val(response.data['EndRoll']);
+                    $('#EditClassLocation').val(response.data['Location']);
+                    $('#EditClassTeacherChoose').val(response.data['TeacherID']);
+                    return response;
+                }
+            });
+
+
+        }
+        function editClassDetailWithSection(std, sec) {
+            $.ajax({
+                type: 'get',
+                url: '/api/GetClassDetailWithSection/' + sec + '/',
+                success: function (response) {
+                    $('#hideSection').css('display', 'block');
+                    $('#ClassIDEdit').val(response.data['ClassID']);
+                    $('#HasSectionEdit').val('YES');
+                    $('#SectionIDEdit').val(response.data['SectionID']);
+                    $('#EditClassName').val(response.data['Class']);
+                    $('#EditSectionName').val(response.data['Section']);
+                    $('#EditClassStartRoll').val(response.data['StartRoll']);
+                    $('#EditClassEndRoll').val(response.data['EndRoll']);
+                    $('#EditClassLocation').val(response.data['Location']);
+                    $('#EditClassTeacherChoose').val(response.data['TeacherID']);
+                    return response;
+                }
+            });
+
+
+        }
+        function getUnassignedTeacherList() {
+
+            $.ajax({
+                type: 'get',
+                url: '/api/GetUnassignedTeacherList/',
+                success: function (response) {
+                    for (i in response) {
+                        listData = '<option value="' + response[i].ID + '">' + response[i].Name + '</option>';
+                        $('#EditClassTeacherChoose').append(listData);
+                    }
+                    {#            return response;#}
+                },
+                error: function () {
+                    $('#name_status').addClass('validate_data');
+                    $('#name_status').html('error.');
+                }
+            });
+
+        }
+
+        $(getUnassignedTeacherList());
+
+        function updateClass() {
+
+            $.ajax({
+                type: 'post',
+                url: '/api/UpdateClassOrSection/',
+                data: {
+                    ClassID: $('#ClassIDEdit').val(),
+                    SectionID: $('#SectionIDEdit').val(),
+                    HasSection: $('#HasSectionEdit').val(),
+                    CLassName: $('#EditClassName').val(),
+                    SectionName: $('#EditSectionName').val(),
+                    StartRoll: $('#EditClassStartRoll').val(),
+                    EndRoll: $('#EditClassEndRoll').val(),
+                    Location: $('#EditClassLocation').val(),
+                    TeacherID: $('#EditClassTeacherChoose').val(),
+                },
+                success: function (response) {
+                    $('#myModalEditClass').modal('toggle');
+                    $('#name_status').addClass('validate_data');
+                    $('#name_status').html('Class Detail Updated Successfully.');
+                    $('#name_status').fadeIn().fadeOut(2000);
+                    classTable.ajax.reload();
+
+
+                    return response;
+                }
+            });
+
+
+        }
+
+    </script>
+{% endblock %}

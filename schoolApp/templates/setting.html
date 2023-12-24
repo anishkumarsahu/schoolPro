@@ -1,0 +1,1462 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block css %}
+    <style>
+        .avatar-upload {
+            position: relative;
+            max-width: 205px;
+            margin: 10px auto;
+
+        }
+
+        .avatar-upload .avatar-edit {
+            position: absolute;
+            right: 75px;
+            z-index: 1;
+            top: 10px;
+
+        }
+
+        .avatar-upload .avatar-edit input {
+            display: none;
+        }
+
+        .avatar-upload .avatar-edit input + label {
+            display: inline-block;
+            width: 0px;
+            height: 0px;
+            margin-bottom: 0;
+            border-radius: 100%;
+            background: #FFFFFF;
+            border: 1px solid transparent;
+            box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+            cursor: pointer;
+            font-weight: normal;
+            transition: all 0.2s ease-in-out;
+            padding: 20px;
+        }
+
+        .avatar-upload .avatar-edit input + label:hover {
+            background: #f1f1f1;
+            border-color: #d6d6d6;
+            padding: 20px;
+        }
+
+        .avatar-upload .avatar-edit input + label:after {
+            content: "\f040";
+            font-family: 'FontAwesome';
+            color: #757575;
+            position: absolute;
+            top: 10px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            margin: auto;
+
+        }
+
+        .avatar-upload .avatar-preview {
+            width: 100px;
+            height: 100px;
+            position: relative;
+            border-radius: 100%;
+            border: 6px solid #F8F8F8;
+            box-shadow: 0px 2px 10px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .avatar-upload .avatar-preview > div {
+            width: 100%;
+            height: 100%;
+            border-radius: 100%;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+    #NonTeacherList{
+        width: 100%!important;
+    }
+
+    </style>
+
+{% endblock %}
+{% block  main %}
+    <div class="right_col" role="main">
+        <div class="">
+            <div class="page-title">
+                <div class="title_left">
+                    <h3>Settings</h3>
+                </div>
+
+
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="">
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+
+
+                            <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                                <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                                    <li role="presentation" class="active"><a href="#tab_content1" id="home-tab"
+                                                                              role="tab" data-toggle="tab"
+                                                                              aria-expanded="true">School
+                                        Details</a>
+                                    </li>
+                                    <li role="presentation" class=""><a href="#tab_content2" role="tab"
+                                                                        id="profile-tab" data-toggle="tab"
+                                                                        aria-expanded="false">Non-Teaching Staffs</a>
+                                    </li>
+                                    <li role="presentation" class=""><a href="#tab_content3" role="tab"
+                                                                        id="profile-tab2" data-toggle="tab"
+                                                                        aria-expanded="false">Social Media</a>
+                                    </li>
+{#                                    <li role="presentation" class=""><a href="#tab_content4" role="tab"#}
+{#                                                                        id="profile-tab3" data-toggle="tab"#}
+{#                                                                        aria-expanded="false">Add Session</a>#}
+{#                                    </li>#}
+                                </ul>
+                                <div id="myTabContent" class="tab-content">
+                                    <div role="tabpanel" class="tab-pane fade active in" id="tab_content1"
+                                         aria-labelledby="home-tab">
+                                        <form class="form-horizontal form-label-left" method="post"
+                                              enctype="multipart/form-data">{% csrf_token %}
+                                            <input type="hidden" id="SDid" name="SDid">
+
+                                            <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
+                                                <label>School Logo *:</label>
+
+                                                <div class="avatar-upload">
+                                                    <div class="avatar-edit">
+                                                        <input type='file' id="imageUpload"
+                                                               accept="image/*"/>
+                                                        <label style="padding: 20px;font-size: 20px"
+                                                               for="imageUpload"></label>
+                                                    </div>
+                                                    <div class="avatar-preview">
+                                                        <div id="imagePreview"
+                                                        >
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                                <label>School Name *:</label>
+                                                <input type="text" class="form-control has-feedback-left"
+                                                       id="SDschoolName" name="SDschoolName"
+                                                       placeholder="School Name">
+                                                <span class="fa fa-user form-control-feedback left"
+                                                      aria-hidden="true"></span>
+                                            </div>
+
+                                            <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                                <label>Phone *:</label>
+                                                <input type="number" class="form-control has-feedback-left"
+                                                       id="SDphone" name="SDphone" placeholder="Phone">
+                                                <span class="fa fa-phone form-control-feedback left"
+                                                      aria-hidden="true"></span>
+                                            </div>
+
+
+                                            <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                                <label>Email *:</label>
+                                                <input type="text" class="form-control has-feedback-left"
+                                                       id="SDemail" name="SDemail" placeholder="Email">
+                                                <span class="fa fa-envelope form-control-feedback left"
+                                                      aria-hidden="true"></span>
+                                            </div>
+
+
+                                            <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                <label>Address *:</label>
+                                                <input type="text" class="form-control has-feedback-left"
+                                                       id="SDaddress" name="SDaddress"
+                                                       placeholder="Address">
+                                                <span class="fa fa-globe form-control-feedback left"
+                                                      aria-hidden="true"></span>
+                                            </div>
+
+
+                                            <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                <label>City Name:</label>
+                                                <input type="text" class="form-control has-feedback-left"
+                                                       id="SDcity" name="SDcity" placeholder="City Name">
+                                                <span class="fa fa-globe form-control-feedback left"
+                                                      aria-hidden="true"></span>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                <label>Country:</label>
+                                                <select id="SDcountry" name="SDcountry" class="form-control">
+                                                    <option value="India">India</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                <label>State:</label>
+
+                                                <select id="SDstate" name="SDstate" class="form-control">
+                                                    <option value="SELECT STATE">SELECT STATE</option>
+                                                    <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                                    <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                                    <option value="Assam">Assam</option>
+                                                    <option value="Bihar">Bihar</option>
+                                                    <option value="Chhattisgarh">Chhattisgarh</option>
+                                                    <option value="Goa">Goa</option>
+                                                    <option value="Gujarat">Gujarat</option>
+                                                    <option value="Haryana">Haryana</option>
+                                                    <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                                    <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                                                    <option value="Jharkhand">Jharkhand</option>
+                                                    <option value="Karnataka">Karnataka</option>
+                                                    <option value="Kerala">Kerala</option>
+                                                    <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                                    <option value="Maharashtra">Maharashtra</option>
+                                                    <option selected value="Manipur">Manipur</option>
+                                                    <option value="Meghalaya">Meghalaya</option>
+                                                    <option value="Mizoram">Mizoram</option>
+                                                    <option value="Nagaland">Nagaland</option>
+                                                    <option value="Orissa">Orissa</option>
+                                                    <option value="Punjab">Punjab</option>
+                                                    <option value="Rajasthan">Rajasthan</option>
+                                                    <option value="Sikkim">Sikkim</option>
+                                                    <option value="Tamil Nadu">Tamil Nadu</option>
+                                                    <option value="Telangana">Telangana</option>
+                                                    <option value="Tripura">Tripura</option>
+                                                    <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                                    <option value="Uttarakhand">Uttarakhand</option>
+                                                    <option value="West Bengal">West Bengal</option>
+
+                                                </select>
+                                            </div>
+
+
+                                            <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                <label>Pin Code *:</label>
+                                                <input type="number" class="form-control has-feedback-left"
+                                                       id="SDpin" name="SDpin" placeholder="Pin Code">
+                                                <span class="fa fa-list-ol form-control-feedback left"
+                                                      aria-hidden="true"></span>
+                                            </div>
+
+
+                                            <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                <label>Website *:</label>
+                                                <input type="text" class="form-control has-feedback-left"
+                                                       id="SDwebsite" name="SDwebsite"
+                                                       placeholder="Website Url">
+                                                <span class="fa fa-globe form-control-feedback left"
+                                                      aria-hidden="true"></span>
+                                            </div>
+
+
+                                        </form>
+
+                                        <button style="float: right" class="btn btn-primary"
+                                                onclick="PostSchoolDetail()">Save
+                                        </button>
+
+
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane fade" id="tab_content2"
+                                         aria-labelledby="profile-tab">
+
+
+                                        <button style="float: right" class="btn btn-primary" data-toggle="modal"
+                                                data-target="#myModal">
+                                            <i class="fa fa-plus"></i> Add Non-Teaching Staff
+                                        </button>
+
+
+                                        <table id="NonTeacherList"
+                                               class="table table-striped table-bordered bulk_action " style="width: 100%">
+                                            <thead>
+                                            <tr><th >ID</th>
+                                                <th>Photo</th>
+                                                  <th>Name</th>
+                                                <th>Employee Code</th>
+
+                                                <th>Phone Number</th>
+                                                <th>DOB</th>
+                                                <th>Date Of Joining</th>
+                                                <th>Gender</th>
+                                                <th>Is Active</th>
+                                                <th>Action</th>
+                                            </tr>
+                                            </thead>
+
+
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                    <div class="modal fade bd-example-modal-lg" id="myViewModal" role="dialog">
+                                        <div class="modal-dialog modal-lg">
+
+                                            <!-- Modal content-->
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close"
+                                                            data-dismiss="modal">&times;
+                                                    </button>
+                                                    <h4 class="modal-title">Staff Detail</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                                            <div class="col-md-3 col-sm-3 col-xs-12 profile_left">
+                                                                <div>
+
+                                                                </div>
+                                                                <div class="profile_img">
+                                                                    <div id="crop-avatar">
+                                                                        <!-- Current avatar -->
+                                                                        <img class="img-responsive avatar-view"
+                                                                             src="" id="imagepic"
+                                                                             alt="Avatar" title="Change the avatar">
+                                                                    </div>
+                                                                    <h4 id="opname"></h4>
+                                                                </div>
+                                                                <ul class="list-unstyled user_data">
+
+                                                                    <li>
+                                                                        <i class="fa fa-user user-profile-icon"></i>
+                                                                        <b>Gender</b> - <span id="opgender"></span>
+                                                                    </li>
+                                                                    <li>
+                                                                        <i class="fa fa-graduation-cap user-profile-icon"></i>
+                                                                        <b>Qualification</b> - <span
+                                                                            id="opqualification"> </span>
+                                                                    </li>
+                                                                    <li>
+                                                                        <i class="fa fa-envelope user-profile-icon"></i>
+                                                                        <b>Email</b> - <span id="opemail"></span>
+                                                                    </li>
+
+                                                                </ul>
+{#                                                                <a class="btn btn-success"><i#}
+{#                                                                        class="fa fa-print m-right-xs"></i>Print#}
+{#                                                                    Profile</a>#}
+{#                                                                <br/>#}
+
+                                                            </div>
+                                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                                <div class="profile_title">
+                                                                    <div class="col-md-6">
+                                                                        <h2 id="opnamehead"></h2>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="x_content">
+                                                                    <table class="table table-striped">
+                                                                        <tbody>
+                                                                        <tr>
+                                                                            <th scope="row">MOBILE NO:</th>
+                                                                            <td id="mno"></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th scope="row">DATE OF BIRTH:</th>
+                                                                            <td id="dob"></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th scope="row">BLOOD GROUP:</th>
+                                                                            <td id="NTblood"></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th scope="row">DATE OF JOINING:</th>
+                                                                            <td id="doj"></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th scope="row">AADHAR NO:</th>
+                                                                            <td id="aadhar"></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th scope="row">ADDRESS:</th>
+                                                                            <td id="tadd">
+                                                                            </td>
+                                                                        </tr>
+{#                                                                        <tr>#}
+{#                                                                            <th scope="row">PERMANENT ADDRESS:</th>#}
+{#                                                                            <td id="padd">#}
+{#                                                                            </td>#}
+{#                                                                        </tr>#}
+                                                                        </tbody>
+                                                                    </table>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-danger"
+                                                                data-dismiss="modal"><i
+                                                                class="fa fa-times m-right-xs"></i>Close
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="modal fade" id="myModalDelete" role="dialog">
+                                        <div class="modal-dialog ">
+
+                                            <!-- Modal content-->
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close"
+                                                            data-dismiss="modal">&times;
+                                                    </button>
+                                                    <h2 class="modal-title">Confirmation</h2>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p style="color: #0D3349;font-size: 20px">Are you sure you want
+                                                        to delete this
+                                                        data.</p>
+                                                    <div id="abc"></div>
+                                                </div>
+                                                <input type="hidden" id="COuserID">
+
+                                                <form>
+                                                    {% csrf_token %}
+                                                    <input type="hidden" id="COuserID">
+
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-danger"
+                                                                onclick="deleteComputerOperator()">Delete
+                                                        </button>
+                                                        <button type="button" class="btn btn-default"
+                                                                data-dismiss="modal">Close
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div role="tabpanel" class="tab-pane fade" id="tab_content3"
+                                         aria-labelledby="profile-tab">
+
+                                        <form class="form-horizontal form-label-left" method="post">{% csrf_token %}
+                                            <input type="hidden" id="SLid">
+
+                                            <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                                <label>Facebook *:</label>
+                                                <input type="text" class="form-control has-feedback-left"
+                                                       id="SLfacebook" placeholder="Facebook">
+                                                <span class="fa fa-facebook form-control-feedback left"
+                                                      aria-hidden="true"></span>
+                                            </div>
+
+                                            <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                                <label>Twitter *:</label>
+                                                <input type="text" class="form-control has-feedback-left"
+                                                       id="SLtwitter" placeholder="Twitter">
+                                                <span class="fa fa-twitter form-control-feedback left"
+                                                      aria-hidden="true"></span>
+                                            </div>
+
+                                            <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                                <label>App Store *:</label>
+                                                <input type="text" class="form-control has-feedback-left"
+                                                       id="SLplaystore" placeholder="App Store">
+                                                <span class="fa fa-play form-control-feedback left"
+                                                      aria-hidden="true"></span>
+                                            </div>
+
+                                        </form>
+                                        <button style="float: right" class="btn btn-primary"
+                                                onclick="PostSchoolSocialLink()">Save
+                                        </button>
+
+                                    </div>
+
+
+                                    <div role="tabpanel" class="tab-pane fade" id="tab_content4"
+                                         aria-labelledby="profile-tab">
+
+                                        <div class="row">
+
+                                            <div class="col-md-6">
+
+                                                <form class="form-horizontal form-label-left"
+                                                      method="post"> {% csrf_token %}
+
+                                                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>Add Session</label>
+                                                        <input type="text" class="form-control has-feedback-left"
+                                                               id="Session" placeholder="Add Session">
+                                                        <span class="fa fa-list-ol form-control-feedback left"
+                                                              aria-hidden="true"></span>
+                                                        <button style="margin-top: 10px" class="btn btn-primary"
+                                                                type="button" onclick="PostSchoolSession()">
+                                                            Add
+                                                        </button>
+                                                    </div>
+
+
+                                                </form>
+
+                                            </div>
+                                            <div style="padding-top: 10px" class=" col-md-6 col-sm-6">
+                                                <label for="">Session List:</label>
+
+                                                <ul id="sessionID"></ul>
+
+                                            </div>
+
+
+                                        </div>
+
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <div class="modal fade bd-example-modal-lg" id="myModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Add Non-Teaching Staff</h4>
+                </div>
+                <div class="modal-body">
+
+                    <form class="form-horizontal form-label-left">
+                        <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
+                            <label>Photo *:</label>
+
+                            <div class="avatar-upload">
+                                <div class="avatar-edit">
+                                    <input type='file' id="imageUploadAddUser"
+                                           accept="image/*"/>
+                                    <label style="padding: 20px;font-size: 20px"
+                                           for="imageUploadAddUser"></label>
+                                </div>
+                                <div class="avatar-preview">
+                                    <div id="imagePreviewAddUser"
+                                         style="background-image: url({% static 'images/user.png' %});">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                            <label>First Name *:</label>
+                            <input type="text" class="form-control has-feedback-left" id="UAfirstname"
+                                   placeholder="First Name">
+                            <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+
+                        <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                            <label>Middle Name *:</label>
+                            <input type="text" class="form-control has-feedback-left" id="UAmiddlename"
+                                   placeholder="Middle Name">
+                            <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+
+
+                        <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                            <label>Last Name *:</label>
+                            <input type="text" class="form-control has-feedback-left" id="UAlastname"
+                                   placeholder="Last Name">
+                            <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                            <label>Blood Group (Optional):</label>
+                            <select id="TbloodGroup" class="form-control">
+                                <option value="">Choose..</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                            </select>
+                        </div>
+                        <div class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
+                            <label>Gender *:</label>
+                            <p>
+                                Male:
+                                <input type="radio" class="flatd form-control" name="gender" value="Male"
+                                       checked=""
+                                       required/>
+                                Female:
+                                <input type="radio" class="flatd form-control" name="gender" value="Female"/>
+
+                                Others:
+                                <input type="radio" class="flatd form-control" name="gender" value="Others"/>
+                            </p>
+                            <br>
+
+                        </div>
+
+
+                        <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                            <label>Phone Number *:</label>
+                            <input type="text" class="form-control has-feedback-left" id="UAphone"
+                                   placeholder="Phone Number">
+                            <span class="fa fa-phone form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+
+                        <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                            <label>Email *:</label>
+                            <input type="email" class="form-control has-feedback-left" id="UAemail"
+                                   placeholder="Email">
+                            <span class="fa fa-envelope form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+                        <div class='col-md-4 col-sm-6 col-xs-12 '>
+                            <label>DOB *:</label>
+
+                            <div class="form-group">
+                                <div class='input-group date' id='myDatepickerDob'>
+                                    <input type='text' class="form-control" id="AUdob"/>
+                                    <span class="input-group-addon">
+                               <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                            <label>Qualification *:</label>
+                            <input type="text" class="form-control has-feedback-left" id="UAqualification"
+                                   placeholder="Qualification">
+                            <span class="fa fa-graduation-cap form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                            <label>Adhaar Number *:</label>
+                            <input type="text" class="form-control has-feedback-left" id="UAadhaar"
+                                   placeholder="Adhaar Number">
+                            <span class="fa fa-graduation-cap form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+
+                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                            <label>Address *:</label>
+                            <input type="text" class="form-control has-feedback-left" id="UAaddress"
+                                   placeholder="Address">
+                            <span class="fa fa-globe form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+
+                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                            <label>City Name:</label>
+                            <input type="text" class="form-control has-feedback-left" id="UAcity"
+                                   placeholder="City Name">
+                            <span class="fa fa-globe form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+
+
+                        <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                            <label>Country:</label>
+                            <select id="UACountryc" class="form-control">
+                                <option value="India">India</option>
+
+                            </select>
+                        </div>
+
+                        <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                            <label>State:</label>
+                            <select id="UAState" class="form-control">
+                                <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                <option value="Assam">Assam</option>
+                                <option value="Bihar">Bihar</option>
+                                <option value="Chhattisgarh">Chhattisgarh</option>
+                                <option value="Goa">Goa</option>
+                                <option value="Gujarat">Gujarat</option>
+                                <option value="Haryana">Haryana</option>
+                                <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                                <option value="Jharkhand">Jharkhand</option>
+                                <option value="Karnataka">Karnataka</option>
+                                <option value="Kerala">Kerala</option>
+                                <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                <option value="Maharashtra">Maharashtra</option>
+                                <option selected value="Manipur">Manipur</option>
+                                <option value="Meghalaya">Meghalaya</option>
+                                <option value="Mizoram">Mizoram</option>
+                                <option value="Nagaland">Nagaland</option>
+                                <option value="Orissa">Orissa</option>
+                                <option value="Punjab">Punjab</option>
+                                <option value="Rajasthan">Rajasthan</option>
+                                <option value="Sikkim">Sikkim</option>
+                                <option value="Tamil Nadu">Tamil Nadu</option>
+                                <option value="Telangana">Telangana</option>
+                                <option value="Tripura">Tripura</option>
+                                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                <option value="Uttarakhand">Uttarakhand</option>
+                                <option value="West Bengal">West Bengal</option>
+
+                            </select>
+                        </div>
+
+
+                        <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                            <label>Pin Code *:</label>
+                            <input type="number" class="form-control has-feedback-left" id="UApin"
+                                   placeholder="Pin Code">
+                            <span class="fa fa-list-ol form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+
+                        <div class='col-sm-6 col-xs-12'>
+                            <label>Date Of Joining *:</label>
+
+                            <div class="form-group">
+                                <div class='input-group date' id='myDatepicker21'>
+                                    <input type='text' class="form-control" id="UAjoindate"/>
+                                    <span class="input-group-addon">
+                               <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class='col-sm-6 col-xs-12'>
+                            <label>Date Of Leaving :</label>
+
+                            <div class="form-group">
+                                <div class='input-group date' id='myDatepicker22'>
+                                    <input type='text' class="form-control" id="UAreleave"/>
+                                    <span class="input-group-addon">
+                               <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                            <label>Current Position *:</label>
+                            <input type="text" class="form-control has-feedback-left" id="UAcurrentPosition"
+                                   placeholder="Current Position">
+                            <span class="fa fa-bank form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+
+
+                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                            <label>Employee Code *:</label>
+                            <input type="text" class="form-control has-feedback-left" id="UAemployeeCode"
+                                   placeholder="Employee Code">
+                            <span class="fa fa-code form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+
+
+                    </form>
+                    <p><strong>Note* </strong>: Login credential for Non-teaching staff will be generated automatically
+                        when a new Non-teaching staff is added. </p>
+
+
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-dark" onclick="AddUserComputerOperator()"
+                            id="AddComputerOperator">Submit
+                    </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal fade bd-example-modal-lg" id="myModalEdit" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Edit User</h4>
+                </div>
+                <div class="modal-body">
+
+                    <form class="form-horizontal form-label-left" method="post"> {% csrf_token %}
+                        <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
+                            <label>Photo *:</label>
+
+                            <div class="avatar-upload">
+                                <div class="avatar-edit">
+                                    <input type='file' id="imageUploadEditUser"
+                                           accept="image/*"/>
+                                    <label style="padding: 20px;font-size: 20px"
+                                           for="imageUploadEditUser"></label>
+                                </div>
+                                <div class="avatar-preview">
+                                    <div id="imagepicedit"
+                                         style="background-image: url(uploaduser.png);">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div><input type="hidden" id="opeditUserId"></div>
+
+                        <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                            <label>First Name *:</label>
+                            <input type="text" class="form-control has-feedback-left" id="opfirstnameedit"
+                                   placeholder="First Name">
+                            <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+
+                        <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                            <label>Middle Name *:</label>
+                            <input type="text" class="form-control has-feedback-left" id="opmiddlenameedit"
+                                   placeholder="Middle Name">
+                            <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+
+
+                        <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                            <label>Last Name *:</label>
+                            <input type="text" class="form-control has-feedback-left" id="oplastnameedit"
+                                   placeholder="Last Name">
+                            <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+
+
+                        <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                            <label>Phone Number *:</label>
+                            <input type="text" class="form-control has-feedback-left" id="mnoedit"
+                                   placeholder="Phone Number">
+                            <span class="fa fa-phone form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+
+                        <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                            <label>Email *:</label>
+                            <input type="email" class="form-control has-feedback-left" id="opemailedit"
+                                   placeholder="Email">
+                            <span class="fa fa-envelope form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+
+
+                        <div class='col-md-4 col-sm-6 col-xs-12 '>
+                            <label>DOB *:</label>
+
+                            <div class="form-group">
+                                <div class='input-group date' id='myDatepicker1e'>
+                                    <input type='text' class="form-control" id="dobedit"/>
+                                    <span class="input-group-addon">
+                               <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                            <label>Qualification *:</label>
+                            <input type="text" class="form-control has-feedback-left" id="opqualificationedit"
+                                   placeholder="Qualification">
+                            <span class="fa fa-graduation-cap form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                            <label>Adhaar Number *:</label>
+                            <input type="text" class="form-control has-feedback-left" id="aadharedit"
+                                   placeholder="Adhaar Number">
+                            <span class="fa fa-graduation-cap form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+
+                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                            <label>Address *:</label>
+                            <input type="text" class="form-control has-feedback-left" id="taddedit"
+                                   placeholder="Address">
+                            <span class="fa fa-globe form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+
+                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                            <label>City Name:</label>
+                            <input type="text" class="form-control has-feedback-left" id="opcityedit"
+                                   placeholder="City Name">
+                            <span class="fa fa-globe form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+
+
+                        <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                            <label>Country:</label>
+                            <select id="UACountry" class="form-control">
+                                <option value="India">India</option>
+
+                            </select>
+                        </div>
+
+                        <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                            <label>State:</label>
+                            <select id="opstateedit" class="form-control">
+                                <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                <option value="Assam">Assam</option>
+                                <option value="Bihar">Bihar</option>
+                                <option value="Chhattisgarh">Chhattisgarh</option>
+                                <option value="Goa">Goa</option>
+                                <option value="Gujarat">Gujarat</option>
+                                <option value="Haryana">Haryana</option>
+                                <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                                <option value="Jharkhand">Jharkhand</option>
+                                <option value="Karnataka">Karnataka</option>
+                                <option value="Kerala">Kerala</option>
+                                <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                <option value="Maharashtra">Maharashtra</option>
+                                <option selected value="Manipur">Manipur</option>
+                                <option value="Meghalaya">Meghalaya</option>
+                                <option value="Mizoram">Mizoram</option>
+                                <option value="Nagaland">Nagaland</option>
+                                <option value="Orissa">Orissa</option>
+                                <option value="Punjab">Punjab</option>
+                                <option value="Rajasthan">Rajasthan</option>
+                                <option value="Sikkim">Sikkim</option>
+                                <option value="Tamil Nadu">Tamil Nadu</option>
+                                <option value="Telangana">Telangana</option>
+                                <option value="Tripura">Tripura</option>
+                                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                <option value="Uttarakhand">Uttarakhand</option>
+                                <option value="West Bengal">West Bengal</option>
+
+                            </select>
+                        </div>
+
+
+                        <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                            <label>Pin Code *:</label>
+                            <input type="number" class="form-control has-feedback-left" id="oppinedit"
+                                   placeholder="Pin Code">
+                            <span class="fa fa-list-ol form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+
+                        <div class='col-sm-6 col-xs-12'>
+                            <label>Date Of Joining *:</label>
+
+                            <div class="form-group">
+                                <div class='input-group date' id='myDatepicker2e'>
+                                    <input type='text' class="form-control" id="dojedit"/>
+                                    <span class="input-group-addon">
+                               <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class='col-sm-6 col-xs-12'>
+                            <label>Date Of Releaving *:</label>
+
+                            <div class="form-group">
+                                <div class='input-group date' id='myDatepicker3e'>
+                                    <input type='text' class="form-control" id="doledit"/>
+                                    <span class="input-group-addon">
+                               <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        {#                            <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">#}
+                        {#                                <label>Username *:</label>#}
+                        {#                                <input type="text" class="form-control has-feedback-left" id="UAusername"#}
+                        {#                                       placeholder="User Name" onkeyup="checknameComputerOperator()">#}
+                        {#                                <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>#}
+                        {#                            </div>#}
+                        {##}
+                        {#                            <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">#}
+                        {#                                <label>Password *:</label>#}
+                        {#                                <input type="password" class="form-control has-feedback-left" id="UApassword"#}
+                        {#                                       placeholder="Password">#}
+                        {#                                <span class="fa fa-key form-control-feedback left" aria-hidden="true"></span>#}
+                        {#                            </div>#}
+                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                            <label> Is-Active *:</label>
+                            <input type="checkbox" class="flatd" id="isActiveedit">
+                        </div>
+
+
+                    </form>
+
+
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-primary" onclick="postEditComputerOperator()"
+                            id="AddComputerOperator"><i class="fa fa-check-square-o" aria-hidden="true"></i>Update
+                    </button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"
+                                                                                         aria-hidden="true"></i>Close
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
+{% block js %}
+<script src="{% static 'js/customjs/main.js' %}"></script>
+
+
+    <script>
+
+        $(getSchoolDetail());
+        $(getSchoolSocialLink());
+        $(getSessionList());
+
+
+
+        $('#myDatepickerDob').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+
+        $('#myDatepicker21').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+
+        $('#myDatepicker22').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+        $('#myDatepicker1e').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+
+        $('#myDatepicker2e').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+
+        $('#myDatepicker3e').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+    </script>
+
+    <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#imagePreview').css('background-image', 'url(' + e.target.result + ')');
+                    $('#imagePreview').hide();
+                    $('#imagePreview').fadeIn(650);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#imageUpload").change(function () {
+            readURL(this);
+            uploadSchoolLogo(this)
+        });
+
+        function readURLAddUser(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#imagePreviewAddUser').css('background-image', 'url(' + e.target.result + ')');
+                    $('#imagePreviewAddUser').hide();
+                    $('#imagePreviewAddUser').fadeIn(650);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#imageUploadAddUser").change(function () {
+            readURLAddUser(this);
+        });
+
+        function readURLEditUser(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#imagepicedit').css('background-image', 'url(' + e.target.result + ')');
+                    $('#imagepicedit').hide();
+                    $('#imagepicedit').fadeIn(650);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#imageUploadEditUser").change(function () {
+            readURLEditUser(this);
+            editComputerOperatorLogo(this)
+        });
+
+
+        function AddUserComputerOperator() {
+            var imageData = document.getElementById("imageUploadAddUser").files[0];
+            var UAfirstname = $('#UAfirstname').val();
+            var UAmiddlename = $('#UAmiddlename').val();
+            var UAlastname = $('#UAlastname').val();
+            var UAphone = $('#UAphone').val();
+            var UAemail = $('#UAemail').val();
+            var AUdob = $('#AUdob').val();
+            var UAqualification = $('#UAqualification').val();
+            var UAadhaar = $('#UAadhaar').val();
+            var UAaddress = $('#UAaddress').val();
+            var UAcity = $('#UAcity').val();
+            var UACountry = $('#UACountryc').val();
+            var UAState = $('#UAState').val();
+            var UApin = $('#UApin').val();
+            var UAjoindate = $('#UAjoindate').val();
+            var UAreleave = $('#UAreleave').val();
+            var UAgender = $("input[name='gender']:checked").val();
+            var UAcurrentPosition = $('#UAcurrentPosition').val();
+            var UAemployeeCode = $('#UAemployeeCode').val();
+            var UAbloodGroup = $('#TbloodGroup').val();
+            var csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val();
+            var form_data = new FormData();
+            form_data.append('photo', imageData);
+            form_data.append('UAfirstname', UAfirstname);
+            form_data.append('UAmiddlename', UAmiddlename);
+            form_data.append('UAlastname', UAlastname);
+            form_data.append('UAphone', UAphone);
+            form_data.append('UAemail', UAemail);
+            form_data.append('AUdob', AUdob);
+            form_data.append('UAqualification', UAqualification);
+            form_data.append('UAadhaar', UAadhaar);
+            form_data.append('UAaddress', UAaddress);
+            form_data.append('UAcity', UAcity);
+            form_data.append('UACountry', UACountry);
+            form_data.append('UAState', UAState);
+            form_data.append('UApin', UApin);
+            form_data.append('UAjoindate', UAjoindate);
+            form_data.append('UAreleave', UAreleave);
+            form_data.append('UAgender', UAgender);
+            form_data.append('UAcurrentPosition', UAcurrentPosition);
+            form_data.append('UAemployeeCode', UAemployeeCode);
+            form_data.append('UAbloodGroup', UAbloodGroup);
+            form_data.append('csrfmiddlewaretoken', csrfmiddlewaretoken);
+            if (UAfirstname === "" || UAlastname === "" || UAphone === ""
+                || AUdob === '' || UAqualification === "" ||
+                UAaddress === "" || UAcity === "" || UACountry === "" || UAState === ""
+                || UApin === "" || UAjoindate === "" || UAgender === "" || UAcurrentPosition === "" || UAemployeeCode === ""
+                || UAbloodGroup === "") {
+
+                $('#name_status').addClass('validate_data');
+                $('#name_status').html('* fields are required.');
+                $('#name_status').fadeIn().fadeOut(2000);
+
+            }
+            else {
+                $.ajax({
+                    type: 'post',
+                    url: '/api/PostNonTeacher/',
+                    data: form_data,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+
+
+                    success: function (response) {
+                        if (response.response === 'ok') {
+                            $('#name_status').addClass('validate_data');
+                            $('#name_status').html('Non Teaching Staff added successfully.');
+                            NonTeacherTable.ajax.reload();
+                             $('#myModal').modal('toggle');
+                            $('#name_status').fadeIn().fadeOut(2000)
+
+                        }
+                        else{
+                            $('#name_status').addClass('validate_data');
+                            $('#name_status').html('error');
+                            NonTeacherTable.ajax.reload();
+                            $('#name_status').fadeIn().fadeOut(2000)
+
+                        }
+
+                    },
+                    error: function () {
+                        $('#name_status').addClass('validate_data');
+                        $('#name_status').html('error.');
+                        $('#name_status').fadeIn().fadeOut(2000)
+                    }
+                });
+            }
+
+
+        }
+
+
+        var NonTeacherTable;
+        function nonTeachingList() {
+
+
+            NonTeacherTable = $('#NonTeacherList').DataTable({
+                "scrollX": true,
+                        dom: 'Blfrtip',
+                        buttons: [{
+                            extend: 'excel',
+                            exportOptions: {
+                                columns: [2, 3, 4, 5,6,7,8]
+                            }
+                        }, {
+                            extend: 'print',
+                            exportOptions: {
+                                 columns: [2, 3, 4, 5,6,7,8]
+                            }
+                        }
+                        ],
+                "ajax": "{% url 'SchoolTableApi:getNonTeachingStaffListJson' %}",
+
+                "columnDefs": [
+                            {"name": "id", "targets": 0, "orderable": false},
+                            {"name": "photo", "targets": 1, "orderable": false},
+                            {"name": "firstName", "targets": 2, "orderable": true},
+                            {"name": "EmployeeCode", "targets": 3, "orderable": true},
+                            {"name": "phoneNumber", "targets": 4, "orderable": true},
+                            {"name": "DOB", "targets": 5, "orderable": true},
+                            {"name": "joinDate", "targets": 6, "orderable": true},
+                            {"name": "gender", "targets": 7, "orderable": true},
+                            {"name": "isActive", "targets": 8, "orderable": true},
+                            {"name": "Action", "targets": 9, "orderable": false},
+
+                ],
+                aaSorting: [[2, 'asc']],
+                        "lengthMenu": [[20, 25, 50, 100, -1], [20, 25, 50, 100, "All"]],
+                        "pageLength": 20,
+                        "processing": true,
+                        "serverSide": true,
+                        stateSave: true
+            });
+            NonTeacherTable.column(0).visible(false)
+
+ }
+
+
+$(nonTeachingList());
+        function userDetailId(id) {
+    $.ajax({
+        type: 'get',
+        url: '/api/GetNonTeacherDetail/' + id + '',
+        success: function (context) {
+            $("#imagepic").attr("src", context.opImage);
+            $("#opname").text(context.name);
+            $("#opnamehead").text(context.name + ' Detail');
+            $("#opqualification").text(context.qualification);
+            $("#opemail").text(context.email);
+            $("#mno").text(context.mobileno);
+            $("#dob").text(context.dob);
+            $("#doj").text(context.doj);
+            $("#aadhar").text(context.aadhar);
+            $("#tadd").text(context.taddress);
+            $("#opgender").text(context.gender);
+            $("#NTblood").text(context.bloodGroup);
+        }
+    });
+}
+function EditUserComputerOperator(id) {
+    $.ajax({
+        type: 'get',
+        url: '/api/GetNonTeacherDetail/' + id + '',
+        success: function (context) {
+            $('#imagepicedit').css('background-image', 'url(' + context.opImage + ')');
+            $("#opfirstnameedit").val(context.firstname);
+            $("#opeditUserId").val(context.opId);
+            $("#opmiddlenameedit").val(context.middlename);
+            $("#oplastnameedit").val(context.lastname);
+            $("#mnoedit").val(context.mobileno);
+            $("#opemailedit").val(context.email);
+            $("#dobedit").val(context.dob);
+            $("#opqualificationedit").val(context.qualification);
+            $("#aadharedit").val(context.aadhar);
+            $("#dojedit").val(context.doj);
+            $("#taddedit").val(context.opaddress);
+            $("#opcityedit").val(context.cityname);
+            $("#opstateedit").val(context.state);
+            $("#oppinedit").val(context.pin);
+            $("#doledit").val(context.dateofreleaving);
+            if(context.isActive === true){
+                $("#isActiveedit").prop('checked',true)
+            }
+        }
+    });
+}
+
+
+
+function editComputerOperatorLogo() {
+    var imageData = document.getElementById("imageUploadEditUser").files[0];
+    var form_data = new FormData();
+    form_data.append('file', imageData);
+    var opeditUserId = $('#opeditUserId').val();
+    form_data.append('opeditUserId', opeditUserId);
+
+    $.ajax({
+        type: 'post',
+        url: '/api/EditNonteacherPhoto/',
+        data: form_data,
+        contentType: false,
+        cache: false,
+        processData: false,
+
+
+        success: function (response) {
+            if (response.response === 'ok') {
+                $('#name_status').addClass('validate_data');
+                $('#name_status').html('User Photo Changed successfully.');
+                $('#name_status').fadeIn().fadeOut(2000)
+                NonTeacherTable.ajax.reload();
+            }
+            else {
+                $('#name_status').removeClass('validate_data');
+                $('#name_status').html("error");
+                $('#name_status').fadeIn().fadeOut(2000)
+            }
+
+            return response;
+        },
+        error: function () {
+            $('#name_status').addClass('validate_data');
+            $('#name_status').html('error.');
+            $('#name_status').fadeIn().fadeOut(2000)
+        }
+    });
+
+
+}
+
+function postEditComputerOperator() {
+    var opeditUserId = document.getElementById("opeditUserId").value;
+    var opfirstnameedit = document.getElementById("opfirstnameedit").value;
+    var opmiddlenameedit = document.getElementById("opmiddlenameedit").value;
+    var oplastnameedit = document.getElementById("oplastnameedit").value;
+    var mnoedit = document.getElementById("mnoedit").value;
+    var opemailedit = document.getElementById("opemailedit").value;
+    var dobedit = document.getElementById("dobedit").value;
+    var opqualificationedit = document.getElementById("opqualificationedit").value;
+    var aadharedit = document.getElementById("aadharedit").value;
+    var dojedit = document.getElementById("dojedit").value;
+    var taddedit = document.getElementById("taddedit").value;
+    var opcityedit = document.getElementById("opcityedit").value;
+    var opstateedit = document.getElementById("opstateedit").value;
+    var oppinedit = document.getElementById("oppinedit").value;
+    var doledit = document.getElementById("doledit").value;
+debugger;
+    if ($('#isActiveedit').is(":checked"))
+        {
+         active = 'True'
+        }
+    else{
+        active='False'
+    }
+    //var imageUploadEditUser = document.getElementById("imageUploadEditUser").files[0];
+    //console.log(opfirstnameedit, doledit, imageUploadEditUser, opmiddlenameedit, oplastnameedit, mnoedit, opemailedit, dobedit, opqualificationedit, aadharedit, dojedit, taddedit, opcityedit, opstateedit, oppinedit);
+    var form_data = new FormData();
+    var csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val();
+    //form_data.append('imageUploadEditUser', imageUploadEditUser);
+    form_data.append('opfirstnameedit', opfirstnameedit);
+    form_data.append('opeditUserId', opeditUserId);
+    form_data.append('opmiddlenameedit', opmiddlenameedit);
+    form_data.append('oplastnameedit', oplastnameedit);
+    form_data.append('mnoedit', mnoedit);
+    form_data.append('opemailedit', opemailedit);
+    form_data.append('dobedit', dobedit);
+    form_data.append('opqualificationedit', opqualificationedit);
+    form_data.append('aadharedit', aadharedit);
+    form_data.append('dojedit', dojedit);
+    form_data.append('taddedit', taddedit);
+    form_data.append('opcityedit', opcityedit);
+    form_data.append('opstateedit', opstateedit);
+    form_data.append('oppinedit', oppinedit);
+    form_data.append('doledit', doledit);
+    form_data.append('csrfmiddlewaretoken', csrfmiddlewaretoken);
+    form_data.append('active', active);
+    $.ajax({
+        type: 'post',
+        url: '/api/EditNonTeacherdetail/',
+        data: form_data,
+        contentType: false,
+        cache: false,
+        processData: false,
+
+
+       success: function (response) {
+            if (response.response === 'ok') {
+                $('#name_status').addClass('validate_data');
+                $('#name_status').html('User Details Changed successfully.');
+                 NonTeacherTable.ajax.reload();
+                $('#myModalEdit').modal('toggle');
+                $('#name_status').fadeIn().fadeOut(2000)
+            }
+            else {
+                $('#name_status').removeClass('validate_data');
+                $('#name_status').html("error");
+                $('#name_status').fadeIn().fadeOut(2000)
+            }
+
+            return response;
+        },
+        error: function () {
+            $('#name_status').addClass('validate_data');
+            $('#name_status').html('error.');
+            $('#name_status').fadeIn().fadeOut(2000)
+        }
+    });
+
+
+}
+
+function getIdFordeletingComputerOperator(id) {
+    $('#COuserID').val(id);
+
+}
+
+function deleteComputerOperator() {
+
+    var userID = $('#COuserID').val();
+
+    $.ajax({
+        type: 'post',
+        url: '/api/DeleteComputerOperator/',
+        data:{
+            COuserID : userID,
+            csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val()
+        },
+         success: function (response) {
+            if (response.response === 'ok') {
+                $('#name_status').addClass('validate_data');
+                $('#name_status').html('User Deleted successfully.');
+                $('#myModalDelete').modal('toggle');
+                NonTeacherTable.ajax.reload();
+                $('#name_status').fadeIn().fadeOut(2000)
+            }
+            else {
+                $('#name_status').removeClass('validate_data');
+                $('#name_status').html("error");
+                $('#name_status').fadeIn().fadeOut(2000)
+            }
+
+            return response;
+        },
+        error: function () {
+            $('#name_status').addClass('validate_data');
+            $('#name_status').html('error.');
+            $('#name_status').fadeIn().fadeOut(2000)
+        }
+    });
+}
+
+
+    </script>
+
+{% endblock %}

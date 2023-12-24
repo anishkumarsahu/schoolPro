@@ -1,0 +1,1064 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block css %}
+    <style>
+        .avatar-upload {
+            position: relative;
+            max-width: 205px;
+            margin: 10px auto;
+
+        }
+
+        .avatar-upload .avatar-edit {
+            position: absolute;
+            right: 75px;
+            z-index: 1;
+            top: 10px;
+
+        }
+
+        .avatar-upload .avatar-edit input {
+            display: none;
+        }
+
+        .avatar-upload .avatar-edit input + label {
+            display: inline-block;
+            width: 0px;
+            height: 0px;
+            margin-bottom: 0;
+            border-radius: 100%;
+            background: #FFFFFF;
+            border: 1px solid transparent;
+            box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+            cursor: pointer;
+            font-weight: normal;
+            transition: all 0.2s ease-in-out;
+            padding: 20px;
+        }
+
+        .avatar-upload .avatar-edit input + label:hover {
+            background: #f1f1f1;
+            border-color: #d6d6d6;
+            padding: 20px;
+        }
+
+        .avatar-upload .avatar-edit input + label:after {
+            content: "\f040";
+            font-family: 'FontAwesome';
+            color: #757575;
+            position: absolute;
+            top: 10px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            margin: auto;
+
+        }
+
+        .avatar-upload .avatar-preview {
+            width: 100px;
+            height: 100px;
+            position: relative;
+            border-radius: 100%;
+            border: 6px solid #F8F8F8;
+            box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+        }
+
+        .avatar-upload .avatar-preview > div {
+            width: 100%;
+            height: 100%;
+            border-radius: 100%;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+    </style>
+{% endblock %}
+{% block  main %}
+    <div class="right_col" role="main">
+        <div class="">
+            <div class="page-title">
+                <div class="title_left">
+                    <h3>Teacher List</h3>
+                </div>
+
+
+            </div>
+
+            <div class="clearfix"></div>
+
+
+            <div class="row">
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>All sessions</h2>
+
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <p class="text-muted font-13 m-b-30">
+                            </p>
+                            <table id="TeacherList" class="table table-striped table-bordered bulk_action"
+                                   style="width: 100%">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Photo</th>
+                                    <th>Name</th>
+                                    <th>Phone</th>
+                                    <th>EmployeeCode</th>
+                                    <th>DOB</th>
+                                    <th>DOJ</th>
+
+                                    <th>Gender</th>
+                                    <th>Active</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+
+
+                                <tbody>
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="modal fade bd-example-modal-lg" id="myModal" role="dialog">
+                    <div class="modal-dialog modal-lg">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Teacher Detail</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <div class="col-md-3 col-sm-3 col-xs-12 profile_left">
+                                            <div class="profile_img">
+                                                <div id="crop-avatar">
+                                                    <!-- Current avatar -->
+                                                    <img class="img-responsive avatar-view" id="dPhoto"
+                                                         src="{% static 'images/picture.jpg' %}"
+                                                         alt="Avatar" title="Change the avatar">
+                                                </div>
+                                                <h4 id="dName"></h4>
+                                            </div>
+                                            <ul class="list-unstyled user_data">
+
+                                                <li>
+                                                    <i class="fa fa-user user-profile-icon"></i>
+                                                    <b>Gender</b> - <span id="dGender"></span>
+                                                </li>
+                                                <li>
+                                                    <i class="fa fa-graduation-cap user-profile-icon"></i>
+                                                    <b>Qualification</b> - <span id="dQualification"></span>
+                                                </li>
+                                                <li>
+                                                    <i class="fa fa-envelope user-profile-icon"></i>
+                                                    <b>Email</b> - <span id="dEmail"></span>
+                                                </li>
+                                            </ul>
+                                            {#                                            <a class="btn btn-success"><i class="fa fa-print m-right-xs"></i>Print#}
+                                            {#                                                Profile</a>#}
+                                            <br/>
+
+                                        </div>
+                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                            <div class="profile_title">
+                                                <div class="col-md-6">
+                                                    <h2> Details</h2>
+                                                </div>
+                                            </div>
+                                            <div class="x_content">
+                                                <table class="table table-striped">
+                                                    <tbody>
+                                                    <tr>
+                                                        <th scope="row">MOBILE NO:</th>
+                                                        <td id="dPhoneNumber"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">DATE OF BIRTH:</th>
+                                                        <td id="dDOB"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">BLOOD GROUP:</th>
+                                                        <td id="dBloodGroup"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">DATE OF JOINING:</th>
+                                                        <td id="dDateOfJoining"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">EMPLOYEE CODE:</th>
+                                                        <td id="dEmployeeCode"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">CURRENT POSITION:</th>
+                                                        <td id="dCurrentPosition"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">DATE OF LEAVING:</th>
+                                                        <td id="dDateOfLeaving"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">AADHAR NO:</th>
+                                                        <td id="dAadhar"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">TEMPORARY ADDRESS:</th>
+                                                        <td id="dPresentAddress"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">PERMANENT ADDRESS:</th>
+                                                        <td id="dPermanentAddress"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">IS ACTIVE:</th>
+                                                        <td id="dIsActive"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">USERNAME:</th>
+                                                        <td id="dUserName"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">PASSWORD:</th>
+                                                        <td id="dPassword"></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i
+                                            class="fa fa-times m-right-xs"></i>Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="modal fade bd-example-modal-lg" id="myModalEditTeacher" role="dialog">
+                    <div class="modal-dialog modal-lg">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Teacher Detail</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <form class="form-horizontal form-label-left" id="teacherForm"> {% csrf_token %}
+
+                                        <input type="hidden" id="EditTeacherID">
+                                        <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
+                                            <label>Photo *:</label>
+
+                                            <div class="avatar-upload">
+                                                <div class="avatar-edit">
+                                                    <input type='file' id="Timage"
+                                                           accept="image/*"/>
+                                                    <label style="padding: 20px;font-size: 20px"
+                                                           for="Timage"></label>
+                                                </div>
+                                                <div class="avatar-preview">
+                                                    <div id="imagePreviewAddUser"
+                                                         style="background-image: url(uploaduser.png);">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <div class="x_panel">
+                                                <div class="x_title">
+                                                    <h2>Personal Details
+                                                        <small>(Teacher)</small>
+                                                    </h2>
+
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                                <div class="x_content">
+                                                    <br/>
+
+                                                    <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>First Name *:</label>
+                                                        <input type="text" class="form-control has-feedback-left"
+                                                               id="TfirstName"
+                                                               placeholder="First Name">
+                                                        <span class="fa fa-user form-control-feedback left"
+                                                              aria-hidden="true"></span>
+                                                    </div>
+
+                                                    <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>Middle Name (Optional):</label>
+                                                        <input type="text" class="form-control has-feedback-left"
+                                                               id="TmiddleName"
+                                                               placeholder="Middle Name (Optional)">
+                                                        <span class="fa fa-user form-control-feedback left"
+                                                              aria-hidden="true"></span>
+                                                    </div>
+
+
+                                                    <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>Last Name *:</label>
+                                                        <input type="text" class="form-control has-feedback-left"
+                                                               id="TlastName"
+                                                               placeholder="Last Name">
+                                                        <span class="fa fa-user form-control-feedback left"
+                                                              aria-hidden="true"></span>
+                                                    </div>
+
+
+                                                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>Email (Optional):</label>
+                                                        <input type="email" class="form-control has-feedback-left"
+                                                               id="Temail"
+                                                               placeholder="Email Address(Optional)">
+                                                        <span class="fa fa-envelope form-control-feedback left"
+                                                              aria-hidden="true"></span>
+                                                    </div>
+
+
+                                                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>Phone Number *:</label>
+                                                        <input type="text" class="form-control has-feedback-left"
+                                                               id="Tphone"
+                                                               placeholder="Phone Number(Optional)">
+                                                        <span class="fa fa-phone form-control-feedback left"
+                                                              aria-hidden="true"></span>
+                                                    </div>
+
+
+                                                    <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>Blood Group (Optional):</label>
+                                                        <select id="TbloodGroup" class="form-control">
+                                                            <option value="">Choose..</option>
+                                                            <option value="A+">A+</option>
+                                                            <option value="A-">A-</option>
+                                                            <option value="B+">B+</option>
+                                                            <option value="B-">B-</option>
+                                                            <option value="AB+">AB+</option>
+                                                            <option value="AB-">AB-</option>
+                                                            <option value="O+">O+</option>
+                                                            <option value="O-">O-</option>
+                                                        </select>
+                                                    </div>
+
+
+                                                    <div class='col-sm-4'>
+                                                        <label>DOB *:</label>
+                                                        <div class="form-group">
+                                                            <div class='input-group date' id='myDatepicker2'>
+                                                                <input type='text' class="form-control" id="Tdob"/>
+                                                                <span class="input-group-addon">
+                               <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>Qualification *:</label>
+                                                        <input type="text" class="form-control has-feedback-left"
+                                                               id="Tqualification"
+                                                               placeholder="Qualification">
+                                                        <span class="fa fa-hand-scissors-o form-control-feedback left"
+                                                              aria-hidden="true"></span>
+                                                    </div>
+
+
+                                                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>Aadhar Number(Optional):</label>
+                                                        <input type="number" class="form-control has-feedback-left"
+                                                               id="Taadhar"
+                                                               placeholder="Aadhar Number(Optional)">
+                                                        <span class="fa fa-list-ol form-control-feedback left"
+                                                              aria-hidden="true"></span>
+                                                    </div>
+
+
+                                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                                        <label>Gender *:</label>
+                                                        <p>
+                                                            Male:
+                                                            <input type="radio" class="flatd" name="gender" value="Male"
+
+                                                                   required/>
+                                                            Female:
+                                                            <input type="radio" class="flatd" name="gender"
+                                                                   value="Female"/>
+
+                                                            Others:
+                                                            <input type="radio" class="flatd" name="gender"
+                                                                   value="Others"/>
+                                                        </p>
+
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-6 col-sm-12 col-xs-12">
+                                            <div class="x_panel">
+                                                <div class="x_title">
+                                                    <h2>Present Address</h2>
+
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                                <div class="x_content">
+                                                    <br/>
+
+
+                                                    <div class="col-md-12 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>Address *:</label>
+                                                        <input type="text" class="form-control has-feedback-left"
+                                                               id="Taddress"
+                                                               placeholder="Address">
+                                                        <span class="fa fa-globe form-control-feedback left"
+                                                              aria-hidden="true"></span>
+                                                    </div>
+
+                                                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>Country *:</label>
+                                                        <select id="Tcountry" class="form-control">
+                                                            <option value="India">India</option>
+
+                                                        </select>
+                                                    </div>
+
+
+                                                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>State *:</label>
+                                                        <select id="Tstate" class="form-control">
+                                                            <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                                            <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                                            <option value="Assam">Assam</option>
+                                                            <option value="Bihar">Bihar</option>
+                                                            <option value="Chhattisgarh">Chhattisgarh</option>
+                                                            <option value="Goa">Goa</option>
+                                                            <option value="Gujarat">Gujarat</option>
+                                                            <option value="Haryana">Haryana</option>
+                                                            <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                                            <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                                                            <option value="Jharkhand">Jharkhand</option>
+                                                            <option value="Karnataka">Karnataka</option>
+                                                            <option value="Kerala">Kerala</option>
+                                                            <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                                            <option value="Maharashtra">Maharashtra</option>
+                                                            <option selected value="Manipur">Manipur</option>
+                                                            <option value="Meghalaya">Meghalaya</option>
+                                                            <option value="Mizoram">Mizoram</option>
+                                                            <option value="Nagaland">Nagaland</option>
+                                                            <option value="Orissa">Orissa</option>
+                                                            <option value="Punjab">Punjab</option>
+                                                            <option value="Rajasthan">Rajasthan</option>
+                                                            <option value="Sikkim">Sikkim</option>
+                                                            <option value="Tamil Nadu">Tamil Nadu</option>
+                                                            <option value="Telangana">Telangana</option>
+                                                            <option value="Tripura">Tripura</option>
+                                                            <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                                            <option value="Uttarakhand">Uttarakhand</option>
+                                                            <option value="West Bengal">West Bengal</option>
+
+                                                        </select>
+                                                    </div>
+
+
+                                                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>City Name *:</label>
+                                                        <input type="text" class="form-control has-feedback-left"
+                                                               id="Tcity"
+                                                               placeholder="City Name">
+                                                        <span class="fa fa-globe form-control-feedback left"
+                                                              aria-hidden="true"></span>
+                                                    </div>
+
+                                                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>Pin Code *:</label>
+                                                        <input type="number" class="form-control has-feedback-left"
+                                                               id="Tpin"
+                                                               placeholder="Pin Code">
+                                                        <span class="fa fa-list-ol form-control-feedback left"
+                                                              aria-hidden="true"></span>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-6 col-sm-12 col-xs-12">
+                                            <div class="x_panel">
+                                                <div class="x_title">
+                                                    <h2>Permanent Address</h2>
+
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                                <div class="x_content">
+                                                    <br/>
+
+
+                                                    <div class="col-md-12 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>Address *:</label>
+                                                        <input type="text" class="form-control has-feedback-left"
+                                                               id="TPaddress"
+                                                               placeholder="Address">
+                                                        <span class="fa fa-globe form-control-feedback left"
+                                                              aria-hidden="true"></span>
+                                                    </div>
+
+
+                                                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>Country *:</label>
+                                                        <select id="TPcountry" class="form-control">
+                                                            <option value="India">India</option>
+                                                        </select>
+                                                    </div>
+
+
+                                                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>State *:</label>
+                                                        <select id="TPstate" class="form-control">
+                                                            <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                                            <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                                            <option value="Assam">Assam</option>
+                                                            <option value="Bihar">Bihar</option>
+                                                            <option value="Chhattisgarh">Chhattisgarh</option>
+                                                            <option value="Goa">Goa</option>
+                                                            <option value="Gujarat">Gujarat</option>
+                                                            <option value="Haryana">Haryana</option>
+                                                            <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                                            <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                                                            <option value="Jharkhand">Jharkhand</option>
+                                                            <option value="Karnataka">Karnataka</option>
+                                                            <option value="Kerala">Kerala</option>
+                                                            <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                                            <option value="Maharashtra">Maharashtra</option>
+                                                            <option selected value="Manipur">Manipur</option>
+                                                            <option value="Meghalaya">Meghalaya</option>
+                                                            <option value="Mizoram">Mizoram</option>
+                                                            <option value="Nagaland">Nagaland</option>
+                                                            <option value="Orissa">Orissa</option>
+                                                            <option value="Punjab">Punjab</option>
+                                                            <option value="Rajasthan">Rajasthan</option>
+                                                            <option value="Sikkim">Sikkim</option>
+                                                            <option value="Tamil Nadu">Tamil Nadu</option>
+                                                            <option value="Telangana">Telangana</option>
+                                                            <option value="Tripura">Tripura</option>
+                                                            <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                                            <option value="Uttarakhand">Uttarakhand</option>
+                                                            <option value="West Bengal">West Bengal</option>
+
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>City Name *:</label>
+                                                        <input type="text" class="form-control has-feedback-left"
+                                                               id="TPcity"
+                                                               placeholder="City Name">
+                                                        <span class="fa fa-globe form-control-feedback left"
+                                                              aria-hidden="true"></span>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>Pin Code *:</label>
+                                                        <input type="number" class="form-control has-feedback-left"
+                                                               id="TPpin"
+                                                               placeholder="Pin Code">
+                                                        <span class="fa fa-list-ol form-control-feedback left"
+                                                              aria-hidden="true"></span>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <div class="x_panel" style="min-height: 250px">
+                                                <div class="x_title">
+                                                    <h2>School Details</h2>
+
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                                <div class="x_content">
+                                                    <br/>
+
+
+                                                    <div class='col-sm-6'>
+                                                        <label>Date Of Joining *:</label>
+                                                        <div class="form-group">
+                                                            <div class='input-group date' id='myDatepicker21'>
+                                                                <input type='text' class="form-control" id="Tdoj"/>
+                                                                <span class="input-group-addon">
+                               <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class='col-sm-6'>
+                                                        <label>Date Of Leaving:</label>
+                                                        <div class="form-group">
+                                                            <div class='input-group date' id='myDatepicker22'>
+                                                                <input type='text' class="form-control" id="Tdor"/>
+                                                                <span class="input-group-addon">
+                               <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>Current Position *:</label>
+                                                        <input type="text" class="form-control has-feedback-left"
+                                                               id="TcurrentPosition"
+                                                               placeholder="Current Position">
+                                                        <span class="fa fa-bank form-control-feedback left"
+                                                              aria-hidden="true"></span>
+                                                    </div>
+
+
+                                                    <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>Employee Code *:</label>
+                                                        <input type="text" class="form-control has-feedback-left"
+                                                               id="TemployeeCode"
+                                                               placeholder="Employee Code">
+                                                        <span class="fa fa-code form-control-feedback left"
+                                                              aria-hidden="true"></span>
+                                                    </div>
+                                                    <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>Is Active *:</label>
+
+                                                        <select id="TIsActive" class="form-control">
+                                                            <option value="Yes">Yes</option>
+                                                            <option value="No">No</option>
+
+                                                        </select>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-success" onclick="updateTeacherDetail()"><i
+                                            class="fa fa-check m-right-xs"></i>Update
+                                    </button>
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i
+                                            class="fa fa-times m-right-xs"></i>Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="modal fade" id="myModalDelete" role="dialog">
+                    <div class="modal-dialog ">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h2 class="modal-title">Confirmation</h2>
+                            </div>
+                            <div class="modal-body">
+                                <p style="color: #0D3349;font-size: 20px">Are you sure you want to delete this
+                                    data.</p>
+                            </div>
+                            <input type="hidden" id="deleteTeacherID">
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" onclick="sureDeleteTeacher()">Delete
+                                </button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block js %}
+    <script>
+        function readURLAddUser(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#imagePreviewAddUser').css('background-image', 'url(' + e.target.result + ')');
+                    $('#imagePreviewAddUser').hide();
+                    $('#imagePreviewAddUser').fadeIn(650);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#Timage").change(function () {
+            readURLAddUser(this);
+            editTeacherPhoto(this);
+
+        });
+        function sameAsPresentAddress() {
+            var address = $('#Taddress').val();
+            var city = $('#Tcity').val();
+            var state = $('#Tstate').val();
+            var country = $('#Tcountry').val();
+            var pin = $('#Tpin').val();
+            $('#TPaddress').val(address);
+            $('#TPcity').val(city);
+            $('#TPcountry').val(country);
+            $('#TPpin').val(pin);
+            $('#TPstate').val(state);
+        }
+        $('#myDatepicker').datetimepicker();
+
+        $('#myDatepicker2').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+
+        $('#myDatepicker21').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+
+        $('#myDatepicker22').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+
+        var listData = '';
+
+var TeacherTable;
+        $(document).ready(function () {
+
+
+            TeacherTable = $('#TeacherList').DataTable({
+                "scrollX": true,
+                dom: 'Blfrtip',
+                buttons: [{
+                    extend: 'excel',
+                    exportOptions: {
+                        columns: [2, 3, 4, 5, 6, 7, 8]
+                    }
+                }, {
+                    extend: 'print',
+                    exportOptions: {
+                        columns: [2, 3, 4, 5, 6, 7, 8]
+                    }
+                }
+                ],
+                "columnDefs": [
+                    {"name": "teacherID", "targets": 0, "orderable": false},
+                    {"name": "photo", "targets": 1, "orderable": false},
+                    {"name": "firstName", "targets": 2, "orderable": true},
+                    {"name": "phoneNumber", "targets": 3, "orderable": true},
+                    {"name": "EmployeeCode", "targets": 4, "orderable": true},
+                    {"name": "DOB", "targets": 5, "orderable": true},
+                    {"name": "'dateOfJoining'", "targets": 6, "orderable": true},
+                    {"name": "gender", "targets": 7, "orderable": true},
+                    {"name": "active", "targets": 8, "orderable": true},
+                    {"name": "Action", "targets": 9, "orderable": false},
+
+                ],
+                aaSorting: [[2, 'asc']],
+                "lengthMenu": [[20, 25, 50, 100, -1], [20, 25, 50, 100, "All"]],
+                "pageLength": 20,
+                "processing": true,
+                "serverSide": true,
+                "ajax": "{% url 'SchoolTableApi:getTeacherListJson' %}",
+                stateSave: true
+            });
+
+
+            TeacherTable.column(0).visible(false)
+        });
+
+        function getTeacherDetail(id) {
+            $.ajax({
+                type: 'get',
+                url: '/api/GetTeacherDetail/' + id + '/',
+                success: function (response) {
+                    $('#TeacherID').html(response.data['TeacherID']);
+                    $('#dName').html(response.data['Name']);
+                    $('#dDOB').html(response.data['DOB']);
+                    $('#dAadhar').html(response.data['Aadhar']);
+                    $('#dGender').html(response.data['Gender']);
+                    $('#dBloodGroup').html(response.data['BloodGroup']);
+                    $('#dPhoneNumber').html(response.data['PhoneNumber']);
+                    $('#dEmail').html(response.data['Email']);
+                    $('#dPresentAddress').html(response.data['PresentAddress']);
+                    $('#dPermanentAddress').html(response.data['PermanentAddress']);
+                    $('#dQualification').html(response.data['Qualification']);
+                    $('#dEmployeeCode').html(response.data['EmployeeCode']);
+                    $('#dDateOfJoining').html(response.data['DateOfJoining']);
+                    $('#dDateOfLeaving').html(response.data['DateOfLeaving']);
+                    $('#dCurrentPosition').html(response.data['CurrentPosition']);
+                    $('#dIsActive').html(response.data['IsActive']);
+                    $('#dUserName').html(response.data['UserName']);
+                    $('#dPassword').html(response.data['Password']);
+                    $('#dPhoto').attr('src', response.data['Photo']);
+                    return response;
+                }
+            });
+
+        }
+
+
+        function editTeacherDetail(id) {
+            $.ajax({
+                type: 'get',
+                url: '/api/GetTeacherDetailForEdit/' + id + '/',
+                success: function (response) {
+                    console.log(response);
+                    $('#EditTeacherID').val(response.data['TeacherID']);
+                    $('#TfirstName').val(response.data['FirstName']);
+                    $('#TmiddleName').val(response.data['MiddleName']);
+                    $('#TlastName').val(response.data['LastName']);
+                    $('#Tdob').val(response.data['DOB']);
+                    $('#Taadhar').val(response.data['Aadhar']);
+                    $('input[name = gender]').val([response.data['Gender']]);
+                    $('#TbloodGroup').val(response.data['BloodGroup']);
+                    $('#Tphone').val(response.data['PhoneNumber']);
+                    $('#Temail').val(response.data['Email']);
+                    $('#Taddress').val(response.data['PresentAddress']);
+                    $('#Tcity').val(response.data['PresentCity']);
+                    $('#Tstate').val(response.data['PresentState']);
+                    $('#Tcountry').val(response.data['PresentCountry']);
+                    $('#Tpin').val(response.data['PresentPin']);
+                    $('#TPaddress').val(response.data['PermanentAddress']);
+                    $('#TPcity').val(response.data['PermanentCity']);
+                    $('#TPstate').val(response.data['PermanentState']);
+                    $('#TPcountry').val(response.data['PermanentCounty']);
+                    $('#TPpin').val(response.data['PermanentPin']);
+                    $('#Tqualification').val(response.data['Qualification']);
+                    $('#TemployeeCode').val(response.data['EmployeeCode']);
+                    $('#Tdoj').val(response.data['DateOfJoining']);
+                    $('#Tdor').val(response.data['DateOfLeaving']);
+                    $('#TcurrentPosition').val(response.data['CurrentPosition']);
+                    $('#TIsActive').val(response.data['IsActive']);
+                    $('#imagePreviewAddUser').css('background-image', "url(" + response.data['Photo'] + ")");
+                }
+            });
+
+        }
+
+
+        function editTeacherPhoto() {
+            var imageData = document.getElementById("Timage").files[0];
+            var form_data = new FormData();
+            form_data.append('file', imageData);
+            var EditTeacherID = $('#EditTeacherID').val();
+            form_data.append('TeacherID', EditTeacherID);
+
+            $.ajax({
+                type: 'post',
+                url: '/api/UpdateTeacherPhoto/',
+                data: form_data,
+                contentType: false,
+                cache: false,
+                processData: false,
+
+
+                success: function (response) {
+                    if (response.response === 'ok') {
+                        $('#name_status').addClass('validate_data');
+                        $('#name_status').html('Teacher Photo Changed successfully.');
+                        $('#name_status').fadeIn().fadeOut(2000);
+                        TeacherTable.ajax.reload();
+
+
+                    }
+                    else {
+                        $('#name_status').removeClass('validate_data');
+                        $('#name_status').html("error");
+                        $('#name_status').fadeIn().fadeOut(2000);
+
+                    }
+
+                    return response;
+                },
+                error: function () {
+                    $('#name_status').addClass('validate_data');
+                    $('#name_status').html('error.');
+                    $('#name_status').fadeIn().fadeOut(2000);
+
+                }
+            });
+
+
+        }
+
+
+        function updateTeacherDetail() {
+            var EditTeacherID = $('#EditTeacherID').val();
+            var TfirstName = $('#TfirstName').val();
+            var TmiddleName = $('#TmiddleName').val();
+            var TlastName = $('#TlastName').val();
+            var Temail = $('#Temail').val();
+            var Tphone = $('#Tphone').val();
+            var TbloodGroup = $('#TbloodGroup').val();
+            var Tdob = $('#Tdob').val();
+            var Tqualification = $('#Tqualification').val();
+            var Taadhar = $('#Taadhar').val();
+            var Tgender = $("input[name='gender']:checked").val();
+            var Tdoj = $('#Tdoj').val();
+            var Tdor = $('#Tdor').val();
+            var TcurrentPosition = $('#TcurrentPosition').val();
+            var TemployeeCode = $('#TemployeeCode').val();
+            var Taddress = $('#Taddress').val();
+            var Tcity = $('#Tcity').val();
+            var Tstate = $('#Tstate').val();
+            var Tcountry = $('#Tcountry').val();
+            var Tpin = $('#Tpin').val();
+            var TPaddress = $('#TPaddress').val();
+            var TPcity = $('#TPcity').val();
+            var TPstate = $('#TPstate').val();
+            var TPcountry = $('#TPcountry').val();
+            var TPpin = $('#TPpin').val();
+            var TisActive = $('#TIsActive').val();
+            {#            var Tusername = $('#Tusername').val();#}
+            {#            var Tpassword = $('#Tpassword').val();#}
+            var csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val();
+            console.log(Tgender)
+            data = new FormData();
+            data.append('TeacherID', EditTeacherID);
+            data.append('TisActive', TisActive);
+            data.append('TfirstName', TfirstName);
+            data.append('TmiddleName', TmiddleName);
+            data.append('TlastName', TlastName);
+            data.append('Temail', Temail);
+            data.append('Tphone', Tphone);
+            data.append('TbloodGroup', TbloodGroup);
+            data.append('Tdob', Tdob);
+            data.append('Tqualification', Tqualification);
+            data.append('Taadhar', Taadhar);
+            data.append('Tgender', Tgender);
+            data.append('Tdoj', Tdoj);
+            data.append('Tdor', Tdor);
+            data.append('TcurrentPosition', TcurrentPosition);
+            data.append('TemployeeCode', TemployeeCode);
+            data.append('Taddress', Taddress);
+            data.append('Tcity', Tcity);
+            data.append('Tstate', Tstate);
+            data.append('Tcountry', Tcountry);
+            data.append('Tpin', Tpin);
+            data.append('TPaddress', TPaddress);
+            data.append('TPcity', TPcity);
+            data.append('TPstate', TPstate);
+            data.append('TPcountry', TPcountry);
+            data.append('TPpin', TPpin);
+            {#            data.append('Tusername', Tusername);#}
+            {#            data.append('Tpassword', Tpassword);#}
+            data.append('csrfmiddlewaretoken', csrfmiddlewaretoken);
+            if (TfirstName === "" || TlastName === "" || Tphone === ""
+                || Tdob === '' || Tqualification === "" || Tgender === "" ||
+                Taddress === "" || Tcity === "" || Tstate === "" || Tcountry === ""
+                || Tpin === "" || TPaddress === "" || TPcity === "" || TPstate === "" || TPcountry === ""
+                || TPpin === "" || Tdoj === "" || TcurrentPosition === "" || TemployeeCode === "") {
+
+                $('#name_status').addClass('validate_data');
+                $('#name_status').html('* fields are required.');
+                $('#name_status').fadeIn().fadeOut(2000);
+
+            }
+            else {
+                $.ajax({
+                    type: 'post',
+                    url: '/api/UpdateTeacherDetail/',
+                    data: data,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+
+
+                    success: function (response) {
+                        if (response.response === 'ok') {
+                            debugger;
+                            $('#name_status').addClass('validate_data');
+                            $('#name_status').html('Teacher Details Updated successfully.').fadeIn().fadeOut(2000);
+                            $('#myModalEditTeacher').modal('toggle');
+                            TeacherTable.ajax.reload();
+                        }
+                        else {
+                            $('#name_status').removeClass('validate_data');
+                            $('#name_status').html("").fadeIn().fadeOut(2000);
+
+                        }
+
+                        return response;
+                    },
+                    error: function () {
+                        $('#name_status').addClass('validate_data');
+                        $('#name_status').html('error.').fadeIn().fadeOut(2000);
+                    }
+                });
+            }
+
+        }
+        function deleteTeacherDetail(id) {
+            $('#deleteTeacherID').val(id);
+
+        }
+
+        function sureDeleteTeacher() {
+            var id = $('#deleteTeacherID').val();
+
+            $.ajax({
+                type: 'post',
+                url: '/api/DeleteTeacherDetail/',
+                data: {
+                    id: id
+                },
+                success: function (response) {
+                    $('#myModalDelete').modal('toggle');
+                    $('#name_status').addClass('validate_data');
+                    $('#name_status').html('Teacher Detail Deleted Successfully.');
+                    $('#name_status').fadeIn().fadeOut(2000);
+                    TeacherTable.ajax.reload();
+
+
+                    return response;
+                }
+            });
+        }
+
+
+    </script>
+
+{% endblock %}
+
+

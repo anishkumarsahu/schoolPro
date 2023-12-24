@@ -1,0 +1,682 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block css %}
+    <style>
+        .avatar-upload {
+            position: relative;
+            max-width: 205px;
+            margin: 10px auto;
+
+        }
+
+        .avatar-upload .avatar-edit {
+            position: absolute;
+            right: 75px;
+            z-index: 1;
+            top: 10px;
+
+        }
+
+        .avatar-upload .avatar-edit input {
+            display: none;
+        }
+
+        .avatar-upload .avatar-edit input + label {
+            display: inline-block;
+            width: 0px;
+            height: 0px;
+            margin-bottom: 0;
+            border-radius: 100%;
+            background: #FFFFFF;
+            border: 1px solid transparent;
+            box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+            cursor: pointer;
+            font-weight: normal;
+            transition: all 0.2s ease-in-out;
+            padding: 20px;
+        }
+
+        .avatar-upload .avatar-edit input + label:hover {
+            background: #f1f1f1;
+            border-color: #d6d6d6;
+            padding: 20px;
+        }
+
+        .avatar-upload .avatar-edit input + label:after {
+            content: "\f040";
+            font-family: 'FontAwesome';
+            color: #757575;
+            position: absolute;
+            top: 10px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            margin: auto;
+
+        }
+
+        .avatar-upload .avatar-preview {
+            width: 100px;
+            height: 100px;
+            position: relative;
+            border-radius: 100%;
+            border: 6px solid #F8F8F8;
+            box-shadow: 0px 2px 10px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .avatar-upload .avatar-preview > div {
+            width: 100%;
+            height: 100%;
+            border-radius: 100%;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+    </style>
+
+{% endblock %}
+
+{% block  main %}
+    <span id="name_status"></span>
+    <div class="right_col" role="main">
+        <div class="">
+            <div class="page-title">
+                <div class="title_left">
+                    <h3>Add Teacher</h3>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="row">
+                <form class="form-horizontal form-label-left" id="teacherForm"> {% csrf_token %}
+                    <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
+                        <label>Photo *:</label>
+
+                        <div class="avatar-upload">
+                            <div class="avatar-edit">
+                                <input type='file' id="Timage"
+                                       accept="image/*"/>
+                                <label style="padding: 20px;font-size: 20px"
+                                       for="Timage"></label>
+                            </div>
+                            <div class="avatar-preview">
+                                <div id="imagePreviewAddUser"
+                                     style="background-image: url({% static 'images/user.png' %});">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Personal Details
+                                    <small>(Teacher)</small>
+                                </h2>
+
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <br/>
+
+                                <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>First Name *:</label>
+                                    <input type="text" class="form-control has-feedback-left" id="TfirstName"
+                                           placeholder="First Name">
+                                    <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                </div>
+
+                                <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>Middle Name (Optional):</label>
+                                    <input type="text" class="form-control has-feedback-left" id="TmiddleName"
+                                           placeholder="Middle Name (Optional)">
+                                    <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                </div>
+
+
+                                <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>Last Name *:</label>
+                                    <input type="text" class="form-control has-feedback-left" id="TlastName"
+                                           placeholder="Last Name">
+                                    <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                </div>
+
+
+                                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>Email (Optional):</label>
+                                    <input type="email" class="form-control has-feedback-left" id="Temail"
+                                           placeholder="Email Address(Optional)">
+                                    <span class="fa fa-envelope form-control-feedback left"
+                                          aria-hidden="true"></span>
+                                </div>
+
+
+                                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>Phone Number *:</label>
+                                    <input type="text" class="form-control has-feedback-left" id="Tphone"
+                                           placeholder="Phone Number">
+                                    <span class="fa fa-phone form-control-feedback left" aria-hidden="true"></span>
+                                </div>
+
+
+                                <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>Blood Group (Optional):</label>
+                                    <select id="TbloodGroup" class="form-control">
+                                        <option value="">Choose..</option>
+                                        <option value="A+">A+</option>
+                                        <option value="A-">A-</option>
+                                        <option value="B+">B+</option>
+                                        <option value="B-">B-</option>
+                                        <option value="AB+">AB+</option>
+                                        <option value="AB-">AB-</option>
+                                        <option value="O+">O+</option>
+                                        <option value="O-">O-</option>
+                                    </select>
+                                </div>
+
+
+                                <div class='col-sm-4'>
+                                    <label>DOB *:</label>
+                                    <div class="form-group">
+                                        <div class='input-group date' id='myDatepicker2'>
+                                            <input type='text' class="form-control" id="Tdob"/>
+                                            <span class="input-group-addon">
+                               <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>Qualification *:</label>
+                                    <input type="text" class="form-control has-feedback-left" id="Tqualification"
+                                           placeholder="Qualification">
+                                    <span class="fa fa-hand-scissors-o form-control-feedback left"
+                                          aria-hidden="true"></span>
+                                </div>
+
+
+                                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>Aadhar Number(Optional):</label>
+                                    <input type="number" class="form-control has-feedback-left" id="Taadhar"
+                                           placeholder="Aadhar Number(Optional)">
+                                    <span class="fa fa-list-ol form-control-feedback left"
+                                          aria-hidden="true"></span>
+                                </div>
+
+
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <label>Gender *:</label>
+                                    <p>
+                                        Male:
+                                        <input type="radio" class="flatd" name="gender" value="Male"
+                                               checked=""
+                                               required/>
+                                        Female:
+                                        <input type="radio" class="flatd" name="gender" value="Female"/>
+
+                                        Others:
+                                        <input type="radio" class="flatd" name="gender" value="Others"/>
+                                    </p>
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-6 col-sm-12 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Present Address</h2>
+
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <br/>
+
+
+                                <div class="col-md-12 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>Address *:</label>
+                                    <input type="text" class="form-control has-feedback-left" id="Taddress"
+                                           placeholder="Address">
+                                    <span class="fa fa-globe form-control-feedback left" aria-hidden="true"></span>
+                                </div>
+
+                                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>Country *:</label>
+                                    <select id="Tcountry" class="form-control">
+                                        <option value="India">India</option>
+
+                                    </select>
+                                </div>
+
+
+                                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>State *:</label>
+                                    <select id="Tstate" class="form-control">
+                                        <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                        <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                        <option value="Assam">Assam</option>
+                                        <option value="Bihar">Bihar</option>
+                                        <option value="Chhattisgarh">Chhattisgarh</option>
+                                        <option value="Goa">Goa</option>
+                                        <option value="Gujarat">Gujarat</option>
+                                        <option value="Haryana">Haryana</option>
+                                        <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                        <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                                        <option value="Jharkhand">Jharkhand</option>
+                                        <option value="Karnataka">Karnataka</option>
+                                        <option value="Kerala">Kerala</option>
+                                        <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                        <option value="Maharashtra">Maharashtra</option>
+                                        <option selected value="Manipur">Manipur</option>
+                                        <option value="Meghalaya">Meghalaya</option>
+                                        <option value="Mizoram">Mizoram</option>
+                                        <option value="Nagaland">Nagaland</option>
+                                        <option value="Orissa">Orissa</option>
+                                        <option value="Punjab">Punjab</option>
+                                        <option value="Rajasthan">Rajasthan</option>
+                                        <option value="Sikkim">Sikkim</option>
+                                        <option value="Tamil Nadu">Tamil Nadu</option>
+                                        <option value="Telangana">Telangana</option>
+                                        <option value="Tripura">Tripura</option>
+                                        <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                        <option value="Uttarakhand">Uttarakhand</option>
+                                        <option value="West Bengal">West Bengal</option>
+
+                                    </select>
+                                </div>
+
+
+                                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>City Name *:</label>
+                                    <input type="text" class="form-control has-feedback-left" id="Tcity"
+                                           placeholder="City Name">
+                                    <span class="fa fa-globe form-control-feedback left" aria-hidden="true"></span>
+                                </div>
+
+                                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>Pin Code *:</label>
+                                    <input type="number" class="form-control has-feedback-left" id="Tpin"
+                                           placeholder="Pin Code">
+                                    <span class="fa fa-list-ol form-control-feedback left"
+                                          aria-hidden="true"></span>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-6 col-sm-12 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Permanent Address</h2>
+
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <br/>
+
+
+                                <div class="col-md-12 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>Address *:</label>
+                                    <input type="text" class="form-control has-feedback-left" id="TPaddress"
+                                           placeholder="Address">
+                                    <span class="fa fa-globe form-control-feedback left" aria-hidden="true"></span>
+                                </div>
+
+
+                                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>Country *:</label>
+                                    <select id="TPcountry" class="form-control">
+                                        <option value="India">India</option>
+                                    </select>
+                                </div>
+
+
+                                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>State *:</label>
+                                    <select id="TPstate" class="form-control">
+                                        <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                        <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                        <option value="Assam">Assam</option>
+                                        <option value="Bihar">Bihar</option>
+                                        <option value="Chhattisgarh">Chhattisgarh</option>
+                                        <option value="Goa">Goa</option>
+                                        <option value="Gujarat">Gujarat</option>
+                                        <option value="Haryana">Haryana</option>
+                                        <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                        <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                                        <option value="Jharkhand">Jharkhand</option>
+                                        <option value="Karnataka">Karnataka</option>
+                                        <option value="Kerala">Kerala</option>
+                                        <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                        <option value="Maharashtra">Maharashtra</option>
+                                        <option selected value="Manipur">Manipur</option>
+                                        <option value="Meghalaya">Meghalaya</option>
+                                        <option value="Mizoram">Mizoram</option>
+                                        <option value="Nagaland">Nagaland</option>
+                                        <option value="Orissa">Orissa</option>
+                                        <option value="Punjab">Punjab</option>
+                                        <option value="Rajasthan">Rajasthan</option>
+                                        <option value="Sikkim">Sikkim</option>
+                                        <option value="Tamil Nadu">Tamil Nadu</option>
+                                        <option value="Telangana">Telangana</option>
+                                        <option value="Tripura">Tripura</option>
+                                        <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                        <option value="Uttarakhand">Uttarakhand</option>
+                                        <option value="West Bengal">West Bengal</option>
+
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>City Name *:</label>
+                                    <input type="text" class="form-control has-feedback-left" id="TPcity"
+                                           placeholder="City Name">
+                                    <span class="fa fa-globe form-control-feedback left" aria-hidden="true"></span>
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>Pin Code *:</label>
+                                    <input type="number" class="form-control has-feedback-left" id="TPpin"
+                                           placeholder="Pin Code">
+                                    <span class="fa fa-list-ol form-control-feedback left"
+                                          aria-hidden="true"></span>
+                                </div>
+                                     <div class="row">
+                                <div class="">
+                                    <label onclick="sameAsPresentAddress()">
+                                        <input type="checkbox" class="flatd" id="sameAddress"> Same as Present Address
+                                    </label>
+                                </div>
+                            </div>
+
+
+
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="x_panel" style="min-height: 250px">
+                            <div class="x_title">
+                                <h2>School Details</h2>
+
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <br/>
+
+
+                                <div class='col-sm-6'>
+                                    <label>Date Of Joining *:</label>
+                                    <div class="form-group">
+                                        <div class='input-group date' id='myDatepicker21'>
+                                            <input type='text' class="form-control" id="Tdoj"/>
+                                            <span class="input-group-addon">
+                               <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class='col-sm-6'>
+                                    <label>Date Of Leaving:</label>
+                                    <div class="form-group">
+                                        <div class='input-group date' id='myDatepicker22'>
+                                            <input type='text' class="form-control" id="Tdor"/>
+                                            <span class="input-group-addon">
+                               <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>Current Position *:</label>
+                                    <input type="text" class="form-control has-feedback-left" id="TcurrentPosition"
+                                           placeholder="Current Position">
+                                    <span class="fa fa-bank form-control-feedback left" aria-hidden="true"></span>
+                                </div>
+
+
+                                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>Employee Code *:</label>
+                                    <input type="text" class="form-control has-feedback-left" id="TemployeeCode"
+                                           placeholder="Employee Code">
+                                    <span class="fa fa-code form-control-feedback left" aria-hidden="true"></span>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <p><strong>Note* </strong>: Login credential for teacher will be generated automatically when a
+                            new teacher is added. </p>
+
+                    </div>
+
+
+                    {#                    <div class="col-md-12 col-sm-12 col-xs-12">#}
+                    {#                        <div class="x_panel" style="min-height: 247px!important;">#}
+                    {#                            <div class="x_title">#}
+                    {#                                <h2>Login Credentails#}
+                    {#                                    <small>(Optinal)</small>#}
+                    {#                                </h2>#}
+                    {##}
+                    {#                                <div class="clearfix"></div>#}
+                    {#                            </div>#}
+                    {#                            <div class="x_content">#}
+                    {#                                <br/>#}
+                    {##}
+                    {#                                <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">#}
+                    {#                                    <label>User Name:</label>#}
+                    {#                                    <input type="text" class="form-control has-feedback-left" id="Tusername"#}
+                    {#                                           placeholder="User Name">#}
+                    {#                                    <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>#}
+                    {#                                </div>#}
+                    {##}
+                    {##}
+                    {#                                <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">#}
+                    {#                                    <label>Password:</label>#}
+                    {#                                    <input type="password" class="form-control has-feedback-left" id="Tpassword"#}
+                    {#                                           placeholder="Password">#}
+                    {#                                    <span class="fa fa-key form-control-feedback left" aria-hidden="true"></span>#}
+                    {#                                </div>#}
+                    {##}
+                    {##}
+                    {#                                <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">#}
+                    {#                                    <label>Photo:</label>#}
+                    {#                                    <input style="background-color: #54bd9c;color: white;width: 100%;" type="file"#}
+                    {#                                           name="pic" accept="image/*" id="Timage">#}
+                    {##}
+                    {#                                </div>#}
+                    {##}
+                    {##}
+                    {#                            </div>#}
+                    {#                        </div>#}
+                    {#                    </div>#}
+                    <div style="text-align: center;padding-top: 10px">
+
+                        <button style="width: 20%;height: 50px" class="btn btn-dark" type="button"
+                                onclick="postTeacherDetail()">
+                            Submit
+                        </button>
+
+                    </div>
+                </form>
+            </div>
+
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        function readURLAddUser(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#imagePreviewAddUser').css('background-image', 'url(' + e.target.result + ')');
+                    $('#imagePreviewAddUser').hide();
+                    $('#imagePreviewAddUser').fadeIn(650);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#Timage").change(function () {
+            readURLAddUser(this);
+        });
+        function sameAsPresentAddress() {
+{#            var sameAddress = $('#sameAddress').is(":checked");#}
+{#            alert(sameAddress)#}
+            var address = $('#Taddress').val();
+            var city = $('#Tcity').val();
+            var state = $('#Tstate').val();
+            var country = $('#Tcountry').val();
+            var pin = $('#Tpin').val();
+            $('#TPaddress').val(address);
+            $('#TPcity').val(city);
+            $('#TPcountry').val(country);
+            $('#TPpin').val(pin);
+            $('#TPstate').val(state);
+        }
+
+
+
+        $('#myDatepicker').datetimepicker();
+
+        $('#myDatepicker2').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+
+        $('#myDatepicker21').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+
+        $('#myDatepicker22').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+
+
+    </script>
+
+    <script>
+
+
+        function postTeacherDetail() {
+            var TfirstName = $('#TfirstName').val();
+            var TmiddleName = $('#TmiddleName').val();
+            var TlastName = $('#TlastName').val();
+            var Temail = $('#Temail').val();
+            var Tphone = $('#Tphone').val();
+            var TbloodGroup = $('#TbloodGroup').val();
+            var Tdob = $('#Tdob').val();
+            var Tqualification = $('#Tqualification').val();
+            var Taadhar = $('#Taadhar').val();
+            var Tgender = $("input[name='gender']:checked").val();
+            var Tdoj = $('#Tdoj').val();
+            var Tdor = $('#Tdor').val();
+            var TcurrentPosition = $('#TcurrentPosition').val();
+            var TemployeeCode = $('#TemployeeCode').val();
+            var Taddress = $('#Taddress').val();
+            var Tcity = $('#Tcity').val();
+            var Tstate = $('#Tstate').val();
+            var Tcountry = $('#Tcountry').val();
+            var Tpin = $('#Tpin').val();
+            var TPaddress = $('#TPaddress').val();
+            var TPcity = $('#TPcity').val();
+            var TPstate = $('#TPstate').val();
+            var TPcountry = $('#TPcountry').val();
+            var TPpin = $('#TPpin').val();
+            {#            var Tusername = $('#Tusername').val();#}
+            {#            var Tpassword = $('#Tpassword').val();#}
+            var Timage = document.getElementById("Timage").files[0];
+            var csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val();
+
+            data = new FormData();
+            data.append('TfirstName', TfirstName);
+            data.append('TmiddleName', TmiddleName);
+            data.append('TlastName', TlastName);
+            data.append('Temail', Temail);
+            data.append('Tphone', Tphone);
+            data.append('TbloodGroup', TbloodGroup);
+            data.append('Tdob', Tdob);
+            data.append('Tqualification', Tqualification);
+            data.append('Taadhar', Taadhar);
+            data.append('Tgender', Tgender);
+            data.append('Tdoj', Tdoj);
+            data.append('Tdor', Tdor);
+            data.append('TcurrentPosition', TcurrentPosition);
+            data.append('TemployeeCode', TemployeeCode);
+            data.append('Taddress', Taddress);
+            data.append('Tcity', Tcity);
+            data.append('Tstate', Tstate);
+            data.append('Tcountry', Tcountry);
+            data.append('Tpin', Tpin);
+            data.append('TPaddress', TPaddress);
+            data.append('TPcity', TPcity);
+            data.append('TPstate', TPstate);
+            data.append('TPcountry', TPcountry);
+            data.append('TPpin', TPpin);
+            {#            data.append('Tusername', Tusername);#}
+            {#            data.append('Tpassword', Tpassword);#}
+            data.append('Timage', Timage);
+            data.append('csrfmiddlewaretoken', csrfmiddlewaretoken);
+            if (TfirstName === "" || TlastName === "" || Tphone === ""
+                || Tdob === '' || Tqualification === "" || Tgender === "" ||
+                Taddress === "" || Tcity === "" || Tstate === "" || Tcountry === ""
+                || Tpin === "" || TPaddress === "" || TPcity === "" || TPstate === "" || TPcountry === ""
+                || TPpin === "" || Timage === "" || Tdoj === "" || TcurrentPosition === "" || TemployeeCode === "") {
+
+                $('#name_status').addClass('validate_data');
+                $('#name_status').html('* fields are required.');
+                $('#name_status').fadeIn().fadeOut(2000);
+
+            }
+            else {
+                $.ajax({
+                    type: 'post',
+                    url: '/api/PostTeacherDetail/',
+                    data: data,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+
+
+                    success: function (response) {
+                        if (response.response === 'ok') {
+                            $('#name_status').addClass('validate_data');
+                            $('#name_status').html('New Teacher added successfully.').fadeIn().fadeOut(2000);
+                            $('#teacherForm').trigger('reset');
+                            $('#imagePreviewAddUser').css('background-image',"url({% static 'images/user.png' %})")
+                        }
+                        else {
+                            $('#name_status').removeClass('validate_data');
+                            $('#name_status').html("").fadeIn().fadeOut(2000);
+
+                        }
+
+                        return response;
+                    },
+                    error: function () {
+                        $('#name_status').addClass('validate_data');
+                        $('#name_status').html('error.').fadeIn().fadeOut(2000);
+                    }
+                });
+            }
+
+        }
+    </script>
+{% endblock %}

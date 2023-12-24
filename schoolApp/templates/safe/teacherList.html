@@ -1,0 +1,292 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link  rel="icon" href="{% static 'images/fevicon3.png'%}" type="" />
+
+    <title>Teacher List</title>
+
+    <!-- Bootstrap -->
+    <link href="{% static 'vendors/bootstrap/dist/css/bootstrap.min.css'%}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="{% static 'vendors/font-awesome/css/font-awesome.min.css'%}" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="{% static 'vendors/nprogress/nprogress.css'%}" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="{% static 'vendors/iCheck/skins/flat/green.css'%}" rel="stylesheet">
+    <!-- Datatables -->
+    <link href="{% static 'vendors/datatables.net-bs/css/dataTables.bootstrap.min.css'%}" rel="stylesheet">
+    <link href="{% static 'vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css'%}" rel="stylesheet">
+    <link href="{% static 'vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css'%}" rel="stylesheet">
+    <link href="{% static 'vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css'%}" rel="stylesheet">
+    <link href="{% static 'vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css'%}" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="{% static 'build/css/custom.min.css'%}" rel="stylesheet">
+  </head>
+
+
+  <body class="nav-md">
+    <div class="container body">
+      <div class="main_container">
+        <div class="col-md-3 left_col">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+              <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>NextFifth School</span></a>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <!-- menu profile quick info -->
+           {%  include 'common/menu_profile.html' %}
+            <!-- /menu profile quick info -->
+
+            <br />
+
+            <!-- sidebar menu -->
+           {% include 'common/sideNavbar.html' %}
+            <!-- /sidebar menu -->
+
+            <!-- /menu footer buttons -->
+           {% include 'common/sideNavbarFooter.html' %}
+            <!-- /menu footer buttons -->
+          </div>
+        </div>
+
+        <!-- top navigation -->
+        {% include 'common/topNavbar.html' %}
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+          <div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3>Teacher List</h3>
+              </div>
+
+
+            </div>
+
+            <div class="clearfix"></div>
+
+
+
+            <div class="row">
+
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>2016-2017</h2>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <p class="text-muted font-13 m-b-30">
+                      <div class="row">
+                          <div class="col-md-6 col-sm-12">
+                              <select id="heard" class="form-control" required>
+                                  <option value="">Choose Class</option>
+                                  <option value="press">Class 1</option>
+                                  <option value="net">Class 2</option>
+
+                              </select>
+                          </div>
+
+                          <div class="col-md-6 col-sm-12">
+
+                              <select id="heard" class="form-control" required>
+                                  <option value="">Choose Section</option>
+                                  <option value="press">Section A</option>
+                                  <option value="net">Section B</option>
+
+                              </select>
+
+                          </div>
+
+                      </div>
+
+
+
+                    </p>
+                    <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action">
+                      <thead>
+                        <tr>
+                          <th>Photo</th>
+                          <th>Name</th>
+                          <th>DOB</th>
+                          <th>DOJ</th>
+                          <th>Phone</th>
+                            <th>Gender</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+
+
+                      <tbody>
+                        <tr>
+                          <td>
+                              <img src="{% static 'images/img.jpg' %}" class="avatar" alt="Avatar">
+
+						  </td>
+                          <td>Tiger Nixon</td>
+                          <td>System Architect</td>
+                          <td>Edinburgh</td>
+                          <td>61</td>
+                          <td>61</td>
+                          <td>
+
+
+                              <a href="#" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i> View </a>
+                            <a href="#" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
+                            <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
+                          </td>
+
+                        </tr>
+                        <tr>
+                         <td>
+						 <img src="{% static 'images/picture.jpg' %}" class="avatar" alt="Avatar">
+
+						  </td>
+                          <td>Garrett Winters</td>
+                          <td>Accountant</td>
+                          <td>Tokyo</td>
+                          <td>63</td>
+                          <td>63</td>
+                          <td>
+                              <a href="#" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i> View </a>
+                            <a href="#" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
+                            <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
+
+                          </td>
+
+                        </tr>
+                        <tr>
+							<td>
+								 <img src="{% static 'images/img.jpg' %}" class="avatar" alt="Avatar">
+						  </td>
+                          <td>Ashton Cox</td>
+                          <td>Junior Technical Author</td>
+                          <td>San Francisco</td>
+                          <td>66</td>
+                          <td>66</td>
+                          <td>
+                              <a href="#" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal"><i class="fa fa-eye"></i> View </a>
+                            <a href="#" class="btn btn-info btn-xs" ><i class="fa fa-pencil"></i> Edit </a>
+                            <a href="#" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModalDelete"><i class="fa fa-trash-o"></i> Delete </a>
+
+                          </td>
+
+                        </tr>
+
+                      </tbody>
+                    </table>
+
+
+
+                  </div>
+                </div>
+              </div>
+
+
+
+<div class="modal fade bd-example-modal-lg" id="myModal" role="dialog">
+    <div class="modal-dialog modal-lg" >
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body">
+          <p>Some text in the modal.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+{#                delete modala#}
+
+   <div class="modal fade" id="myModalDelete" role="dialog">
+    <div class="modal-dialog " >
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h2 class="modal-title">Confirmation</h2>
+        </div>
+        <div class="modal-body">
+          <p style="color: #0D3349;font-size: 20px">Are you sure you want to delete this data.</p>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-danger">Delete</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+            </div>
+          </div>
+        </div>
+        <!-- /page content -->
+
+        <!-- footer content -->
+        {% include 'common/pageFooter.html' %}
+        <!-- /footer content -->
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="{% static 'vendors/jquery/dist/jquery.min.js'%}"></script>
+    <!-- Bootstrap -->
+    <script src="{% static 'vendors/bootstrap/dist/js/bootstrap.min.js'%}"></script>
+    <!-- FastClick -->
+    <script src="{% static 'vendors/fastclick/lib/fastclick.js'%}"></script>
+    <!-- NProgress -->
+    <script src="{% static 'vendors/nprogress/nprogress.js'%}"></script>
+    <!-- iCheck -->
+    <script src="{% static 'vendors/iCheck/icheck.min.js'%}"></script>
+    <!-- Datatables -->
+    <script src="{% static 'vendors/datatables.net/js/jquery.dataTables.min.js'%}"></script>
+    <script src="{% static 'vendors/datatables.net-bs/js/dataTables.bootstrap.min.js'%}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons/js/dataTables.buttons.min.js'%}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js'%}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons/js/buttons.flash.min.js'%}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons/js/buttons.html5.min.js'%}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons/js/buttons.print.min.js'%}"></script>
+    <script src="{% static 'vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js'%}"></script>
+    <script src="{% static 'vendors/datatables.net-keytable/js/dataTables.keyTable.min.js'%}"></script>
+    <script src="{% static 'vendors/datatables.net-responsive/js/dataTables.responsive.min.js'%}"></script>
+    <script src="{% static 'vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js'%}"></script>
+    <script src="{% static 'vendors/datatables.net-scroller/js/dataTables.scroller.min.js'%}"></script>
+    <script src="{% static 'vendors/jszip/dist/jszip.min.js'%}"></script>
+    <script src="{% static 'vendors/pdfmake/build/pdfmake.min.js'%}"></script>
+    <script src="{% static 'vendors/pdfmake/build/vfs_fonts.js'%}"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="{% static 'build/js/custom.min.js'%}"></script>
+
+  </body>
+</html>

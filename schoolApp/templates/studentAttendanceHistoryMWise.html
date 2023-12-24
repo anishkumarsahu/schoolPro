@@ -1,0 +1,146 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{% static 'vendors/bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+
+
+
+    <title>Student Attendance Month Wise Print</title>
+</head>
+<body>
+<style>
+    hr {
+    margin-top: 0px!important;
+    margin-bottom: 0px!important;
+    border: 0;
+    border-top: 1px solid #2a3f54;
+}
+</style>
+<div class="container">
+
+
+ <div class="row">
+     <div class="col-md-2 col-sm-6">
+             <img style="width: 120px;height: 120px" src="{% static 'images/school_logo.png' %}" alt="">
+
+     </div>
+
+     <div class="col-md-10 col-sm-6">
+
+           <h2 style="padding-top: 15px"><strong>Christ Jyoti School,</strong><br>Mantripukhri, Imphal-East-795002</h2>
+
+     </div>
+
+ </div>
+    <h4> <strong>Student Attendance Month Wise:</strong></h4>
+    <hr>
+
+    <div class="row" style="margin: 10px">
+
+ <div class="col-md-3">
+            <h4 ><strong>Class:</strong> 2</h4>
+
+        </div>
+
+
+         <div class="col-md-3">
+            <h4 ><strong>Section:</strong> A</h4>
+
+        </div>
+
+        <div class="col-md-3">
+            <h4 ><strong>Subject:</strong> Science</h4>
+
+        </div>
+
+
+        <div class="col-md-3">
+            <h4 ><strong>Session:</strong> 2017-2018</h4>
+
+        </div>
+
+
+        <div class="col-md-3">
+            <h4 ><strong>From:</strong> 24/1/2018</h4>
+
+        </div>
+
+
+        <div class="col-md-3">
+            <h4 ><strong>To:</strong> 12/2/2018</h4>
+
+        </div>
+
+        <div class="col-md-3">
+            <h4 ><strong>Total Days:</strong> 250</h4>
+
+        </div>
+
+    </div>
+
+
+    <hr>
+
+<div class="row" style="margin-top: 10px">
+
+
+    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Sl. No.</th>
+                          <th>Name</th>
+                          <th>Roll No.</th>
+                          <th>No. Of Days Attended</th>
+                          <th>No. Of Days Absent</th>
+                          <th>Percentage</th>
+
+
+                        </tr>
+                      </thead>
+                      <tbody>
+                      <tr>
+                          <th scope="row">1</th>
+                          <td>Kylie</td>
+                          <td>12</td>
+                          <td>120/250</td>
+                          <td>12</td>
+                          <td>60%</td>
+
+                      </tr>
+
+                       <tr>
+                          <th scope="row">1</th>
+                          <td>Kylie</td>
+                          <td>12</td>
+                          <td>120/250</td>
+                          <td>12</td>
+                          <td>60%</td>
+
+                      </tr>
+                      <tr>
+                          <th scope="row">1</th>
+                          <td>Kylie</td>
+                          <td>12</td>
+                          <td>120/250</td>
+                          <td>12</td>
+                          <td>60%</td>
+
+                      </tr>
+                      </tbody>
+                    </table>
+
+
+
+
+    </div>
+
+
+</div>
+
+
+</body>
+</html>

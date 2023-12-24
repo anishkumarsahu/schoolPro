@@ -1,0 +1,167 @@
+{% load static %}
+
+<div id="sidebar-menu" class="main_menu_side hidden-print main_menu ">
+    <div class="menu_section">
+        <h3>General</h3>
+        <ul class="nav side-menu">
+            <li><a href="{% url 'schoolApp:home' %}"><i class="fa fa-home"></i> Home </a>
+            </li>
+            <li><a><i class="fa fa-users"></i> Students <span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                    <li><a href="{% url 'schoolApp:addStudent' %}">Add Students</a></li>
+                    <li><a href="{% url 'schoolApp:studentList' %}">Students List</a></li>
+
+                </ul>
+            </li>
+            <li><a><i class="fa fa-user"></i> Teachers <span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                    <li><a href="{% url 'schoolApp:addTeacher' %}">Add Teacher</a></li>
+                    <li><a href="{% url 'schoolApp:teacherList' %}">Teacher List</a></li>
+
+                </ul>
+            </li>
+            <li><a href="{% url 'schoolApp:parentsList' %}"><i class="fa fa-user-times"></i> Parents List </a>
+            </li>
+            <li><a><i class="fa fa-book"></i> Classes <span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                    <li><a href="{% url 'schoolApp:addClasses' %}">Add Class</a></li>
+{#                    <li><a href="{% url 'schoolApp:addTeacherToClass' %}">Assign Class Teacher</a></li>#}
+                    <li><a href="{% url 'schoolApp:classList' %}">Class List</a></li>
+
+                </ul>
+            </li>
+
+
+            <li><a><i class="fa fa-sitemap"></i>Attendance <span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+
+{#                    <li><a>Student Attendance<span class="fa fa-chevron-down"></span></a>#}
+
+                            <li class="sub_menu"><a href="{% url 'schoolApp:studentAttendanceAdd' %}">Add Attendance (Student)</a>
+                            </li>
+                            <li class="sub_menu"><a href="{% url 'schoolApp:studentAttendanceHistory' %}">Attendance History (Student)</a>
+                            </li>
+
+
+{#                    <li>#}
+
+{#                    <li><a>Teachers Attendance<span class="fa fa-chevron-down"></span></a>#}
+
+                            <li class="sub_menu"><a href="{% url 'schoolApp:teacherAddAttendance' %}">Add Attendance (Teacher)</a>
+                            </li>
+                            <li class="sub_menu"><a href="{% url 'schoolApp:tecaherAttendanceHistory' %}">Attendance History (Teacher)</a>
+                            </li>
+
+{#                    </li>#}
+                </ul>
+            </li>
+
+            <li><a><i class="fa fa-book"></i>Subjects <span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                    <li><a href="{% url 'schoolApp:addSubject' %}">Add Subject</a></li>
+                    <li><a href="{% url 'schoolApp:classAssignedSubject' %}">Class Assigned Subjects</a></li>
+                    <li><a href="{% url 'schoolApp:assignSubject' %}">Assign Subject To Teacher</a></li>
+                    <li><a href="{% url 'schoolApp:assignedSubject' %}">Teacher Assigned Subjects</a></li>
+                </ul>
+            </li>
+
+
+            <li><a><i class="fa fa-balance-scale"></i>Exams <span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                    <li><a href="{% url 'schoolApp:addExam' %}">Add Exam</a></li>
+                    <li><a href="{% url 'schoolApp:assignExam' %}">Assign Exam</a></li>
+                    <li><a href="{% url 'schoolApp:examList' %}">Assigned Exam List</a></li>
+                </ul>
+            </li>
+
+             <li><a><i class="fa fa-money"></i>Student Fees <span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                    <li><a href="{% url 'schoolApp:updateFees' %}">Add Fee</a></li>
+                    <li><a href="{% url 'schoolApp:feesDetailList' %}">Fee Details</a></li>
+                </ul>
+            </li>
+
+
+            <li><a><i class="fa fa-dot-circle-o"></i>Marks <span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                    <li><a href="{% url 'schoolApp:addMark' %}">Add Mark</a></li>
+                    <li><a href="{% url 'schoolApp:markList' %}">Mark List</a></li>
+                </ul>
+            </li>
+
+            <li><a href="{% url 'schoolApp:event' %}"><i class="fa fa-cubes"></i>Events</a>
+
+            </li>
+
+
+
+        </ul>
+    </div>
+    <div class="menu_section">
+        <h3>Add-On (On Demand)</h3>
+        <ul class="nav side-menu">
+             <li data-toggle="tooltip" data-placement="bottom" title="Please Contact Ziva Infotech to avail this feature."><a><i class="fa fa-comment-o"></i> SMS </a>
+                <ul class="nav child_menu" >
+                    <li ><a href="{% url 'schoolApp:SchoolSMS' %}#sms">School SMS</a></li>
+                    <li><a href="{% url 'schoolApp:ClassSMS' %}">Class SMS</a></li>
+                    <li><a href="{% url 'schoolApp:StudentSMS' %}">Student SMS</a></li>
+                    <li><a href="{% url 'schoolApp:SMSList' %}">Sent SMS List</a></li>
+                </ul>
+            </li>
+              <li data-toggle="tooltip" data-placement="bottom" title="Please Contact Ziva Infotech to avail this feature."><a><i class="fa fa-bus"></i> Transport Service<span ></span></a>
+               <ul class="nav child_menu">
+                     <li><a href="{% url 'transport:TransportDriver' %}">Driver</a>
+                    <li><a href="{% url 'transport:TransportConductor' %}">Conductor</a>
+                    <li><a href="{% url 'transport:TransportVehicle' %}">Vehicle</a>
+
+                    <li><a href="{% url 'transport:TransportVehicleExpenses' %}">Vehicle Expenses</a>
+                    <li><a href="{% url 'transport:TransportAssignStudent' %}">Assign Student</a>
+                    <li><a>Fees<span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li class="sub_menu"><a href="{% url 'transport:TransportAddFees' %}">Add Fees</a>
+                            </li>
+                            <li><a href="{% url 'transport:TransportFeesDetail' %}">Fees Detail</a>
+                            </li>
+{#                            <li><a href="#level2_2">Level Two</a>#}
+{#                            </li>#}
+                        </ul>
+                    </li>
+{#                    <li><a href="#level1_2">Level One</a>#}
+{#                    </li>#}
+                </ul>
+            </li>
+
+
+            <li data-toggle="tooltip" data-placement="bottom" title="Please Contact Ziva Infotech to avail this feature."><a><i class="fa fa-empire"></i> EduBridge <span ></span></a>
+{#                <ul class="nav child_menu">#}
+{#                    <li><a href="../e_commerce.html">E-commerce</a></li>#}
+{#                </ul>#}
+            </li>
+
+
+            <li data-toggle="tooltip" data-placement="bottom" title="Please Contact Ziva Infotech to avail this feature."><a><i class="fa fa-certificate"></i> Generate Certificate <span ></span></a>
+{#                <ul class="nav child_menu">#}
+{#                    <li><a href="../page_403.html">403 Error</a></li>#}
+{#                    #}
+{#                </ul>#}
+            </li>
+
+            <li data-toggle="tooltip" data-placement="bottom" title="Please Contact Ziva Infotech to avail this feature."><a><i class="fa fa-book"></i> Library Management <span ></span></a>
+{#                <ul class="nav child_menu">#}
+{#                    <li><a href="../page_403.html">403 Error</a></li>#}
+{#                    #}
+{#                </ul>#}
+            </li>
+{#            <li><a><i class="fa fa-bus"></i> Transport Service<span ></span></a>#}
+{#                <ul class="nav child_menu">#}
+{#                    <li><a href="#level1_1">Level One</a>#}
+{#                    </li>#}
+{#                </ul>#}
+{#            </li>#}
+
+            <li data-toggle="tooltip" data-placement="bottom" title="Please Contact Ziva Infotech  to avail this feature."><a href="javascript:void(0)"><i class="fa fa-chrome"></i>School Website <span
+                    class="label label-success pull-right"></span></a></li>
+        </ul>
+    </div>
+
+</div>

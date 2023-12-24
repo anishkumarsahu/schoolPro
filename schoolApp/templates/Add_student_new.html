@@ -1,0 +1,472 @@
+
+
+{% extends 'index.html' %}
+{% load static %}
+
+{% block css %}
+
+  <style>
+        .avatar-upload {
+            position: relative;
+            max-width: 205px;
+            margin: 10px auto;
+
+        }
+
+        .avatar-upload .avatar-edit {
+            position: absolute;
+            right: 75px;
+            z-index: 1;
+            top: 10px;
+
+        }
+
+        .avatar-upload .avatar-edit input {
+            display: none;
+        }
+
+        .avatar-upload .avatar-edit input + label {
+            display: inline-block;
+            width: 0px;
+            height: 0px;
+            margin-bottom: 0;
+            border-radius: 100%;
+            background: #FFFFFF;
+            border: 1px solid transparent;
+            box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+            cursor: pointer;
+            font-weight: normal;
+            transition: all 0.2s ease-in-out;
+            padding: 20px;
+        }
+
+        .avatar-upload .avatar-edit input + label:hover {
+            background: #f1f1f1;
+            border-color: #d6d6d6;
+            padding: 20px;
+        }
+
+        .avatar-upload .avatar-edit input + label:after {
+            content: "\f040";
+            font-family: 'FontAwesome';
+            color: #757575;
+            position: absolute;
+            top: 10px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            margin: auto;
+
+        }
+
+        .avatar-upload .avatar-preview {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    border-radius: 100%;
+    border: 6px solid #F8F8F8;
+    box-shadow: 0px 2px 10px 2px rgba(0, 0, 0, 0.5);
+}
+
+        .avatar-upload .avatar-preview > div {
+            width: 100%;
+            height: 100%;
+            border-radius: 100%;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+    </style>
+
+{% endblock %}
+
+{% block  main %}
+    <div class="right_col" role="main">
+        <div class="">
+            <div class="page-title">
+                <div class="title_left">
+                    <h3>Add Student</h3>
+                </div>
+
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="row" id="StudentADD">
+            </div>
+
+
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block js %}
+    <script>
+        function Studentdate() {
+            $('#myDatepicker2').datetimepicker({
+
+                format: 'YYYY-MM-DD'
+            });
+            $('#myDatepicker21').datetimepicker({
+                format: 'YYYY-MM-DD'
+            });
+        }
+    </script>
+
+    <script>
+        $(
+            newStu(),
+            Studentdate()
+        );
+
+        function StudentAddType(elm) {
+
+
+            if (elm.value === 'New') {
+                newStu();
+            }
+            else if (elm.value === 'Session') {
+                sesStu();
+
+            }
+
+        }
+        function newStu() {
+
+            $.get("/addNewStudent/", {},
+
+                function (data) {
+                    $("#StudentADD").html(data);
+                    Studentdate();
+                    getOnlyClassListList();
+                    sameAsPresentAddress();
+                        function readURLAddUser(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#imagePreviewAddUser').css('background-image', 'url(' + e.target.result + ')');
+                    $('#imagePreviewAddUser').hide();
+                    $('#imagePreviewAddUser').fadeIn(650);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#Timage").change(function () {
+            readURLAddUser(this);
+
+    });
+                });
+        }
+        function sesStu() {
+
+            $.get("/addNewStudentFromSession/", {},
+
+                function (data) {
+                    $("#StudentADD").html(data);
+                });
+        }
+
+                function getOnlyClassListList() {
+
+            $.ajax({
+                type: 'get',
+                url: '/api/GetOnlyClassList/',
+                success: function (response) {
+                    for (i in response.data) {
+                        listData = '<option value="' + response.data[i].ClassID + '">' + response.data[i].Standard + '</option>';
+                        $('#stuClass').append(listData);
+                    }
+                    {#            return response;#}
+                },
+                error: function () {
+                    $('#name_status').addClass('validate_data');
+                    $('#name_status').html('error.');
+                }
+            });
+
+        }
+
+        function sameAsPresentAddress() {
+            var address = $('#stuAddress').val();
+            var city = $('#stuCity').val();
+            var state = $('#stuState').val();
+            var country = $('#stuCountry').val();
+            var pin = $('#stuPincode').val();
+            $('#stuPAddress').val(address);
+            $('#stuPCity').val(city);
+            $('#stuPCountry').val(country);
+            $('#stuPPincode').val(pin);
+            $('#stuPState').val(state);
+        }
+
+        function getClassSectionList() {
+
+            var classID = $('#stuClass').val();
+            $('#stuSection').html('');
+
+               $.ajax({
+                type: 'get',
+                url: '/api/GetOnlyClassSectionDetail/'+classID+'/',
+                success: function (response) {
+
+
+                    for (i in response.data) {
+                        listData = '<option value="' + response.data[i].SectionID + '">' + response.data[i].Section + '</option>';
+                        $('#stuSection').append(listData);
+
+
+                    }
+                    {#            return response;#}
+                },
+                error: function () {
+                    $('#name_status').addClass('validate_data');
+                    $('#name_status').html('error.').fadeIn().fadeOut(2000);
+                }
+            });
+
+
+
+
+
+        }
+         function postNewStudent() {
+            var studentByKey = $('#studentByKey').val();
+            var key = $('#UniqueKey').val();
+            var TfirstName = $('#stuFirstName').val();
+            var TmiddleName = $('#stuMiddleName').val();
+            var TlastName = $('#stuLastName').val();
+            var Temail = $('#stuEmail').val();
+            var Tphone = $('#stuPhone').val();
+            var TbloodGroup = $('#stuBloodGroup').val();
+            var Tdob = $('#stuDOB').val();
+            var Taadhar = $('#stuAdhaar').val();
+            var Tgender = $("input[name='gender']:checked").val();
+
+            var stuFatherFirstName = $('#stuFatherFirstName').val();
+            var stuFatherMiddleName = $('#stuFatherMiddleName').val();
+            var stuFatherLastName = $('#stuFatherLastName').val();
+            var stuMotherFirstName = $('#stuMotherFirstName').val();
+            var stuMotherMiddleName = $('#stuMotherMiddleName').val();
+            var stuMotherLastName = $('#stuMotherLastName').val();
+            var stuFatherEmail = $('#stuFatherEmail').val();
+            var stuFatherPhone = $('#stuFatherPhone').val();
+            var stuFatherProfession = $('#stuFatherProfession').val();
+
+
+            var Taddress = $('#stuAddress').val();
+            var Tcity = $('#stuCity').val();
+            var Tstate = $('#stuState').val();
+            var Tcountry = $('#stuCountry').val();
+            var Tpin = $('#stuPincode').val();
+            var TPaddress = $('#stuPAddress').val();
+            var TPcity = $('#stuPCity').val();
+            var TPstate = $('#stuPState').val();
+            var TPcountry = $('#stuPCountry').val();
+            var TPpin = $('#stuPPincode').val();
+            var stuClass = $('#stuClass').val();
+            var stuSection = $('#stuSection').val();
+            var stuRoll = $('#stuRoll').val();
+            var stuDOJ = $('#stuDOJ').val();
+            var Timage = document.getElementById("Timage").files[0];
+            var csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val();
+
+            data = new FormData();
+            data.append('studentByKey', studentByKey);
+            data.append('key', key);
+            data.append('TfirstName', TfirstName);
+            data.append('TmiddleName', TmiddleName);
+            data.append('TlastName', TlastName);
+            data.append('Temail', Temail);
+            data.append('Tphone', Tphone);
+            data.append('TbloodGroup', TbloodGroup);
+            data.append('Tdob', Tdob);
+            data.append('Taadhar', Taadhar);
+            data.append('Tgender', Tgender);
+
+
+            data.append('stuFatherFirstName', stuFatherFirstName);
+            data.append('stuFatherMiddleName', stuFatherMiddleName);
+            data.append('stuFatherLastName', stuFatherLastName);
+            data.append('stuMotherFirstName', stuMotherFirstName);
+            data.append('stuMotherMiddleName', stuMotherMiddleName);
+            data.append('stuMotherLastName', stuMotherLastName);
+            data.append('stuFatherEmail', stuFatherEmail);
+            data.append('stuFatherPhone', stuFatherPhone);
+            data.append('stuFatherProfession', stuFatherProfession);
+
+
+            data.append('Taddress', Taddress);
+            data.append('Tcity', Tcity);
+            data.append('Tstate', Tstate);
+            data.append('Tcountry', Tcountry);
+            data.append('Tpin', Tpin);
+            data.append('TPaddress', TPaddress);
+            data.append('TPcity', TPcity);
+            data.append('TPstate', TPstate);
+            data.append('TPcountry', TPcountry);
+            data.append('TPpin', TPpin);
+
+
+            data.append('stuClass', stuClass);
+            data.append('stuSection', stuSection);
+            data.append('stuRoll', stuRoll);
+            data.append('stuDOJ', stuDOJ);
+
+
+            data.append('Timage', Timage);
+            data.append('csrfmiddlewaretoken', csrfmiddlewaretoken);
+
+
+            if (TfirstName === "" || TlastName === "" || stuFatherPhone === ""
+                || Tdob === '' || Tgender === "" ||
+                Taddress === "" || Tcity === "" || Tstate === "" || Tcountry === ""
+                || Tpin === "" || TPaddress === "" || TPcity === "" || TPstate === "" || TPcountry === ""
+                || TPpin === "" ||  stuDOJ === "" || stuClass === ""
+                || stuFatherFirstName === "" || stuFatherLastName === "" || stuMotherFirstName === ""
+            || stuMotherLastName === ""|| stuFatherPhone === ""|| stuFatherProfession === "") {
+
+                $('#name_status').addClass('validate_data');
+                $('#name_status').html('* fields are required.');
+                $('#name_status').fadeIn().fadeOut(2000);
+
+            }
+            else {
+
+                if(document.getElementById("Timage").files.length === 0  && studentByKey === "No"){
+                    $('#name_status').addClass('validate_data');
+                $('#name_status').html('* image fields are required.');
+                $('#name_status').fadeIn().fadeOut(2000);
+                }
+                else {
+                    $.ajax({
+                    type: 'post',
+                    url: '/api/PostNewStudentDetail/',
+                    data: data,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+
+
+                    success: function (response) {
+                        if (response.response === 'ok') {
+                            $('#name_status').addClass('validate_data');
+                            $('#name_status').html('Student Detail added successfully.').fadeIn().fadeOut(2000);;
+                            $('#studentAddNewForm').trigger('reset')
+                             $('#imagePreviewAddUser').css('background-image', "url('{% static 'images/user.png' %}')");
+                            $('#studentByKey').val('No')
+                        }
+                        else {
+                            $('#name_status').removeClass('validate_data');
+                            $('#name_status').html("").fadeIn().fadeOut(2000);
+
+                        }
+
+                        return response;
+                    },
+                    error: function () {
+                        $('#name_status').addClass('validate_data');
+                        $('#name_status').html('error.').fadeIn().fadeOut(2000);
+                    }
+                });
+                }
+
+            }
+
+        }
+
+function GetByUniqueKey() {
+            var key = $('#UniqueKey').val();
+
+            if(key.length < 8){
+                $('#studentAddNewForm').trigger('reset')
+                            $('#UniqueKey').val(key)
+                            $('#imagePreviewAddUser').css('background-image', "url('{% static 'images/user.png' %}')");
+                $('#studentByKey').val('No')
+            }
+    if (key.length === 8){
+            var csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val();
+
+            data = new FormData();
+            data.append('key', key);
+            data.append('csrfmiddlewaretoken', csrfmiddlewaretoken);
+
+
+            $.ajax({
+                    type: 'post',
+                    url: '/api/GetStudentDetailByUniqueKey/',
+                    data: data,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+
+
+                    success: function (response) {
+                        if (response.response === 'ok') {
+                            $('#name_status').addClass('validate_data');
+                            $('#name_status').html('Student Detail Available.').fadeIn().fadeOut(2000);
+
+{#                        $('#EditStudentID').val(response.data['StudentID']);#}
+                    $('#stuFirstName').val(response.data['FirstName']);
+                    $('#stuMiddleName').val(response.data['MiddleName']);
+                    $('#stuLastName').val(response.data['LastName']);
+                    $('#stuEmail').val(response.data['Email']);
+                    $('#stuPhone').val(response.data['PhoneNumber']);
+                    $('#stuBloodGroup').val(response.data['BloodGroup']);
+                    $('#stuDOB').val(response.data['DOB']);
+                    $('#stuAdhaar').val(response.data['Aadhar']);
+                    $('input[name = gender]').val(response.data['Gender']);
+
+                    $('#stuFatherFirstName').val(response.data['FatherFirstName']);
+                    $('#stuFatherMiddleName').val(response.data['FatherMiddleName']);
+                    $('#stuFatherLastName').val(response.data['FatherLastName']);
+                    $('#stuMotherFirstName').val(response.data['MotherFirstName']);
+                    $('#stuMotherMiddleName').val(response.data['MotherMiddleName']);
+                    $('#stuMotherLastName').val(response.data['MotherLastName']);
+                    $('#stuFatherEmail').val(response.data['FatherEmail']);
+                    $('#stuFatherPhone').val(response.data['FatherPhone']);
+                    $('#stuFatherProfession').val(response.data['Occupation']);
+
+                    $('#stuAddress').val(response.data['PresentAddress']);
+                    $('#stuCity').val(response.data['PresentCity']);
+                    $('#stuState').val(response.data['PresentState']);
+                    $('#stuCountry').val(response.data['PresentCountry']);
+                    $('#stuPincode').val(response.data['PresentPin']);
+                    $('#stuPAddress').val(response.data['PermanentAddress']);
+                    $('#stuPCity').val(response.data['PermanentCity']);
+                    $('#stuPState').val(response.data['PermanentState']);
+                    $('#stuPCountry').val(response.data['PermanentCounty']);
+                    $('#stuPPincode').val(response.data['PermanentPin']);
+{#                    $('#stuClass').val(response.data['StandardID']);#}
+{#                    getClassSectionList(response.data['StandardID']);#}
+{#                    $('#stuSection').val(response.data['Section']);#}
+{#                    $('#stuRoll').val(response.data['Roll']);#}
+                    $('#stuDOJ').val(response.data['DateOfJoining']);
+                    {#                    $('#stuDOJ').val(response.data['IsActive']);#}
+                    $('#imagePreviewAddUser').css('background-image', "url(" + response.data['Photo'] + ")");
+                    $('#studentByKey').val('Yes')
+
+
+
+                        }
+                        else {
+                           $('#name_status').addClass('validate_data');
+                            $('#name_status').html(''+ response.response).fadeIn().fadeOut(2000);
+                            $('#studentAddNewForm').trigger('reset')
+                            $('#UniqueKey').val(key)
+                            $('#imagePreviewAddUser').css('background-image', "url('{% static 'images/user.png' %}')");
+                            $('#studentByKey').val('No')
+                        }
+
+                    },
+                    error: function () {
+                        $('#name_status').addClass('validate_data');
+                        $('#name_status').html('error.').fadeIn().fadeOut(2000);
+                    }
+                });
+    }
+
+}
+    </script>
+{% endblock %}

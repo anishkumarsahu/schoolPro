@@ -1,0 +1,325 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block css %}
+    <style>
+        .dataTables_filter {
+            width: 50%;
+            float: left !important;
+            text-align: right;
+        }
+
+        div.dataTables_wrapper div.dataTables_length select {
+            width: 176% !important;
+            display: inline-block;
+        }
+
+        div.dataTables_wrapper div.dataTables_filter input {
+            margin-left: 0.5em;
+            display: inline-block;
+            width: 161% !important;
+        }
+    </style>
+
+{% endblock %}
+{% block  main %}
+    <div class="right_col" role="main">
+        <div class="">
+            <div class="page-title">
+                <div class="title_left">
+                    <h3>Add Exam</h3>
+                </div>
+
+
+            </div>
+
+            <div class="clearfix"></div>
+            <div class="row">
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>All sessions</h2>
+
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <form class="form-horizontal form-label-left">
+                                <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>Exam Name:</label>
+                                    <input type="text" class="form-control has-feedback-left" id="exam"
+                                           placeholder="Exam Name">
+                                    <span class="fa fa-pencil form-control-feedback left" aria-hidden="true"></span>
+                                </div>
+
+
+                                <div style="padding-top: 23px" class="col-md-4 col-sm-6 col-xs-12">
+                                    <button class="btn btn-success" type="button" onclick="AddExam()">Add</button>
+                                </div>
+
+                            </form>
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>Exam List</h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <p class="text-muted font-13 m-b-30">
+
+
+                            </p>
+                            <table id="ExamListTable" class="table table-striped table-bordered bulk_action">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Sl No.</th>
+                                    <th>Exam Name</th>
+                                    <th>Action</th>
+
+                                </tr>
+                                </thead>
+
+
+                                <tbody>
+                                </tbody>
+                            </table>
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <div class="modal fade bd-example-modal-lg" id="myModalAssignEdit" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Edit Exam</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <form class="form-horizontal form-label-left"> {% csrf_token %}
+
+                            <input type="hidden" id="examID">
+
+                            <div class="col-md-8 col-sm-12 col-xs-12 form-group has-feedback">
+                                <label>Exam *:</label>
+                                <input id="ExamEdit" type="text" class="form-control">
+                                </input>
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success"
+                                onclick="UpdateExam()"><i
+                                class="fa fa-check m-right-xs"></i>Update
+                        </button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i
+                                class="fa fa-times m-right-xs"></i>Close
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModalDelete" role="dialog">
+        <div class="modal-dialog ">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h2 class="modal-title">Confirmation</h2>
+                </div>
+                <div class="modal-body">
+                    <p style="color: #0D3349;font-size: 20px">Are you sure you want to delete this
+                        data.</p>
+                    <input type="hidden" id="DeleteID">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger" onclick="DeleteExam()">Delete</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+
+{% block js %}
+    <script>
+        $(getExamList());
+        function AddExam() {
+            var exam = $('#exam').val();
+            if (exam === '') {
+                $('#name_status').addClass('validate_data');
+                $('#name_status').html('Exam Name Required.').fadeIn().fadeOut(2000);
+
+            }
+            else {
+                data = new FormData();
+                data.append('exam', exam);
+                $.ajax({
+                    type: 'post',
+                    url: '/api/AddExam/',
+                    data: data,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (response) {
+                        if (response.response === 'ok') {
+                            $('#name_status').addClass('validate_data');
+                            $('#name_status').html('Exam Added.').fadeIn().fadeOut(2000);
+                            ExamListTableData.ajax.url("/api/GetExamList/").load();
+
+                        }
+                        else {
+                            $('#name_status').addClass('validate_data');
+                            $('#name_status').html("" + response.response).fadeIn().fadeOut(2000);
+                        }
+                        return response;
+                    },
+                    error: function () {
+                        $('#name_status').addClass('validate_data');
+                        $('#name_status').html('error.').fadeIn().fadeOut(2000);
+                    }
+                });
+            }
+        }
+        var ExamListTableData;
+        var count = 0;
+        function getExamList() {
+
+            ExamListTableData = $('#ExamListTable').DataTable({
+                "processing": true,
+                "ajax": "/api/GetExamList/",
+
+                "columns": [
+                    {"data": "ID"},
+                    {"data": "Count"},
+                    {"data": "ExamName"},
+                    {"data": "Action"}
+
+                ],
+                "order": [['0', 'asc']],
+                "language": {
+                    "emptyTable": 'No Record Found.'
+                },
+
+
+            });
+            ExamListTableData.column(0).visible(false);
+            count = count + 1;
+        }
+        function editExamDetail(id, exam) {
+            console.log(exam, id)
+            $('#ExamEdit').val(exam);
+            $('#examID').val(id)
+        }
+        function UpdateExam() {
+            var examID = $('#examID').val();
+            var exam = $('#ExamEdit').val();
+            var csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val();
+
+
+            if (exam === '') {
+                $('#name_status').addClass('validate_data');
+                $('#name_status').html('Exam Name Required.').fadeIn().fadeOut(2000);
+
+            }
+            else {
+                data = new FormData();
+                data.append('examID', examID);
+                data.append('exam', exam);
+                data.append('csrfmiddlewaretoken', csrfmiddlewaretoken);
+                $.ajax({
+                    type: 'post',
+                    url: '/api/EditExam/',
+                    data: data,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (response) {
+                        if (response.response === 'ok') {
+                            $('#name_status').addClass('validate_data');
+                            $('#name_status').html('Exam Updated.').fadeIn().fadeOut(2000);
+                            ExamListTableData.ajax.url("/api/GetExamList/").load();
+                            $('#myModalAssignEdit').modal('toggle');
+
+                        }
+                        else {
+                            $('#name_status').addClass('validate_data');
+                            $('#name_status').html("" + response.response).fadeIn().fadeOut(2000);
+                        }
+                        return response;
+                    },
+                    error: function () {
+                        $('#name_status').addClass('validate_data');
+                        $('#name_status').html('error.').fadeIn().fadeOut(2000);
+                    }
+                });
+            }
+        }
+        function deleteAssignDetail(id) {
+            $('#DeleteID').val(id)
+
+        }
+        function DeleteExam() {
+            var examID = $('#DeleteID').val();
+            var csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val();
+            data = new FormData();
+            data.append('examID', examID);
+            data.append('csrfmiddlewaretoken', csrfmiddlewaretoken);
+            $.ajax({
+                type: 'post',
+                url: '/api/DeleteExam/',
+                data: data,
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function (response) {
+                    if (response.response === 'ok') {
+                        $('#name_status').addClass('validate_data');
+                        $('#name_status').html('Exam Deleted.').fadeIn().fadeOut(2000);
+                        ExamListTableData.ajax.url("/api/GetExamList/").load();
+                        $('#myModalDelete').modal('toggle');
+
+                    }
+                    else {
+                        $('#name_status').addClass('validate_data');
+                        $('#name_status').html("" + response.response).fadeIn().fadeOut(2000);
+                    }
+                    return response;
+                },
+                error: function () {
+                    $('#name_status').addClass('validate_data');
+                    $('#name_status').html('error.').fadeIn().fadeOut(2000);
+                }
+            });
+
+        }
+
+    </script>
+{% endblock %}

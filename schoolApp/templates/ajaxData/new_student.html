@@ -1,0 +1,458 @@
+{% load static %}
+<form id="studentAddNewForm"> {% csrf_token %}
+
+    <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
+        <div class="x_title">
+            <label for="">Quick Input
+                <small>( Enter the unique key for quick entry.)</small>
+            </label>
+            <input type="hidden" id="studentByKey" value="No">
+            <input id="UniqueKey" onkeyup="GetByUniqueKey()" style="width: 50%" class="form-control has-feedback-left"
+                   placeholder="Enter Unique Key" type="text" pattern="[0-9.]+" maxlength="8">
+
+
+            <div class="clearfix"></div>
+        </div>
+        <label>Photo *:</label>
+
+        <div class="avatar-upload">
+            <div class="avatar-edit">
+                <input type='file' id="Timage"
+                       accept="image/*"/>
+                <label style="padding: 20px;font-size: 20px"
+                       for="Timage"></label>
+            </div>
+            <div class="avatar-preview">
+                <div id="imagePreviewAddUser"
+                     style="background-image: url({% static 'images/user.png' %});">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Personal Details
+                    <small>(Student)</small>
+                    <br>
+                    <small><strong>Note* :</strong> For each entry of new student, a unique key will be generated.
+                    </small>
+
+                </h2>
+
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="x_content">
+                <br/>
+
+
+                <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                    <label>First Name *:</label>
+                    <input type="text" class="form-control has-feedback-left" id="stuFirstName"
+                           placeholder="First Name">
+                    <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                </div>
+
+                <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                    <label>Middle Name (Optional):</label>
+                    <input type="text" class="form-control has-feedback-left" id="stuMiddleName"
+                           placeholder="Middle Name (Optional)">
+                    <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                </div>
+
+
+                <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                    <label>Last Name *:</label>
+                    <input type="text" class="form-control has-feedback-left" id="stuLastName"
+                           placeholder="Last Name">
+                    <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                </div>
+
+
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                    <label>Email (Optional):</label>
+                    <input type="email" class="form-control has-feedback-left" id="stuEmail"
+                           placeholder="Email Address(Optional)">
+                    <span class="fa fa-envelope form-control-feedback left" aria-hidden="true"></span>
+                </div>
+
+
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                    <label>Phone Number (Optional):</label>
+                    <input type="number" class="form-control has-feedback-left" id="stuPhone"
+                           placeholder="Phone Number(Optional)">
+                    <span class="fa fa-phone form-control-feedback left" aria-hidden="true"></span>
+                </div>
+
+
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                    <label>Blood Group (Optional):</label>
+                    <select id="stuBloodGroup" class="form-control">
+                        <option value="">Choose..</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                    </select>
+                </div>
+
+
+                <div class='col-sm-6'>
+                    <label>DOB *:</label>
+                    <div class="form-group">
+                        <div class='input-group date' id='myDatepicker2'>
+                            <input type='text' class="form-control" id="stuDOB"/>
+                            <span class="input-group-addon">
+                               <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                    <label>Aadhar Number(Optional):</label>
+                    <input type="number" class="form-control has-feedback-left" id="stuAdhaar"
+                           placeholder="Aadhar Number(Optional)">
+                    <span class="fa fa-list-ol form-control-feedback left" aria-hidden="true"></span>
+                </div>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <label>Gender *:</label>
+                    <p>
+                        Male:
+                        <input type="radio" class="flat" name="gender" value="Male"
+                               checked=""
+                               required/>
+                        Female:
+                        <input type="radio" class="flat" name="gender" value="Female"/>
+
+                        Others:
+                        <input type="radio" class="flat" name="gender" value="Others"/>
+                    </p>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel" style="min-height: 383px">
+            <div class="x_title">
+                <h2>Parent Details</h2>
+
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <br/>
+
+                <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                    <label>Father First Name *:</label>
+                    <input type="text" class="form-control has-feedback-left" id="stuFatherFirstName"
+                           placeholder="First Name">
+                    <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                </div>
+
+                <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                    <label>Father Middle Name (Optional):</label>
+                    <input type="text" class="form-control has-feedback-left" id="stuFatherMiddleName"
+                           placeholder="Middle Name (Optional)">
+                    <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                </div>
+
+
+                <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                    <label>Father Last Name *:</label>
+                    <input type="text" class="form-control has-feedback-left" id="stuFatherLastName"
+                           placeholder="Last Name">
+                    <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                </div>
+
+
+                <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                    <label>Mother First Name *:</label>
+                    <input type="text" class="form-control has-feedback-left" id="stuMotherFirstName"
+                           placeholder="First Name">
+                    <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                </div>
+
+                <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                    <label>Mother Middle Name (Optional):</label>
+                    <input type="text" class="form-control has-feedback-left" id="stuMotherMiddleName"
+                           placeholder="Middle Name (Optional)">
+                    <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                </div>
+
+
+                <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                    <label>Mother Last Name *:</label>
+                    <input type="text" class="form-control has-feedback-left" id="stuMotherLastName"
+                           placeholder="Last Name">
+                    <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                </div>
+
+
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                    <label>Email (Optional):</label>
+                    <input type="email" class="form-control has-feedback-left" id="stuFatherEmail"
+                           placeholder="Email Address(Optional)">
+                    <span class="fa fa-envelope form-control-feedback left" aria-hidden="true"></span>
+                </div>
+
+
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                    <label>Phone Number *:</label>
+                    <input type="number" class="form-control has-feedback-left" id="stuFatherPhone"
+                           placeholder="Phone Number">
+                    <span class="fa fa-phone form-control-feedback left" aria-hidden="true"></span>
+                </div>
+
+
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                    <label>Profession *:</label>
+                    <input type="text" class="form-control has-feedback-left" id="stuFatherProfession"
+                           placeholder="Profession">
+                    <span class="fa fa-briefcase form-control-feedback left" aria-hidden="true"></span>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-6 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Present Address</h2>
+
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <br/>
+
+                <div class="col-md-12 col-sm-6 col-xs-12 form-group has-feedback">
+                    <label>Address *:</label>
+                    <input type="text" class="form-control has-feedback-left" id="stuAddress" placeholder="Address">
+                    <span class="fa fa-globe form-control-feedback left" aria-hidden="true"></span>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                    <label>Country *:</label>
+                    <select id="stuCountry" class="form-control">
+                        <option value="India">India</option>
+                    </select>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                    <label>State *:</label>
+                    <select id="stuState" class="form-control">
+                        <option value="Andhra Pradesh">Andhra Pradesh</option>
+                        <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                        <option value="Assam">Assam</option>
+                        <option value="Bihar">Bihar</option>
+                        <option value="Chhattisgarh">Chhattisgarh</option>
+                        <option value="Goa">Goa</option>
+                        <option value="Gujarat">Gujarat</option>
+                        <option value="Haryana">Haryana</option>
+                        <option value="Himachal Pradesh">Himachal Pradesh</option>
+                        <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                        <option value="Jharkhand">Jharkhand</option>
+                        <option value="Karnataka">Karnataka</option>
+                        <option value="Kerala">Kerala</option>
+                        <option value="Madhya Pradesh">Madhya Pradesh</option>
+                        <option value="Maharashtra">Maharashtra</option>
+                        <option selected value="Manipur">Manipur</option>
+                        <option value="Meghalaya">Meghalaya</option>
+                        <option value="Mizoram">Mizoram</option>
+                        <option value="Nagaland">Nagaland</option>
+                        <option value="Orissa">Orissa</option>
+                        <option value="Punjab">Punjab</option>
+                        <option value="Rajasthan">Rajasthan</option>
+                        <option value="Sikkim">Sikkim</option>
+                        <option value="Tamil Nadu">Tamil Nadu</option>
+                        <option value="Telangana">Telangana</option>
+                        <option value="Tripura">Tripura</option>
+                        <option value="Uttar Pradesh">Uttar Pradesh</option>
+                        <option value="Uttarakhand">Uttarakhand</option>
+                        <option value="West Bengal">West Bengal</option>
+
+                    </select>
+                </div>
+
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                    <label>City Name *:</label>
+                    <input type="text" class="form-control has-feedback-left" id="stuCity"
+                           placeholder="City Name">
+                    <span class="fa fa-globe form-control-feedback left" aria-hidden="true"></span>
+                </div>
+
+
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                    <label>Pin Code *:</label>
+                    <input type="number" class="form-control has-feedback-left" id="stuPincode"
+                           placeholder="Pin Code">
+                    <span class="fa fa-list-ol form-control-feedback left" aria-hidden="true"></span>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-6 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Permanent Address</h2>
+
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <br/>
+
+                <div class="col-md-12 col-sm-6 col-xs-12 form-group has-feedback">
+                    <label>Address *:</label>
+                    <input type="text" class="form-control has-feedback-left" id="stuPAddress" placeholder="Address">
+                    <span class="fa fa-globe form-control-feedback left" aria-hidden="true"></span>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                    <label>Country *:</label>
+                    <select id="stuPCountry" class="form-control">
+                        <option value="India">India</option>
+
+                    </select>
+                </div>
+
+
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                    <label>State *:</label>
+                    <select id="stuPState" class="form-control">
+                        <option value="Andhra Pradesh">Andhra Pradesh</option>
+                        <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                        <option value="Assam">Assam</option>
+                        <option value="Bihar">Bihar</option>
+                        <option value="Chhattisgarh">Chhattisgarh</option>
+                        <option value="Goa">Goa</option>
+                        <option value="Gujarat">Gujarat</option>
+                        <option value="Haryana">Haryana</option>
+                        <option value="Himachal Pradesh">Himachal Pradesh</option>
+                        <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                        <option value="Jharkhand">Jharkhand</option>
+                        <option value="Karnataka">Karnataka</option>
+                        <option value="Kerala">Kerala</option>
+                        <option value="Madhya Pradesh">Madhya Pradesh</option>
+                        <option value="Maharashtra">Maharashtra</option>
+                        <option selected value="Manipur">Manipur</option>
+                        <option value="Meghalaya">Meghalaya</option>
+                        <option value="Mizoram">Mizoram</option>
+                        <option value="Nagaland">Nagaland</option>
+                        <option value="Orissa">Orissa</option>
+                        <option value="Punjab">Punjab</option>
+                        <option value="Rajasthan">Rajasthan</option>
+                        <option value="Sikkim">Sikkim</option>
+                        <option value="Tamil Nadu">Tamil Nadu</option>
+                        <option value="Telangana">Telangana</option>
+                        <option value="Tripura">Tripura</option>
+                        <option value="Uttar Pradesh">Uttar Pradesh</option>
+                        <option value="Uttarakhand">Uttarakhand</option>
+                        <option value="West Bengal">West Bengal</option>
+
+                    </select>
+                </div>
+
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                    <label>City Name *:</label>
+                    <input type="text" class="form-control has-feedback-left" id="stuPCity"
+                           placeholder="City Name">
+                    <span class="fa fa-globe form-control-feedback left" aria-hidden="true"></span>
+                </div>
+
+
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                    <label>Pin Code *:</label>
+                    <input type="number" class="form-control has-feedback-left" id="stuPPincode"
+                           placeholder="Pin Code">
+                    <span class="fa fa-list-ol form-control-feedback left" aria-hidden="true"></span>
+                </div>
+
+
+                <div class="row">
+                    <div class="">
+                        <label onclick="sameAsPresentAddress()">
+                            <input type="checkbox" class="flat"> Same as Present Address
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>School Details</h2>
+
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <br/>
+
+
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                    <label>Class *:</label>
+                    <select id="stuClass" class="form-control" onchange="getClassSectionList()">
+                        <option value="">Choose..</option>
+
+                    </select>
+                </div>
+
+
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                    <label>Section:</label>
+                    <select id="stuSection" class="form-control">
+                        <option value="">Choose..</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                    <label>Roll Number:</label>
+                    <input type="number" class="form-control has-feedback-left" id="stuRoll"
+                           placeholder="Roll Name">
+                    <span class="fa fa-list-ol form-control-feedback left" aria-hidden="true"></span>
+                </div>
+
+
+                <div class='col-sm-6'>
+                    <label>Date Of Joining *:</label>
+                    <div class="form-group">
+                        <div class='input-group date' id='myDatepicker21'>
+                            <input type='text' class="form-control" id="stuDOJ"/>
+                            <span class="input-group-addon">
+                               <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <div style="text-align: center;padding-top: 10px">
+
+        <button type="button" style="width: 20%;height: 50px" class="btn btn-dark" onclick="postNewStudent()">Submit
+        </button>
+
+    </div>
+
+
+</form>

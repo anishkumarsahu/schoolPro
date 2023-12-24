@@ -1,0 +1,20 @@
+.validate_data{
+    position: fixed;
+    float: left;
+    background-color: #e91e63;
+    width: 100%;
+    color: white;
+    font-family: monospace;
+    font-size: 12px;
+    border-radius: 2px;
+    top: 0px;
+    left: 0px;
+    z-index: 10000;
+    height: 50px;
+    padding: 19px;
+    text-align: center;
+    -webkit-transition: opacity 3s ease-in-out;
+    -moz-transition: opacity 3s ease-in-out;
+    -ms-transition: opacity 3s ease-in-out;
+    -o-transition: opacity 3s ease-in-out;
+}

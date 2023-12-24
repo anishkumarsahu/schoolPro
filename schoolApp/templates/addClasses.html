@@ -1,0 +1,396 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block  main %}
+    <div class="right_col" role="main">
+        <div class="">
+            <div class="page-title">
+                <div class="title_left">
+                    <h3>Add Class</h3>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>{{ request.session.CurrentSchoolSession.currentSessionYear }}</h2>
+
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <br/>
+                            <form class="form-horizontal form-label-left" id="classAddForm"> {% csrf_token %}
+
+
+                                <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>Class Name *:</label>
+                                    <input type="text" class="form-control has-feedback-left" id="ClassName"
+                                           placeholder="Class Name">
+                                    <span class="fa fa-joomla form-control-feedback left" aria-hidden="true"></span>
+                                </div>
+
+
+                                <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>Class Location (Optional):</label>
+                                    <input type="text" class="form-control has-feedback-left" id="ClassLocation"
+                                           placeholder="Class Location">
+                                    <span class="fa fa-globe form-control-feedback left" aria-hidden="true"></span>
+                                </div>
+
+
+                                <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>Has Section ? *</label>
+                                    <select id="HaveClassSection" class="form-control" onchange="HaveSection(this)">
+                                        <option value="No">No</option>
+                                        <option value="Yes">Yes</option>
+
+
+                                    </select>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12" id="ClassDetail">
+                                    <div class="x_panel">
+                                        <div class="x_title">
+                                            <h2>Detail</h2>
+
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="x_content">
+                                            <br/>
+
+
+{#                                            <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">#}
+{#                                                <label>Class Teacher: *</label>#}
+{#                                                <select id="ClassTeacherChoose" class="form-control">#}
+{#                                                    <option value="">Choose..</option>#}
+{##}
+{##}
+{#                                                </select>#}
+{#                                            </div>#}
+
+
+                                            <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                <label>Start Roll *:</label>
+                                                <input type="number" class="form-control has-feedback-left"
+                                                       id="ClassStartRoll"
+                                                       placeholder="Start Roll">
+                                                <span class="fa fa-list-ol form-control-feedback left"
+                                                      aria-hidden="true"></span>
+                                            </div>
+
+
+                                            <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                <label>End Roll *:</label>
+                                                <input type="number" class="form-control has-feedback-left"
+                                                       id="ClassEndRoll"
+                                                       placeholder="End Roll">
+                                                <span class="fa fa-list-ol form-control-feedback left"
+                                                      aria-hidden="true"></span>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 col-sm-12 col-xs-12" id="SectionDetail" style="display: None">
+                                    <div class="x_panel">
+                                        <div class="x_title">
+                                            <h2>Section Detail</h2>
+
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="x_content" id="SetionBlock">
+                                            <br/>
+
+                                            <div id="sec0">
+                                                <div id=""
+                                                     class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
+                                                    <label>Section Name *:</label>
+                                                    <input type="text" class="form-control has-feedback-left"
+                                                           id="sectionName0"
+                                                           placeholder="Section Name">
+                                                    <span class="fa fa-joomla form-control-feedback left"
+                                                          aria-hidden="true"></span>
+                                                </div>
+
+
+{#                                                <div class="col-md-3 col-sm-6 col-xs-12 form-group has-feedback">#}
+{#                                                    <label>Class Teacher *:</label>#}
+{#                                                    <select  id="Teacher0" class="form-control"#}
+{#                                                            >#}
+{#                                                        <option value="">Choose..</option>#}
+{##}
+{##}
+{#                                                    </select>#}
+{#                                                </div>#}
+
+
+                                                <div class="col-md-3 col-sm-6 col-xs-12 form-group has-feedback">
+                                                    <label>Start Roll *:</label>
+                                                    <input type="number" class="form-control has-feedback-left"
+                                                           id="StartRoll0"
+                                                           placeholder="Start Roll">
+                                                    <span class="fa fa-list-ol form-control-feedback left"
+                                                          aria-hidden="true"></span>
+                                                </div>
+
+
+                                                <div class="col-md-3 col-sm-6 col-xs-12 form-group has-feedback">
+                                                    <label>End Roll *:</label>
+                                                    <input type="number" class="form-control has-feedback-left"
+                                                           id="EndRoll0"
+                                                           placeholder="End Roll">
+                                                    <span class="fa fa-list-ol form-control-feedback left"
+                                                          aria-hidden="true"></span>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                        <button style="float: right" class="btn btn-dark" type="button"
+                                                onclick="AddAnotherSection()">Add Another
+                                        </button>
+
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div style="text-align: center;padding-top: 10px">
+
+                <button style="width: 20%;height: 50px" class="btn btn-dark" type="button"
+                        onclick="postClassDetail()" id="WithoutSection">Submit
+                </button>
+                <button style="width: 20%;height: 50px; display: none" class="btn btn-dark" type="button"
+                        id="WithSection" onclick="postClassDetailWithSection()">Submit
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block js %}
+    <script>
+        function HaveSection(elm) {
+            if (elm.value === 'Yes') {
+                $('#ClassDetail').css('display', 'None');
+                $('#SectionDetail').css('display', '');
+                $('#WithSection').css('display', '');
+                $('#WithoutSection').css('display', 'none');
+                $.ajax({
+                type: 'get',
+                url: '/api/GetUnassignedTeacherList/',
+                success: function (response) {
+                    for (i in response) {
+                        listData = '<option value="' + response[i].ID + '">' + response[i].Name + '</option>';
+                        $('#Teacher0').append(listData);
+                    }
+                    {#            return response;#}
+                },
+                error: function () {
+                    $('#name_status').addClass('validate_data');
+                    $('#name_status').html('error.');
+                }
+            });
+
+            }
+            if (elm.value === 'No') {
+                $('#ClassDetail').css('display', '');
+                $('#SectionDetail').css('display', 'None');
+                $('#WithSection').css('display', 'none');
+                $('#WithoutSection').css('display', '');
+            }
+
+        }
+
+        var sectionCount = 1;
+        function AddAnotherSection() {
+            $('#SetionBlock').append('<div id ="sec' + sectionCount + '"> <div class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback"> <label>Section Name*:</label> <input type="text" class="form-control has-feedback-left" id="sectionName' + sectionCount + '"placeholder="Section Name"> <span class="fa fa-joomla form-control-feedback left" aria-hidden="true"></span> </div>  <div class="col-md-3 col-sm-6 col-xs-12 form-group has-feedback"> <label>Start Roll *:</label> <input type="number" class="form-control has-feedback-left" id="StartRoll' + sectionCount + '"placeholder="Start Roll"> <span class="fa fa-list-ol form-control-feedback left"aria-hidden="true"></span> </div> <div class="col-md-3 col-sm-6 col-xs-12 form-group has-feedback"> <label>End Roll *:</label> <input type="number" class="form-control has-feedback-left" id="EndRoll' + sectionCount + '"placeholder="End Roll"> <span class="fa fa-list-ol form-control-feedback left"aria-hidden="true"></span> </div> <div class="col-md-1 col-sm-6 col-xs-12 form-group has-feedback"> <i style="color:red;padding: 27px;cursor:pointer;" class="fa fa-trash" onclick= removeSection(' + sectionCount + ')></i>  </div></div>')
+             $.ajax({
+                type: 'get',
+                url: '/api/GetUnassignedTeacherList/',
+                success: function (response) {
+                    for (i in response) {
+                        listData = '<option value="' + response[i].ID + '">' + response[i].Name + '</option>';
+                        $('#Teacher'+(sectionCount-1)).append(listData);
+                    }
+                    {#            return response;#}
+                },
+                error: function () {
+                    $('#name_status').addClass('validate_data');
+                    $('#name_status').html('error.');
+                }
+            });
+            sectionCount += 1;
+
+
+        }
+    </script>
+
+
+    <script>
+
+        var classForm = $('#classAddForm');
+
+        function getUnassignedTeacherList() {
+
+            $.ajax({
+                type: 'get',
+                url: '/api/GetUnassignedTeacherList/',
+                success: function (response) {
+                    for (i in response) {
+                        listData = '<option value="' + response[i].ID + '">' + response[i].Name + '</option>';
+                        $('#ClassTeacherChoose').append(listData);
+                    }
+                    {#            return response;#}
+                },
+                error: function () {
+                    $('#name_status').addClass('validate_data');
+                    $('#name_status').html('error.');
+                }
+            });
+
+        }
+
+        $(getUnassignedTeacherList());
+
+        function postClassDetail() {
+            var ClassName = $('#ClassName').val();
+            var ClassLocation = $('#ClassLocation').val();
+            var HaveClassSection = $('#HaveClassSection').val();
+            var ClassStartRoll = $('#ClassStartRoll').val();
+            var ClassEndRoll = $('#ClassEndRoll').val();
+            var csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val();
+
+            if (ClassName === ''  || ClassStartRoll === "" || ClassEndRoll === "") {
+                $('#name_status').addClass('validate_data');
+                $('#name_status').html('* fields are required.');
+                $('#name_status').fadeIn().fadeOut(2000);
+            }
+            else {
+
+                $.ajax({
+                    type: 'post',
+                    url: '/api/AddClassWithoutSection/',
+                    data: {
+                        ClassName: ClassName,
+                        ClassLocation: ClassLocation,
+                        HaveClassSection: HaveClassSection,
+                        ClassStartRoll: ClassStartRoll,
+                        ClassEndRoll: ClassEndRoll,
+                        csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val()
+                    },
+
+                    success: function (response) {
+                        if (response.response === 'ok') {
+                            $('#name_status').addClass('validate_data');
+                            $('#name_status').html('Class added successfully.');
+                            $('#name_status').fadeIn().fadeOut(2000);
+                            classForm.trigger('reset')
+                        }
+                        else {
+                            $('#name_status').addClass('validate_data');
+                            $('#name_status').html(""+response.response);
+                            $('#name_status').fadeIn().fadeOut(2000);
+
+                        }
+
+                    },
+                    error: function () {
+                        $('#name_status').addClass('validate_data');
+                        $('#name_status').html('error.');
+                        $('#name_status').fadeIn().fadeOut(2000);
+                    }
+                });
+
+            }
+        }
+
+        function postClassDetailWithSection() {
+            var ClassName = $('#ClassName').val();
+            var ClassLocation = $('#ClassLocation').val();
+            var HaveClassSection = $('#HaveClassSection').val();
+            var csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val();
+            var secCount = 10;
+            var SecDetail = "";
+            for (var jj = 0; jj <= secCount; jj++) {
+                try {
+                    SecDetail += document.getElementById("sectionName" + jj).value;
+                    SecDetail += ',';
+
+                    SecDetail += document.getElementById("StartRoll" + jj).value;
+                    SecDetail += ',';
+                    SecDetail += document.getElementById("EndRoll" + jj).value;
+
+                    SecDetail += '|';
+                }
+                catch (err) {
+
+
+                }
+
+            }
+
+            if (ClassName === '' || HaveClassSection === "") {
+                $('#name_status').addClass('validate_data');
+                $('#name_status').html('* fields are required.');
+                $('#name_status').fadeIn().fadeOut(2000);
+            }
+            else {
+
+
+                $.ajax({
+                    type: 'post',
+                    url: '/api/AddClassWithSection/',
+                    data: {
+                        ClassName: ClassName,
+                        ClassLocation: ClassLocation,
+                        HaveClassSection: HaveClassSection,
+                        SecDetail: SecDetail,
+                        csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val()
+                    },
+
+                    success: function (response) {
+                        if (response.response === 'ok') {
+                            $('#name_status').addClass('validate_data');
+                            $('#name_status').html('Class added successfully.');
+                            $('#name_status').fadeIn().fadeOut(2000);
+                            classForm.trigger('reset')
+                        }
+                        else {
+                            $('#name_status').addClass('validate_data');
+                            $('#name_status').html(""+response.response);
+                            $('#name_status').fadeIn().fadeOut(2000);
+
+                        }
+
+                        return response;
+                    },
+                    error: function () {
+                        $('#name_status').addClass('validate_data');
+                        $('#name_status').html('error.');
+                        $('#name_status').fadeIn().fadeOut(2000);
+
+                    }
+                });
+
+            }
+        }
+        function removeSection(id) {
+            $('#sec' + id).remove();
+
+        }
+
+    </script>
+{% endblock %}

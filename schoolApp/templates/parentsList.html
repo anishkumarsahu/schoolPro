@@ -1,0 +1,575 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block css %}
+{% endblock %}
+{% block  main %}
+    <div class="right_col" role="main">
+        <div class="">
+            <div class="page-title">
+                <div class="title_left">
+                    <h3>Parents List</h3>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+            <div class="row">
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>{{ request.session.CurrentSchoolSession.currentSessionYear }}</h2>
+
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <p class="text-muted font-13 m-b-30">
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12">
+                                    <select id="stuClass" class="form-control" onchange="getClassSectionList()">
+                                        <option value="">Choose Class</option>
+
+
+                                    </select>
+                                </div>
+
+                                <div class="col-md-5 col-sm-12">
+
+                                    <select id="stuSection" class="form-control">
+
+
+                                    </select>
+
+                                </div>
+                                <div class="col-md-1 col-sm-6 col-xs-12">
+
+                                    <button type="button"
+                                            class="btn btn-success" onclick="GetParentList()"><i
+                                            class="fa fa-search"></i> Search
+                                    </button>
+                                </div>
+
+                            </div>
+
+
+                            </p>
+                            <table id="ParentList" class="table table-striped table-bordered bulk_action"
+                                   style="width:100%">
+                                <thead>
+                                <tr>
+                                    <th>ParentID</th>
+                                    <th>Father Name</th>
+                                    <th>Phone</th>
+                                    <th>Mother Name</th>
+                                    <th>Profession</th>
+                                    <th>Ward Details</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+
+
+                                <tbody>
+
+
+                                </tbody>
+                            </table>
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="modal fade bd-example-modal-lg" id="myModal" role="dialog">
+                    <div class="modal-dialog modal-lg">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Parent Detail</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+
+                                            <div class="x_content">
+                                                <table class="table table-striped">
+                                                    <tbody>
+                                                    <tr>
+                                                        <th scope="row">FATHER'S NAME:</th>
+                                                        <td id="sFatherName"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">FATHER'S OCCUPATION:</th>
+                                                        <td id="sProfession"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">EMAIL ID:</th>
+                                                        <td id="sEmail"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">MOBILE NO:</th>
+                                                        <td id="sPhoneNumber"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">MOTHER'S NAME:</th>
+                                                        <td id="sMotherName"></td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <th scope="row">PRESENT ADDRESS:</th>
+                                                        <td id="sPresentAddress"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">PERMANENT ADDRESS:</th>
+                                                        <td id="sPermanentAddress"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">Ward Detail:</th>
+                                                        <td id="sWardDetail"></td>
+                                                    </tr>
+
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i
+                                            class="fa fa-times m-right-xs"></i>Close
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade bd-example-modal-lg" id="myModalEditParent" role="dialog">
+                    <div class="modal-dialog modal-lg">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Edit Parent Detail</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <form>{% csrf_token %}
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <div class="x_panel" style="min-height: 383px">
+
+                                                <div class="x_content">
+                                                    <br/>
+                                                    <input type="hidden" id="eParentID">
+                                                    <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>Father First Name *:</label>
+                                                        <input type="text" class="form-control has-feedback-left"
+                                                               id="eFatherFirstName"
+                                                               placeholder="First Name">
+                                                        <span class="fa fa-user form-control-feedback left"
+                                                              aria-hidden="true"></span>
+                                                    </div>
+
+                                                    <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>Father Middle Name:</label>
+                                                        <input type="text" class="form-control has-feedback-left"
+                                                               id="eFatherMiddleName"
+                                                               placeholder="Middle Name">
+                                                        <span class="fa fa-user form-control-feedback left"
+                                                              aria-hidden="true"></span>
+                                                    </div>
+
+
+                                                    <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>Father Last Name *:</label>
+                                                        <input type="text" class="form-control has-feedback-left"
+                                                               id="eFatherLastName"
+                                                               placeholder="Last Name">
+                                                        <span class="fa fa-user form-control-feedback left"
+                                                              aria-hidden="true"></span>
+                                                    </div>
+
+
+                                                    <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>Mother First Name *:</label>
+                                                        <input type="text" class="form-control has-feedback-left"
+                                                               id="eMotherFirstName"
+                                                               placeholder="First Name">
+                                                        <span class="fa fa-user form-control-feedback left"
+                                                              aria-hidden="true"></span>
+                                                    </div>
+
+                                                    <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>Mother Middle Name:</label>
+                                                        <input type="text" class="form-control has-feedback-left"
+                                                               id="eMotherMiddleName"
+                                                               placeholder="Middle Name">
+                                                        <span class="fa fa-user form-control-feedback left"
+                                                              aria-hidden="true"></span>
+                                                    </div>
+
+
+                                                    <div class="col-md-4 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>Mother Last Name *:</label>
+                                                        <input type="text" class="form-control has-feedback-left"
+                                                               id="eMotherLastName"
+                                                               placeholder="Last Name">
+                                                        <span class="fa fa-user form-control-feedback left"
+                                                              aria-hidden="true"></span>
+                                                    </div>
+
+
+                                                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>Email (Optional):</label>
+                                                        <input type="email" class="form-control has-feedback-left"
+                                                               id="eEmail"
+                                                               placeholder="Email Address(Optional)">
+                                                        <span class="fa fa-envelope form-control-feedback left"
+                                                              aria-hidden="true"></span>
+                                                    </div>
+
+
+                                                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>Phone Number *:</label>
+                                                        <input type="number" class="form-control has-feedback-left"
+                                                               id="ePhoneNumber"
+                                                               placeholder="Phone Number">
+                                                        <span class="fa fa-phone form-control-feedback left"
+                                                              aria-hidden="true"></span>
+                                                    </div>
+
+
+                                                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>Profession *:</label>
+                                                        <input type="text" class="form-control has-feedback-left"
+                                                               id="eProfession"
+                                                               placeholder="Profession">
+                                                        <span class="fa fa-briefcase form-control-feedback left"
+                                                              aria-hidden="true"></span>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-success" onclick="updateParentDetail()"><i
+                                            class="fa fa-check m-right-xs"></i>Update
+                                    </button>
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i
+                                            class="fa fa-times m-right-xs"></i>Close
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                {#                delete modala#}
+
+                <div class="modal fade" id="myModalDelete" role="dialog">
+                    <div class="modal-dialog ">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h2 class="modal-title">Confirmation</h2>
+                            </div>
+                            <div class="modal-body">
+                                <p style="color: #0D3349;font-size: 20px">Are you sure you want to delete this data.</p>
+                            </div>
+
+                            <input type="hidden" id="deleteParentID">
+                            <div class="modal-footer">
+                                <button type="button" onclick="sureDeleteParent()" class="btn btn-danger">Delete
+                                </button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block js %}
+    <script>
+
+
+        $(
+            getOnlyClassListList()
+        );
+        function getOnlyClassListList() {
+
+
+            $.ajax({
+                type: 'get',
+                url: '/api/GetOnlyClassList/',
+                success: function (response) {
+                    for (i in response.data) {
+                        listData = '<option value="' + response.data[i].ClassID + '">' + response.data[i].Standard + '</option>';
+                        $('#stuClass').append(listData);
+                    }
+                    {#            return response;#}
+                },
+                error: function () {
+                    $('#name_status').addClass('validate_data');
+                    $('#name_status').html('error.');
+                }
+            });
+
+        }
+        function getClassSectionList() {
+            $('#selectDate').val('');
+
+            var id = $('#stuClass').val();
+            $('#stuSection').html('');
+
+            if (id !== '') {
+                $.ajax({
+                    type: 'get',
+                    url: '/api/GetOnlyClassSectionDetail/' + id + '/',
+                    success: function (response) {
+
+
+                        for (i in response.data) {
+                            listData = '<option value="' + response.data[i].SectionID + '">' + response.data[i].Section + '</option>';
+                            $('#stuSection').append(listData);
+
+
+                        }
+                        {#            return response;#}
+                    },
+                    error: function () {
+                        $('#name_status').addClass('validate_data');
+                        $('#name_status').html('error.').fadeIn().fadeOut(2000);
+                    }
+                });
+
+            }
+
+
+        }
+
+
+        function getParentDetail(id) {
+            $.ajax({
+                type: 'get',
+                url: '/api/GetParentDetail/' + id + '/',
+                success: function (response) {
+                    $('#sParentID').html(response.data['ParentID']);
+                    $('#sPhoneNumber').html(response.data['Phone']);
+                    $('#sEmail').html(response.data['Email']);
+                    $('#sPresentAddress').html(response.data['PresentAddress']);
+                    $('#sPermanentAddress').html(response.data['PermanentAddress']);
+                    $('#sFatherName').html(response.data['FatherName']);
+                    $('#sMotherName').html(response.data['MotherName']);
+                    $('#sProfession').html(response.data['Profession']);
+                    $('#sWardDetail').html(response.data['WardDetail']);
+                    return response;
+                }
+            });
+
+        }
+        function editParentDetail(id) {
+            $.ajax({
+                type: 'get',
+                url: '/api/GetParentDetailForEdit/' + id + '/',
+                success: function (response) {
+                    $('#eParentID').val(response.data['ParentID']);
+                    $('#ePhoneNumber').val(response.data['Phone']);
+                    $('#eEmail').val(response.data['Email']);
+                    $('#eFatherFirstName').val(response.data['FatherFirstName']);
+                    $('#eFatherMiddleName').val(response.data['FatherMiddleName']);
+                    $('#eFatherLastName').val(response.data['FatherLastName']);
+                    $('#eMotherFirstName').val(response.data['MotherFirstName']);
+                    $('#eMotherMiddleName').val(response.data['MotherMiddleName']);
+                    $('#eMotherLastName').val(response.data['MotherLastName']);
+                    $('#eProfession').val(response.data['Profession']);
+                    return response;
+                }
+            });
+
+        }
+
+
+        function updateParentDetail() {
+            var eParentID = $('#eParentID').val();
+            var ePhoneNumber = $('#ePhoneNumber').val();
+            var eEmail = $('#eEmail').val();
+            var eFatherFirstName = $('#eFatherFirstName').val();
+            var eFatherMiddleName = $('#eFatherMiddleName').val();
+            var eFatherLastName = $('#eFatherLastName').val();
+            var eMotherFirstName = $('#eMotherFirstName').val();
+            var eMotherMiddleName = $('#eMotherMiddleName').val();
+            var eMotherLastName = $('#eMotherLastName').val();
+            var eProfession = $('#eProfession').val();
+            var csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val();
+
+            data = new FormData();
+            data.append('eParentID', eParentID);
+            data.append('ePhoneNumber', ePhoneNumber);
+            data.append('eEmail', eEmail);
+            data.append('eFatherFirstName', eFatherFirstName);
+            data.append('eFatherMiddleName', eFatherMiddleName);
+            data.append('eFatherLastName', eFatherLastName);
+            data.append('eMotherFirstName', eMotherFirstName);
+            data.append('eMotherMiddleName', eMotherMiddleName);
+            data.append('eMotherLastName', eMotherLastName);
+            data.append('eProfession', eProfession);
+
+            data.append('csrfmiddlewaretoken', csrfmiddlewaretoken);
+            if (ePhoneNumber === "" || eFatherFirstName === "" || eFatherLastName === ""
+                || eMotherFirstName === '' || eMotherLastName === "" || eProfession === "") {
+
+                $('#name_status').addClass('validate_data');
+                $('#name_status').html('* fields are required.');
+                $('#name_status').fadeIn().fadeOut(2000);
+
+            }
+            else {
+                $.ajax({
+                    type: 'post',
+                    url: '/api/UpdateParentDetail/',
+                    data: data,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+
+
+                    success: function (response) {
+                        if (response.response === 'ok') {
+
+                            $('#name_status').addClass('validate_data');
+                            $('#name_status').html('Parent Details Updated successfully.').fadeIn().fadeOut(2000);
+                            $('#myModalEditParent').modal('toggle');
+                            ParentListTableData.ajax.reload();
+
+                        }
+                        else {
+                            $('#name_status').removeClass('validate_data');
+                            $('#name_status').html("").fadeIn().fadeOut(2000);
+
+                        }
+
+                        return response;
+                    },
+                    error: function () {
+                        $('#name_status').addClass('validate_data');
+                        $('#name_status').html('error.').fadeIn().fadeOut(2000);
+                    }
+                });
+            }
+
+        }
+
+        function deleteParentDetail(id) {
+            $('#deleteParentID').val(id);
+
+        }
+
+        function sureDeleteParent() {
+            var id = $('#deleteParentID').val();
+
+            $.ajax({
+                type: 'post',
+                url: '/api/DeleteParentDetail/',
+                data: {
+                    id: id
+                },
+                success: function (response) {
+                    $('#myModalDelete').modal('toggle');
+                    $('#name_status').addClass('validate_data');
+                    $('#name_status').html('Parent Detail Deleted Successfully.');
+                    $('#name_status').fadeIn().fadeOut(2000);
+                    ParentListTableData.ajax.reload();
+
+
+                    return response;
+                }
+            });
+        }
+
+
+        var ParentListTableData;
+        var counts = 0;
+        function GetParentList() {
+
+            var standard = $('#stuClass').val();
+            var section = $('#stuSection').val();
+            if (standard === '') {
+                $('#name_status').addClass('validate_data');
+                $('#name_status').html('* fields are required.');
+                $('#name_status').fadeIn().fadeOut(2000);
+
+            }
+            else {
+                if (counts === 0) {
+                    ParentListTableData = $('#ParentList').DataTable({
+                        "scrollX": true,
+                        dom: 'Blfrtip',
+                        buttons: [{
+                            extend: 'excel',
+                            exportOptions: {
+                                columns: [1, 2, 3, 4, 5]
+                            }
+                        }, {
+                            extend: 'print',
+                            exportOptions: {
+                                columns: [1, 2, 3, 4, 5]
+                            }
+                        }
+                        ],
+                        "columnDefs": [
+                            {"name": "ParentID", "targets": 0, "orderable": false},
+                            {"name": "fatherFirstName", "targets": 1, "orderable": true},
+                            {"name": "motherFirstName", "targets": 2, "orderable": true},
+                            {"name": "occupation", "targets": 3, "orderable": true},
+                            {"name": "phoneNumber", "targets": 4, "orderable": true},
+                            {"name": "fatherMiddleName", "targets": 5, "orderable": true},
+                            {"name": "'Action'", "targets": 6, "orderable": false},
+
+                        ],
+                        aaSorting: [[2, 'asc']],
+                        "lengthMenu": [[20, 25, 50, 100, -1], [20, 25, 50, 100, "All"]],
+                        "pageLength": 20,
+                        "processing": true,
+                        "serverSide": true,
+                        "ajax": "{% url 'SchoolTableApi:getParentListJson' %}?classID=" + standard + "&sectionID=" + section,
+                        stateSave: true
+                    });
+
+
+                    ParentListTableData.column(0).visible(false);
+                    counts = counts + 1;
+
+
+                }
+                else {
+                    ParentListTableData.ajax.url("{% url 'SchoolTableApi:getParentListJson' %}?classID=" + standard + "&sectionID=" + section).load();
+
+                }
+
+            }
+
+        }
+
+
+    </script>
+
+{% endblock %}

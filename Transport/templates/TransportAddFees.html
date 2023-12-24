@@ -1,0 +1,322 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block css %}
+
+    <!-- bootstrap-daterangepicker -->
+    <link href="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.css' %}" rel="stylesheet">
+    <!-- bootstrap-datetimepicker -->
+    <link href="{% static 'vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css' %}"
+          rel="stylesheet">
+
+
+    <link href="{% static 'vendors/switchery/dist/switchery.min.css' %}" rel="stylesheet">
+
+    <link href="{% static 'vendors/iCheck/skins/flat/green.css' %}" rel="stylesheet">
+
+{% endblock %}
+{% block main %}
+    <div class="right_col" role="main">
+        <div class="">
+            <div class="page-title">
+                <div class="title_left">
+                    <h3>Update Transport Fees</h3>
+                </div>
+
+
+            </div>
+
+            <div class="clearfix"></div>
+
+
+            <div class="row">
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>Add Detail</h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <p class="text-muted font-13 m-b-30 ">
+                            <div class="row">
+
+                            <div class="col-md-3 col-sm-6 col-xs-12">
+                                    <label>Vehicle Name:</label>
+                                    <select id="stuClass" class="form-control" onchange="getClassSectionList()">
+                                        <option value="">Choose Class</option>
+                                    </select>
+                                </div>
+
+
+                                <div class="col-md-3 col-sm-6 col-xs-12">
+                                    <label>Class:</label>
+                                    <select id="stuClass" class="form-control" onchange="getClassSectionList()">
+                                        <option value="">Choose Class</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-3 col-sm-6 col-xs-12">
+                                    <label>Section:</label>
+
+                                    <select id="stuSection" class="form-control" onchange="getStudentList()">
+
+
+                                    </select>
+
+                                </div>
+
+
+                                <div class="col-md-3 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>Student Name/Roll *:</label>
+                                    <select id="stuList" class="form-control" onchange="stuChange()"></select>
+                                </div>
+
+
+                                <div class="row">
+
+                                    <button style="float: right" class="btn btn-success" type="button" onclick="getFees()"> <i class="fa fa-search"></i>
+                                        Search
+                                    </button>
+                                </div>
+
+
+                            </div>
+
+
+                            </p>
+                            <table class="table table-bordered table-striped" id="StudentFee">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Month</th>
+                                    <th>Status</th>
+                                    <th>Paid Date</th>
+                                    <th>Remark (Optional)</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+
+
+                                <tbody>
+
+
+
+                                </tbody>
+                            </table>
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block js %}
+    <script src="{% static 'vendors/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-bs/js/dataTables.bootstrap.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons/js/buttons.flash.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-keytable/js/dataTables.keyTable.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-scroller/js/dataTables.scroller.min.js' %}"></script>
+    <script src="{% static 'vendors/jszip/dist/jszip.min.js' %}"></script>
+    <script src="{% static 'vendors/pdfmake/build/pdfmake.min.js' %}"></script>
+    <script src="{% static 'vendors/pdfmake/build/vfs_fonts.js' %}"></script>
+    <script src="{% static 'vendors/switchery/dist/switchery.min.js' %}"></script>
+
+    <script src="{% static 'vendors/iCheck/icheck.min.js' %}"></script>
+    <script src="{% static 'vendors/moment/min/moment.min.js' %}"></script>
+    <script src="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
+    <!-- bootstrap-datetimepicker -->
+    <script src="{% static 'vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js' %}"></script>
+
+    <script>
+          $(
+            getOnlyClassListList()
+        );
+        function getOnlyClassListList() {
+
+
+
+            $.ajax({
+                type: 'get',
+                url: '/api/GetOnlyClassList/',
+                success: function (response) {
+
+                    for (i in response.data) {
+                        listData = '<option value="' + response.data[i].ClassID + '">' + response.data[i].Standard + '</option>';
+                        $('#stuClass').append(listData);
+                    }
+                    {#            return response;#}
+
+                },
+                error: function () {
+                    $('#name_status').addClass('validate_data');
+                    $('#name_status').html('error.');
+                }
+            });
+
+        }
+        function getClassSectionList() {
+            $('#StudentFee tbody').empty();
+            var id = $('#stuClass').val();
+            $('#stuSection').html('');
+
+            $.ajax({
+                type: 'get',
+                url: '/api/GetOnlyClassSectionDetail/' + id + '/',
+                success: function (response) {
+
+
+                    for (i in response.data) {
+                        listData = '<option value="' + response.data[i].SectionID + '">' + response.data[i].Section + '</option>';
+                        $('#stuSection').append(listData);
+
+
+                    }
+                   getStudentList();
+                },
+                error: function () {
+                    $('#name_status').addClass('validate_data');
+                    $('#name_status').html('error.').fadeIn().fadeOut(2000);
+                }
+            });
+
+
+        }
+
+        function getStudentList() {
+
+            var standard = $('#stuClass').val();
+            var section = $('#stuSection').val();
+        $('#stuList').html('');
+
+            $.ajax({
+                type: 'get',
+                url: '/api/GetStudentListwithClassAndSection/?classID=' + standard + '&sectionID=' + section ,
+                success: function (response) {
+                    for (i in response.data) {
+                        listData = '<option value="' + response.data[i].StudentID + '">' + response.data[i].Name + '-' + response.data[i].Roll + '</option>';
+                        $('#stuList').append(listData);
+                    }
+                    {#            return response;#}
+                },
+                error: function () {
+                    $('#name_status').addClass('validate_data');
+                    $('#name_status').html('error.');
+                }
+            });
+
+
+
+        }
+
+        function stuChange() {
+             $('#StudentFee tbody').empty();
+
+        }
+        var StudentFeeTable ;
+        var counts =0;
+        function getFees() {
+
+            var standard = $('#stuClass').val();
+            var stu = $('#stuList').val();
+            if(standard ==='' || stu ==='' || stu === null){
+             $('#name_status').addClass('validate_data');
+                $('#name_status').html('* fields are required.');
+                $('#name_status').fadeIn().fadeOut(2000);
+
+        }
+        else{
+            if (counts === 0) {
+
+                StudentFeeTable = $('#StudentFee').DataTable({
+                    "processing": true,
+                    "ajax": "/api/GetStudentFee/?studentID=" + stu,
+
+                    "columns": [
+                        {"data": "ID"},
+                        {"data": "Month"},
+                        {"data": "IsPaid"},
+                        {"data": "PaidDate"},
+                        {"data": "Remark"},
+                        {"data": "Action"}
+
+                    ],
+                    "order": [['0', 'asc']],
+                    "language":{
+                        "emptyTable":'No Record Found.'
+                    },
+                    "lengthMenu":[[12,25,50,-1],[12,25,50,'All']]
+
+
+                });
+                StudentFeeTable.column(0).visible(false);
+                 counts = counts + 1;
+
+
+            }
+            else{
+              StudentFeeTable.ajax.url("/api/GetStudentFee/?studentID=" + stu).load();
+
+            }
+
+        }
+
+        }
+         function submitData(reason, feeID) {
+
+
+            var a = $('#a' + feeID).is(":checked");
+            var b = $('#' + reason).val();
+
+                data = new FormData();
+                data.append('feeID', reason);
+                data.append('reason', b);
+                data.append('isPaid', a);
+
+
+                $.ajax({
+                    type: 'post',
+                    url: '/api/AddStudentFee/',
+                    data: data,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+
+
+                    success: function (response) {
+                        if (response.response === 'ok') {
+                            $('#name_status').addClass('validate_data');
+                            $('#name_status').html('Fee Updated.').fadeIn().fadeOut(2000);
+                            getFees();
+
+                        }
+                        else {
+                            $('#name_status').removeClass('validate_data');
+                            $('#name_status').html("").fadeIn().fadeOut(2000);
+                        }
+                        return response;
+                    },
+                    error: function () {
+                        $('#name_status').addClass('validate_data');
+                        $('#name_status').html('error.').fadeIn().fadeOut(2000);
+                    }
+                });
+        }
+
+
+
+    </script>
+
+{% endblock %}

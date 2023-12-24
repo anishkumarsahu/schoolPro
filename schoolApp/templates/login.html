@@ -1,0 +1,137 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="{% static 'images/fevicon3.png' %}" type=""/>
+    <title>School Management Software </title>
+    <link href="{% static 'vendors/bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendors/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendors/nprogress/nprogress.css' %}" rel="stylesheet">
+    <link href="{% static  'vendors/animate.css/animate.min.css' %}" rel="stylesheet">
+    <link href="{% static  'build/css/custom.min.css' %}" rel="stylesheet">
+    <link href="{% static  'css/custom/main.css' %}" rel="stylesheet">
+
+    <style>
+    </style>
+</head>
+
+<body class="login jYjZsx">
+<div>
+    <a class="hiddenanchor" id="signup"></a>
+    <a class="hiddenanchor" id="signin"></a>
+
+    <div class="login_wrapper">
+
+
+        {% if messages %}
+
+            {% for message in messages %}
+                <p style="font-size: 18px;text-align: center;color: #ff6461">{{ message }}</p>
+            {% endfor %}
+
+        {% endif %}
+        <div class="animate form login_form">
+            <section class="login_content">
+                <form method="post"> {% csrf_token %}
+
+                    <h1>School Stack</h1>
+                    <h1>Login</h1>
+                    <div>
+                        <input type="text" class="form-control" name="username" placeholder="Username" required=""/>
+                    </div>
+                    <div>
+                        <input type="password" class="form-control" name="password" placeholder="Password" required=""/>
+                    </div>
+                    <div>
+                        <button class="btn btn-dark submit" type="submit">Log in</button>
+                    </div>
+
+                    <div class="clearfix"></div>
+                    {% if count == 0 %}
+
+
+                        <div class="separator">
+                            <p class="change_link">New to site?
+                                <a href="#signup" class="to_register"> Create Account </a>
+                            </p>
+
+                            <div class="clearfix"></div>
+                            <br/>
+
+                            <div>
+                                <h1><i class=""></i>NextFifth Technologies</h1>
+                                <p>©2019 All Rights Reserved.</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                </form>
+            </section>
+        </div>
+
+        <div id="register" class="animate form registration_form">
+            <section class="login_content">
+                <form method="post" action="{% url 'schoolApp:AddOwner' %}"> {% csrf_token %}
+                    <h1>Create Account</h1>
+                    <div>
+                        <input type="text" class="form-control" id="Name" name="nameSign" placeholder="Name"
+                               required="required" onkeyup="checkname()"/>
+                    </div>
+
+                    <div>
+                        <input type="text" class="form-control" name="phoneNumberSign" placeholder="Phone Number"
+                               required="required"/>
+                    </div>
+                    <div>
+                        <input type="email" class="form-control" name="emailSign" placeholder="Email"
+                               required="required"/>
+                    </div>
+                    <div>
+                        <input type="text" class="form-control" id="UserName" name="usernameSign" placeholder="Username"
+                               required="required" onkeyup="checkname()"/>
+                    </div>
+                    <div>
+                        <input type="password" class="form-control" id="password" name="passwordSign"
+                               onblur="checkPassword()" placeholder="Password (Min 6 characters)" required="required"/>
+                    </div>
+
+                    <div>
+                        <input type="password" class="form-control" id="confirmPassword" onkeyup="confirmpassword()"
+                               name="confirmPasswordSign" placeholder="Confirm Password (Min 6 characters)"
+                               required="required"/>
+                    </div>
+                    <div>
+                        <button class="btn btn-dark submit" id="submitSignUp" onclick="return postNewUser()"
+                                type="submit">Submit
+                        </button>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <div class="separator">
+                        <p class="change_link">Already a member ?
+                            <a href="#signin" class="to_register"> Log in </a>
+                        </p>
+
+                        <div class="clearfix"></div>
+                        <br/>
+
+                        <div>
+                            <h1><i class=""></i>NextFifth Technologies</h1>
+                            <p>©2019 All Rights Reserved.</p>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+<script src="{% static 'vendors/jquery/dist/jquery.min.js' %}"></script>
+<script src="{% static 'js/customjs/main.js' %}"></script>
+
+</body>
+</html>

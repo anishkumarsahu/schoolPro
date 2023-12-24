@@ -1,0 +1,59 @@
+{% load static %}
+<div class="top_nav">
+    <div class="nav_menu">
+        <nav>
+            <div class="nav toggle">
+                <a id="menu_toggle" onclick="tClass()"><i class="fa fa-bars"></i></a>
+
+            </div>
+
+
+            <ul class="nav navbar-nav navbar-right">
+
+
+                <li class="" data-toggle="tooltip" data-placement="bottom" title="User Profile">
+                    <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"
+                       aria-expanded="false">
+                        <img src="{% static 'images/user.png' %}" alt="">{{ request.user.username|capfirst }}
+                        <span class=" fa fa-angle-down"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-usermenu pull-right">
+                        {% comment %}<li><a href="javascript:;"> Profile</a></li>{% endcomment %}
+                        <li>
+                            <a href="{% url 'schoolApp:setting' %}">
+                                {#                        <span class="badge bg-red pull-right">50%</span>#}
+                                <span>Settings</span>
+                            </a>
+                        </li>
+                        <li><a href="{% url 'schoolApp:logout' %}"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
+                        </li>
+                    </ul>
+                </li>
+
+
+                <li class="" data-toggle="tooltip" data-placement="bottom" title="Change Session">
+                    <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"
+                       aria-expanded="false">
+                        <img src="{% static 'images/session.png' %}" alt="">
+                        <span onclick="setCurrentSession({{ request.session.CurrentSchoolSession.Id }})">{{ request.session.CurrentSchoolSession.currentSessionYear }}</span>
+                        <span class=" fa fa-angle-down"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-usermenu pull-right">
+                        {% for foo in request.session.schoolSession %}
+                            <li><a href="javascript:;" onclick="updateSession('{{ foo.ID }}', '{{ foo.sessionYear }}')"
+                                   data-toggle="modal" data-target="#myModalSession"> {{ foo.sessionYear }}</a></li>
+                        {% endfor %}
+
+
+                    </ul>
+                </li>
+
+
+            </ul>
+        </nav>
+        <link href="{% static  'css/custom/main.css' %}" rel="stylesheet">
+        <span id="name_status"></span>
+
+
+    </div>
+</div>
