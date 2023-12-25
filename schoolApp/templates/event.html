@@ -283,7 +283,7 @@
                         if (response.response === 'ok') {
                             $('#name_status').addClass('validate_data');
                             $('#name_status').html('Event Added.').fadeIn().fadeOut(2000);
-                            EventListTableData.ajax.url("/api/GetEventsList/").load();
+                            EventListTableData.ajax.reload(null, false)
                             $('#myModalEventAdd').modal('toggle');
 
                         }
@@ -394,7 +394,7 @@
                         if (response.response === 'ok') {
                             $('#name_status').addClass('validate_data');
                             $('#name_status').html('Event Updated.').fadeIn().fadeOut(2000);
-                            EventListTableData.reload();
+                             EventListTableData.ajax.reload(null, false)
                             $('#myModalStudentEdit').modal('toggle');
 
                         }

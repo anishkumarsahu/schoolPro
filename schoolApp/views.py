@@ -33,12 +33,8 @@ def is_locked():
 
             if request.user.is_authenticated and request.session['isLocked'] == 'Yes':
                 return redirect('/LockScreen/')
-
-
             return view_func(request, *args, **kwargs)
-
         return wrapper
-
     return _check_group
 
 

@@ -773,23 +773,22 @@ def get_class_list(request, *args, **kwargs):
         class_list = Standard.objects.filter(isDeleted__exact=False, sessionID=get_current_session(request)).order_by('datetime')
     else:
         class_list = Standard.objects.filter(isDeleted__exact=False, pk=int(query),sessionID=get_current_session(request)).order_by('datetime')
-    teachers =''
+    teachers =""
     std_list = []
     for obj in class_list:
         if obj.hasSection == 'No':
             try:
                 teachers = AssignTeacherToClassOrSection.objects.get(standardID_id=obj.pk, sessionID=get_current_session(request))
             except:
-
                 if int(get_current_session_year()) == int(get_current_session(request)):
-                    assign_teacher = AssignTeacherToClassOrSection()
-                    assign_teacher.standardID_id = obj.pk
-                    assign_teacher.sessionID_id = get_current_session_year()
-                    assign_teacher.save()
+                    teachers = AssignTeacherToClassOrSection()
+                    teachers.standardID_id = obj.pk
+                    teachers.sessionID_id = get_current_session_year()
+                    teachers.save()
                 else:
                     pass
-            if teachers.classTeacher == None:
-                teacher = 'No Data'
+            if teachers.classTeacher is None or teachers =="":
+                teacher = 'N/A'
             else:
                 teacher = teachers.classTeacher.firstName + ' ' + teachers.classTeacher.middleName + ' ' + teachers.classTeacher.lastName
 
