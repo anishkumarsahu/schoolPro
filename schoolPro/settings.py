@@ -51,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'schoolPro.urls'
@@ -186,3 +187,4 @@ MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "media")
 #
 # PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'schoolApp', '../static/sw/sw.js')
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
