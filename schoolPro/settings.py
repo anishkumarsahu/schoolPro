@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'pwa',
+    # 'pwa',
     'schoolApp',
     'Transport',
     'students'
@@ -145,44 +145,44 @@ MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "media_cdn")
 
 
 
-
-PWA_APP_NAME = 'School Stack'
-PWA_APP_DESCRIPTION = "School Management System from Nextfifth Technologies."
-PWA_APP_THEME_COLOR = '#3F51B5'
-PWA_APP_DISPLAY = 'standalone'
-PWA_APP_START_URL = '/'
-PWA_APP_ICONS = [
-    {
-      "src": "static/sw/images/48.png",
-      "sizes": "48x48",
-      "type": "image/png"
-    },
-    {
-        "src": "static/sw/images/72.png",
-        "sizes": "72x72",
-        "type": "image/png"
-    },
-    {
-        "src": "static/sw/images/96.png",
-        "sizes": "96x96",
-        "type": "image/png"
-    },
-    {
-      "src": "static/sw/images/144.png",
-      "sizes": "144x144",
-      "type": "image/png"
-    },
-    {
-      "src": "static/sw/images/192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-        "src": "static/sw/images/512.png",
-        "sizes": "512x512",
-        "type": "image/png"
-    }
-  ]
-
-PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'schoolApp', '../static/sw/sw.js')
+#
+# PWA_APP_NAME = 'School Stack'
+# PWA_APP_DESCRIPTION = "School Management System from Nextfifth Technologies."
+# PWA_APP_THEME_COLOR = '#3F51B5'
+# PWA_APP_DISPLAY = 'standalone'
+# PWA_APP_START_URL = '/'
+# PWA_APP_ICONS = [
+#     {
+#       "src": "static/sw/images/48.png",
+#       "sizes": "48x48",
+#       "type": "image/png"
+#     },
+#     {
+#         "src": "static/sw/images/72.png",
+#         "sizes": "72x72",
+#         "type": "image/png"
+#     },
+#     {
+#         "src": "static/sw/images/96.png",
+#         "sizes": "96x96",
+#         "type": "image/png"
+#     },
+#     {
+#       "src": "static/sw/images/144.png",
+#       "sizes": "144x144",
+#       "type": "image/png"
+#     },
+#     {
+#       "src": "static/sw/images/192.png",
+#       "sizes": "192x192",
+#       "type": "image/png"
+#     },
+#     {
+#         "src": "static/sw/images/512.png",
+#         "sizes": "512x512",
+#         "type": "image/png"
+#     }
+#   ]
+#
+# PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'schoolApp', '../static/sw/sw.js')
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

@@ -28,7 +28,7 @@ urlpatterns = [
     re_path(r'^apiT/', include(("Transport.apiUrls", 'transportApi'), namespace='transportApi')),
     re_path(r'^Students/', include(("students.urls", 'students'), namespace='students')),
     re_path(r'^SchoolTableApi/', include(("schoolApp.datatableApi.urls", 'schoolApp'), namespace='SchoolTableApi')),
-    re_path('', include('pwa.urls')),
+    # re_path('', include('pwa.urls')),
 ]
 
 if settings.DEBUG:
